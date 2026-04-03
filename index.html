@@ -716,84 +716,97 @@
   .pw-error.visible { display: block; }
   .pw-hint { font-size: 0.75rem; color: var(--text-muted); margin-top: 16px; opacity: 0.7; }
 
-  /* ─── NAV TOUR-BUTTON ───────────────────────────── */
-  .nav-tour-btn {
+  /* ─── INFO-MODAL ────────────────────────────────── */
+  .nav-info-btn {
     background: rgba(30,127,194,0.2); color: rgba(255,255,255,0.85);
     border: 1px solid rgba(30,127,194,0.45); border-radius: 100px;
     padding: 6px 16px; font-size: 0.8rem; font-weight: 600;
     cursor: pointer; transition: all 0.2s; font-family: 'DM Sans', sans-serif;
     white-space: nowrap;
   }
-  .nav-tour-btn:hover { background: var(--blue-accent); color: white; border-color: var(--blue-accent); }
+  .nav-info-btn:hover { background: var(--blue-accent); color: white; border-color: var(--blue-accent); }
 
-  /* TOUR PAGE */
-  #tour-page {
-    position: fixed;
-    inset: 0;
-    z-index: 999;
-    overflow: hidden; /* kein Scrollen möglich */
-    background: var(--bg);
-    transition: opacity 0.6s ease;
+  #info-overlay {
+    position: fixed; inset: 0; z-index: 9998;
+    background: rgba(10,37,64,0.6);
+    display: flex; align-items: center; justify-content: center;
+    backdrop-filter: blur(3px);
+    transition: opacity 0.3s ease;
   }
-  #tour-page.hidden { display: none; }
-  #tour-page main { overflow: hidden; }
-
-  /* Wrapper um jedes erklärte Element */
-  .t-step-wrap {
-    position: relative; /* Kontext für absolute Kind-Elemente */
+  #info-overlay.hidden { display: none; }
+  #info-box {
+    background: white; border-radius: 20px;
+    padding: 0; max-width: 520px; width: 92%;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.3);
+    overflow: hidden;
+    animation: modalIn 0.3s ease;
   }
-
-  /* Highlight-Rahmen: deckt den Wrapper vollständig ab */
-  .t-hl {
-    display: none; /* standardmäßig unsichtbar */
-    position: absolute;
-    inset: -6px;
-    border-radius: 12px;
-    border: 2.5px solid #1e7fc2;
-    box-shadow: 0 0 0 9999px rgba(10,37,64,0.65);
-    z-index: 1000;
-    pointer-events: none;
+  @keyframes modalIn {
+    from { transform: translateY(20px); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
   }
-  /* Nur der aktive Schritt zeigt Highlight + Popup */
-  .t-step-wrap.t-active .t-hl { display: block; }
-  .t-step-wrap.t-active .t-popup { display: flex; }
-
-  /* Popup */
-  .t-popup {
-    display: none;
-    position: absolute;
-    z-index: 10000;
-    background: white;
-    border-radius: 16px;
-    padding: 22px 24px 18px;
-    width: 290px;
-    box-shadow: 0 12px 48px rgba(10,37,64,0.22);
-    flex-direction: column;
-    gap: 10px;
-    pointer-events: all;
-    border: 1px solid rgba(10,37,64,0.06);
+  .info-header {
+    background: linear-gradient(135deg, var(--blue-deep) 0%, var(--blue-mid) 100%);
+    padding: 32px 36px 28px;
+    color: white;
+    position: relative;
   }
-  .t-popup::before {
-    content:''; display:block; height:3px; border-radius:3px;
-    background:linear-gradient(90deg,#1e7fc2,#5bc0f8);
-    margin-bottom:4px; border-radius:2px;
+  .info-header-tag {
+    display: inline-block;
+    background: rgba(30,127,194,0.4);
+    color: #8ecff5;
+    font-size: 0.7rem; font-weight: 700;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    padding: 4px 12px; border-radius: 100px;
+    margin-bottom: 14px;
+    border: 1px solid rgba(30,127,194,0.4);
   }
-  .t-popup-below { top: calc(100% + 16px); left: 0; }
-  .t-popup-right  { top: 0; left: calc(100% + 16px); }
-  .t-popup-left   { top: 0; right: calc(100% + 16px); }
-  .t-popup-above { bottom: calc(100% + 16px); left: 0; }
-
-  .t-popup-step  { font-size:0.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#1e7fc2; }
-  .t-popup-title { font-family:'DM Serif Display',serif;font-size:1.15rem;color:#0a2540;margin-top:2px; }
-  .t-popup-desc  { font-size:0.84rem;color:#6b7a8d;line-height:1.65; }
-  .t-popup-footer { display:flex;justify-content:space-between;align-items:center;margin-top:8px;padding-top:10px;border-top:1px solid #eef2f7; }
-  .t-dots { display:flex;gap:5px;align-items:center; }
-  .t-dot { width:7px;height:7px;border-radius:50%;background:#dce3ec;transition:background 0.2s; }
-  .t-dot-active { background:#1e7fc2; width:18px; border-radius:4px; }
-  .t-btn-skip { background:none;border:none;color:#6b7a8d;font-size:0.8rem;cursor:pointer;font-family:'DM Sans',sans-serif;padding:6px 4px;transition:color 0.15s; }
-  .t-btn-skip:hover { color:#0a2540; }
-  .t-btn-next { background:#0a2540;color:white;border:none;border-radius:8px;padding:9px 18px;font-size:0.83rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background 0.2s; }
-  .t-btn-next:hover { background:#1e7fc2; }
+  .info-header h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.6rem; line-height: 1.2;
+    margin-bottom: 10px;
+  }
+  .info-header p {
+    font-size: 0.88rem; color: rgba(255,255,255,0.7); line-height: 1.6;
+  }
+  .info-body {
+    padding: 28px 36px 32px;
+    display: flex; flex-direction: column; gap: 16px;
+  }
+  .info-block {
+    display: flex; gap: 14px; align-items: flex-start;
+  }
+  .info-icon {
+    font-size: 1.4rem; flex-shrink: 0; margin-top: 2px;
+  }
+  .info-block-text strong {
+    display: block; font-size: 0.88rem; font-weight: 600;
+    color: var(--blue-deep); margin-bottom: 3px;
+  }
+  .info-block-text span {
+    font-size: 0.83rem; color: var(--text-muted); line-height: 1.6;
+  }
+  .info-divider { height: 1px; background: var(--border); }
+  .info-footer {
+    display: flex; justify-content: flex-end; gap: 10px;
+    padding: 0 36px 28px;
+  }
+  .info-btn-close {
+    background: var(--blue-deep); color: white;
+    border: none; border-radius: 10px;
+    padding: 12px 28px; font-size: 0.9rem; font-weight: 600;
+    cursor: pointer; font-family: 'DM Sans', sans-serif;
+    transition: background 0.2s;
+  }
+  .info-btn-close:hover { background: var(--blue-accent); }
+  .info-btn-noshow {
+    background: transparent; color: var(--text-muted);
+    border: 1.5px solid var(--border); border-radius: 10px;
+    padding: 12px 18px; font-size: 0.85rem;
+    cursor: pointer; font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s;
+  }
+  .info-btn-noshow:hover { border-color: var(--blue-accent); color: var(--blue-accent); }
 
 </style>
 </head>
@@ -818,176 +831,45 @@
   </div>
 </div>
 
-<!-- TOUR PAGE -->
-<div id="tour-page" class="hidden">
-
-  <!-- Dunkles Overlay über die ganze Seite -->
-  <div style="position:fixed;inset:0;background:rgba(10,37,64,0.65);z-index:105;pointer-events:none;"></div>
-
-  <!-- Nav Duplikat -->
-  <nav style="pointer-events:none; position:relative; z-index:1;">
-    <div class="nav-logo">Hochwasser<span>Schutz</span></div>
-    <div class="nav-links"><a>Produkte</a><a>Hausübersicht</a><a>Über uns</a><a>Kontakt</a></div>
-  </nav>
-
-  <!-- Hero Duplikat -->
-  <div class="hero" style="pointer-events:none;">
-    <div class="hero-inner">
-      <div class="hero-tag">Webbasierte Plattform - Prototyp</div>
-      <h1>Hochwasserschutzelemente –<br>Produkte im Überblick</h1>
-      <p>Eine prototypische Übersicht von Produkten zum Hochwasserschutz, erstellt im Rahmen einer Masterarbeit.</p>
+<!-- ═══════════════════════════════════════════════ -->
+<!-- INFO-MODAL (erscheint beim ersten Besuch)       -->
+<!-- ═══════════════════════════════════════════════ -->
+<div id="info-overlay" class="hidden">
+  <div id="info-box">
+    <div class="info-header">
+      <div class="info-header-tag">Prototyp · Masterarbeit</div>
+      <h2>Willkommen auf der Hochwasserschutz-Plattform</h2>
+      <p>Eine webbasierte Informationsplattform zum privaten Hochwasserschutz – entstanden im Rahmen einer Masterarbeit.</p>
+    </div>
+    <div class="info-body">
+      <div class="info-block">
+        <div class="info-icon">🏠</div>
+        <div class="info-block-text">
+          <strong>Worum geht es?</strong>
+          <span>Diese Plattform gibt einen strukturierten Überblick über Produkte und Fachbetriebe, die beim privaten Schutz vor Hochwasser eingesetzt werden können – von wasserdichten Türen und Fenstern über Pumpen bis hin zu Barrieren-Systemen.</span>
+        </div>
+      </div>
+      <div class="info-block">
+        <div class="info-icon">🎓</div>
+        <div class="info-block-text">
+          <strong>Hinweis: Prototyp</strong>
+          <span>Diese Website ist ein Prototyp, der im Rahmen einer Masterarbeit entwickelt wurde. Alle aufgeführten Produkte und Einträge dienen als Beispieldaten und erheben keinen Anspruch auf Vollständigkeit.</span>
+        </div>
+      </div>
+      <div class="info-divider"></div>
+      <div class="info-block">
+        <div class="info-icon">👆</div>
+        <div class="info-block-text">
+          <strong>So funktioniert die Plattform</strong>
+          <span>Nutzen Sie die Kategorien links, um Produkte zu filtern. Die interaktive Hausübersicht zeigt, wo am Gebäude welche Maßnahmen eingesetzt werden können.</span>
+        </div>
+      </div>
+    </div>
+    <div class="info-footer">
+      <button class="info-btn-noshow" onclick="closeInfoModal(true)">Nicht mehr anzeigen</button>
+      <button class="info-btn-close" onclick="closeInfoModal(false)">Zur Plattform →</button>
     </div>
   </div>
-
-  <!-- SCHRITT 0: Willkommen (Hero) -->
-  <div class="t-step-wrap" id="tw-welcome" style="position:relative;display:block;">
-    <div class="hero" style="pointer-events:none;">
-      <div class="hero-inner">
-        <div class="hero-tag">Webbasierte Plattform - Prototyp</div>
-        <h1>Hochwasserschutzelemente –<br>Produkte im Überblick</h1>
-        <p>Eine prototypische Übersicht von Produkten zum Hochwasserschutz, erstellt im Rahmen einer Masterarbeit.</p>
-      </div>
-    </div>
-    <div class="t-hl" style="inset:-2px;border-radius:0;"></div>
-    <div class="t-popup t-popup-below" style="left:48px;top:calc(100% + 16px);">
-      <div class="t-popup-step">Schritt 1 von 5</div>
-      <div class="t-popup-title">Willkommen auf der Plattform!</div>
-      <div class="t-popup-desc">Diese Plattform gibt einen strukturierten Überblick über Produkte und Fachbetriebe zum privaten Hochwasserschutz – entstanden im Rahmen einer Masterarbeit. In 4 kurzen Schritten erklären wir Ihnen die wichtigsten Bereiche.</div>
-      <div class="t-popup-footer">
-        <div class="t-dots" id="tour-dots-0"></div>
-        <div style="display:flex;gap:8px;">
-          <button class="t-btn-skip" onclick="endTour()">Überspringen</button>
-          <button class="t-btn-next" onclick="nextStep()">Weiter →</button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <main style="pointer-events:none;">
-
-    <!-- SCHRITT 2: Tabs – Wrapper mit relativem Kontext -->
-    <div class="t-step-wrap" id="tw-tabs" style="display:inline-block;">
-      <div class="main-tabs" style="pointer-events:none;">
-        <div class="main-tab active">🛒 Produkte</div>
-        <div class="main-tab">🔧 Fachbetriebe & Installateure</div>
-      </div>
-      <!-- Highlight-Rahmen sitzt direkt im Wrapper -->
-      <div class="t-hl"></div>
-      <!-- Popup sitzt direkt im Wrapper, unterhalb -->
-      <div class="t-popup t-popup-below">
-        <div class="t-popup-step">Schritt 2 von 5</div>
-        <div class="t-popup-title">Produkte & Fachbetriebe</div>
-        <div class="t-popup-desc">Über diese Reiter wechseln Sie zwischen der <strong>Produktübersicht</strong> und den gelisteten <strong>Fachbetrieben & Installateuren</strong>, die Hochwasserschutzmaßnahmen umsetzen können.</div>
-        <div class="t-popup-footer">
-          <div class="t-dots" id="tour-dots-1"></div>
-          <div style="display:flex;gap:8px;">
-            <button class="t-btn-skip" onclick="endTour()">Überspringen</button>
-            <button class="t-btn-next" onclick="nextStep()">Weiter →</button>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div style="display:flex;gap:24px;align-items:flex-start;">
-
-      <!-- SCHRITT 2: Sidebar -->
-      <div class="t-step-wrap" id="tw-sidebar" style="flex-shrink:0;align-self:flex-start;">
-        <aside class="sidebar" style="pointer-events:none;position:relative;">
-          <div class="sidebar-header">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-            Kategorien
-          </div>
-          <div class="sidebar-item active">Alle Produkte <span class="sidebar-count">–</span></div>
-          <div class="sidebar-item">Garagentore <span class="sidebar-count">–</span></div>
-          <div class="sidebar-item">Wasserdichte Türen <span class="sidebar-count">–</span></div>
-          <div class="sidebar-item">Wasserdichte Fenster <span class="sidebar-count">–</span></div>
-          <div class="sidebar-item">Kellerfenster <span class="sidebar-count">–</span></div>
-          <div class="sidebar-item">Barrieren-Systeme <span class="sidebar-count">–</span></div>
-          <div class="sidebar-item">Rückstausicherungen <span class="sidebar-count">–</span></div>
-          <div class="sidebar-item">Pumpen <span class="sidebar-count">–</span></div>
-          <div class="sidebar-item">Hebeanlagen <span class="sidebar-count">–</span></div>
-          <div class="sidebar-item">Messen & Modellieren <span class="sidebar-count">–</span></div>
-          <div class="sidebar-item">Sonstiges <span class="sidebar-count">–</span></div>
-        </aside>
-        <div class="t-hl"></div>
-        <div class="t-popup t-popup-right">
-          <div class="t-popup-step">Schritt 3 von 5</div>
-          <div class="t-popup-title">Kategorien filtern</div>
-          <div class="t-popup-desc">Über diesen Explorer filtern Sie die Produkte nach Kategorie – z.B. nur <strong>Pumpen</strong> oder <strong>Barrieren-Systeme</strong> anzeigen. Die Zahl zeigt jeweils, wie viele Produkte in der Kategorie vorhanden sind.</div>
-          <div class="t-popup-footer">
-            <div class="t-dots" id="tour-dots-2"></div>
-            <div style="display:flex;gap:8px;">
-              <button class="t-btn-skip" onclick="endTour()">Überspringen</button>
-              <button class="t-btn-next" onclick="nextStep()">Weiter →</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- SCHRITT 4: Produktkarten -->
-      <div class="t-step-wrap" id="tw-products" style="flex:1;">
-        <div class="products-topbar">
-          <div class="products-topbar-title">Alle Produkte</div>
-          <div class="products-count">– Einträge</div>
-        </div>
-        <div class="product-grid">
-          <div class="product-card"><div class="product-image" style="background:var(--blue-light);"></div><div class="product-info"><div class="product-name" style="background:var(--blue-light);height:14px;border-radius:4px;width:70%;margin-bottom:8px;"></div><div style="background:var(--blue-light);height:10px;border-radius:4px;width:90%;margin-bottom:5px;"></div><div style="background:var(--blue-light);height:10px;border-radius:4px;width:60%;"></div></div></div>
-          <div class="product-card"><div class="product-image" style="background:var(--blue-light);"></div><div class="product-info"><div class="product-name" style="background:var(--blue-light);height:14px;border-radius:4px;width:80%;margin-bottom:8px;"></div><div style="background:var(--blue-light);height:10px;border-radius:4px;width:85%;margin-bottom:5px;"></div><div style="background:var(--blue-light);height:10px;border-radius:4px;width:55%;"></div></div></div>
-          <div class="product-card"><div class="product-image" style="background:var(--blue-light);"></div><div class="product-info"><div class="product-name" style="background:var(--blue-light);height:14px;border-radius:4px;width:65%;margin-bottom:8px;"></div><div style="background:var(--blue-light);height:10px;border-radius:4px;width:90%;margin-bottom:5px;"></div><div style="background:var(--blue-light);height:10px;border-radius:4px;width:70%;"></div></div></div>
-        </div>
-        <div class="t-hl"></div>
-        <div class="t-popup t-popup-above" style="left:auto;right:0;">
-          <div class="t-popup-step">Schritt 4 von 5</div>
-          <div class="t-popup-title">Produktkarten</div>
-          <div class="t-popup-desc">Hier erscheinen die gefilterten Produkte – jeweils mit <strong>Beschreibung</strong>, <strong>Hersteller</strong>, <strong>Zertifizierung</strong> und einem weiterführenden Link zur Herstellerwebsite.</div>
-          <div class="t-popup-footer">
-            <div class="t-dots" id="tour-dots-3"></div>
-            <div style="display:flex;gap:8px;">
-              <button class="t-btn-skip" onclick="endTour()">Überspringen</button>
-              <button class="t-btn-next" onclick="nextStep()">Weiter →</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- SCHRITT 3: Grafik -->
-      <div class="t-step-wrap" id="tw-grafik" style="flex-shrink:0;">
-        <div class="grafik-spalte" style="pointer-events:none;">
-          <div class="section-title">Hausübersicht</div>
-          <div class="section-sub">Hover über die Bereiche für Details.</div>
-          <div class="svg-tabs">
-            <div class="svg-tab active">Querschnitt</div>
-            <div class="svg-tab">Außenansicht</div>
-          </div>
-          <div style="background:var(--blue-light);border-radius:10px;height:220px;display:flex;align-items:center;justify-content:center;margin-top:8px;">
-            <svg viewBox="0 0 280 200" width="260" height="200" fill="none">
-              <rect width="280" height="200" fill="#eef4fb" rx="8"/>
-              <polygon points="140,20 240,80 40,80" fill="#d4c5b0" stroke="#b0a090" stroke-width="2"/>
-              <rect x="40" y="80" width="200" height="60" fill="#f0ebe3" stroke="#d4c5b0" stroke-width="2"/>
-              <rect x="40" y="140" width="200" height="45" fill="#c8b89a" stroke="#b0a080" stroke-width="2"/>
-              <rect x="110" y="100" width="40" height="30" fill="#b8a888" stroke="#8a7860" stroke-width="1.5"/>
-              <rect x="55" y="90" width="28" height="22" fill="#c8e4f5" stroke="#8ab8d4" stroke-width="1.5"/>
-              <rect x="197" y="90" width="28" height="22" fill="#c8e4f5" stroke="#8ab8d4" stroke-width="1.5"/>
-            </svg>
-          </div>
-        </div>
-        <div class="t-hl"></div>
-        <div class="t-popup t-popup-left">
-          <div class="t-popup-step">Schritt 5 von 5</div>
-          <div class="t-popup-title">Interaktive Hausübersicht</div>
-          <div class="t-popup-desc">Diese Grafik zeigt, wo am Gebäude welche Schutzmaßnahmen eingesetzt werden. Fahren Sie mit der Maus über die <strong>Gebäudebereiche</strong> für Details. Zwischen Querschnitt und Außenansicht kann gewechselt werden.</div>
-          <div class="t-popup-footer">
-            <div class="t-dots" id="tour-dots-4"></div>
-            <div style="display:flex;gap:8px;">
-              <button class="t-btn-skip" onclick="endTour()">Überspringen</button>
-              <button class="t-btn-next" onclick="endTour()">Zur Plattform 🚀</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </main>
 </div>
 
 <nav>
@@ -998,7 +880,7 @@
     <a href="#ueber-uns">Über uns</a>
     <a href="#kontakt">Kontakt</a>
   </div>
-  <button class="nav-tour-btn" onclick="restartTour()">🗺 Tour starten</button>
+  <button class="nav-info-btn" onclick="showInfoModal()">ℹ️ Info</button>
 </nav>
 
 <div class="hero">
@@ -1731,58 +1613,7 @@ if (sessionStorage.getItem('pw_ok') === '1') {
   document.getElementById('pw-overlay').classList.add('hidden');
 }
 
-// ═══════════════════════════════════════════════
-// TOUR – reine CSS-Klassen-Umschaltung, kein Positioning
-// ═══════════════════════════════════════════════
-const tourWrappers = ['tw-welcome', 'tw-tabs', 'tw-sidebar', 'tw-products', 'tw-grafik'];
-const TOUR_TOTAL = tourWrappers.length;
-let currentStep = 0;
 
-function renderTourDots() {
-  // Dynamisch Dots für jeden Schritt rendern
-  tourWrappers.forEach((_, stepIdx) => {
-    const container = document.getElementById('tour-dots-' + stepIdx);
-    if (!container) return;
-    container.innerHTML = tourWrappers.map((__, i) =>
-      `<div class="t-dot${i === currentStep ? ' t-dot-active' : ''}"></div>`
-    ).join('');
-  });
-}
-
-function startTour() {
-  if (localStorage.getItem('tourSeen')) return;
-  document.getElementById('tour-page').classList.remove('hidden');
-  showStep(0);
-}
-
-function showStep(index) {
-  tourWrappers.forEach(id => document.getElementById(id).classList.remove('t-active'));
-  document.getElementById(tourWrappers[index]).classList.add('t-active');
-  currentStep = index;
-  renderTourDots();
-}
-
-function nextStep() {
-  currentStep++;
-  if (currentStep >= tourWrappers.length) endTour();
-  else showStep(currentStep);
-}
-
-function endTour() {
-  localStorage.setItem('tourSeen', '1');
-  const tp = document.getElementById('tour-page');
-  tp.style.transition = 'opacity 0.6s ease';
-  tp.style.opacity = '0';
-  setTimeout(() => tp.classList.add('hidden'), 650);
-}
-
-function restartTour() {
-  localStorage.removeItem('tourSeen');
-  const tp = document.getElementById('tour-page');
-  tp.classList.remove('hidden');
-  tp.style.opacity = '1';
-  showStep(0);
-}
 
 // Initialisierung
 async function init() {
@@ -1805,6 +1636,30 @@ async function init() {
 
   // Tour anzeigen (nur beim ersten Besuch)
   startTour();
+}
+
+// ═══════════════════════════════════════════════
+// INFO-MODAL
+// ═══════════════════════════════════════════════
+function showInfoModal() {
+  document.getElementById('info-overlay').classList.remove('hidden');
+}
+
+function closeInfoModal(dontShowAgain) {
+  if (dontShowAgain) localStorage.setItem('infoSeen', '1');
+  const overlay = document.getElementById('info-overlay');
+  overlay.style.transition = 'opacity 0.3s ease';
+  overlay.style.opacity = '0';
+  setTimeout(() => {
+    overlay.classList.add('hidden');
+    overlay.style.opacity = '';
+  }, 300);
+}
+
+// Beim ersten Besuch automatisch anzeigen
+if (!localStorage.getItem('infoSeen')) {
+  // Kurz warten bis Seite geladen ist
+  setTimeout(showInfoModal, 600);
 }
 
 init();
