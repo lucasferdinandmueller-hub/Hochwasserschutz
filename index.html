@@ -1,0 +1,1813 @@
+<!DOCTYPE html> <!-- Art des Scripts -->
+<html lang="de"> <!-- Sprache des Scripts -->
+<head> <!-- Start der invisible Einstellungen bis </head> -->
+<meta charset="UTF-8"> <!-- Zeichenkodierung -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Mobile Phone Darstellung -->
+<title>Hochwasserschutzproukte – Informationsplattform</title> <!-- Name der Seite -->
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"> <!-- Schriftarten -->
+<style> /* CSS Bereich startet hier (wäre auch als eigene "Datei" möglich*/
+  :root {/* Gilt für die ganze Seite*/
+    --bg: #f2f4f7; 
+    --surface: #ffffff;
+    --blue-deep: #0a2540;
+    --blue-mid: #1a4a7a;
+    --blue-accent: #1e7fc2;           /* Farben */
+    --blue-light: #e8f3fb;
+    --text: #0a2540;
+    --text-muted: #6b7a8d;
+    --border: #dce3ec;
+    --radius: 12px; /* Abrundungen */
+    --shadow: 0 2px 16px rgba(10,37,64,0.08); /* Schatten */
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }  /* Dient der Abstandskalibrierung für verschiedene Websites*/
+
+  body { /* Sichtbarer Bereich für den Besucher */
+    font-family: 'DM Sans', sans-serif; /* Schriftarten */
+    background: var(--bg); /* Hintergrundfarbe */
+    color: var(--text); /* Textfarbe */
+    min-height: 100vh; /* Sichthöhe der Farbe (verhindert, dass bei wenig Inhalt die Seite nicht "ausgefüllt" wirkt) */
+  }
+
+
+  nav {   /* Navigationsleiste */
+    background: var(--blue-deep);
+    padding: 0 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .nav-logo { /* Logo Navigationsleiste */
+    font-family: 'DM Serif Display', serif;
+    color: #fff;
+    font-size: 1.2rem;
+    letter-spacing: 0.02em;
+  }
+  .nav-logo span { color: var(--blue-accent); } /* Logo Navigationsleiste */
+  .nav-links { display: flex; gap: 32px; } 
+  .nav-links a {
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: #fff; }
+
+  /* Titel bzw. Überschrift */
+  .hero {
+    background: linear-gradient(135deg, var(--blue-deep) 0%, var(--blue-mid) 100%);
+    padding: 72px 48px 64px;
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    bottom: -60px; left: -60px;
+    width: 320px; height: 320px;
+    background: rgba(30,127,194,0.15);
+    border-radius: 50%;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: -80px; right: -40px;
+    width: 400px; height: 400px;
+    background: rgba(255,255,255,0.03);
+    border-radius: 50%;
+  }
+  .hero-inner { max-width: 800px; position: relative; z-index: 1; }
+  .hero-tag {
+    display: inline-block;
+    background: rgba(30,127,194,0.3);
+    color: #8ecff5;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 100px;
+    margin-bottom: 20px;
+    border: 1px solid rgba(30,127,194,0.4);
+  }
+  .hero h1 {
+    font-family: 'DM Serif Display', serif;
+    font-size: clamp(2rem, 4vw, 3.2rem);
+    line-height: 1.15;
+    margin-bottom: 16px;
+  }
+  .hero p {
+    font-size: 1.05rem;
+    color: rgba(255,255,255,0.72);
+    max-width: 560px;
+    line-height: 1.7;
+  }
+
+  /* Bereich des Hauptinhalts */
+  main { max-width: 1200px; margin: 0 auto; padding: 48px 24px 80px; }
+
+  /* Überschriften der Abschnitte*/
+  .section-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.7rem;
+    color: var(--blue-deep);
+    margin-bottom: 8px;
+  }
+  .section-sub {
+    color: var(--text-muted);
+    font-size: 0.92rem;
+    margin-bottom: 28px;
+  }
+
+  /* SVG SECTION */
+  .svg-section { margin-bottom: 64px; }
+  .svg-tabs {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .svg-tab {
+    padding: 8px 20px;
+    border-radius: 100px;
+    border: 1.5px solid var(--border);
+    background: var(--surface);
+    font-size: 0.88rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--text-muted);
+  }
+  .svg-tab.active {
+    background: var(--blue-deep);
+    color: white;
+    border-color: var(--blue-deep);
+  }
+  .svg-container {
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 32px;
+    display: none;
+    position: relative;
+  }
+  .svg-container.active { display: block; }
+  .svg-legend {
+    margin-top: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.82rem;
+    color: var(--text-muted);
+  }
+  .legend-dot {
+    width: 12px; height: 12px;
+    border-radius: 3px;
+    flex-shrink: 0;
+  }
+
+  /* SVG HOUSE STYLES */
+  .house-svg { width: 100%; max-width: 680px; display: block; margin: 0 auto; }
+  .house-zone {
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .house-zone:hover .zone-fill { opacity: 1 !important; }
+  .house-zone .zone-fill { opacity: 0; transition: opacity 0.25s; }
+  .tooltip-box {
+    position: absolute;
+    background: var(--blue-deep);
+    color: white;
+    padding: 10px 16px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s;
+    max-width: 220px;
+    line-height: 1.5;
+    z-index: 10;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  }
+  .tooltip-box.visible { opacity: 1; }
+
+  /* HAUPT-TABS (Produkte / Installateure) */
+  .main-tabs {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 28px;
+    background: var(--surface);
+    padding: 6px;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    width: fit-content;
+  }
+  .main-tab {
+    padding: 10px 24px;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    font-size: 0.92rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    color: var(--text-muted);
+    font-family: 'DM Sans', sans-serif;
+  }
+  .main-tab:hover { color: var(--blue-deep); }
+  .main-tab.active {
+    background: var(--blue-deep);
+    color: white;
+  }
+  .main-panel { display: none; }
+  .main-panel.active { display: block; }
+
+  /* INSTALLATEURE */
+  .installateure-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    margin-top: 24px;
+  }
+  .installateur-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 24px;
+    border: 1.5px solid transparent;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .installateur-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 32px rgba(10,37,64,0.13);
+    border-color: var(--blue-accent);
+  }
+  .installateur-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.1rem;
+    color: var(--blue-deep);
+  }
+  .installateur-region {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 0.83rem;
+    color: var(--text-muted);
+  }
+  .installateur-kategorien {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .kat-badge {
+    background: var(--blue-light);
+    color: var(--blue-accent);
+    border-radius: 100px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 3px 10px;
+  }
+  .installateur-meta {
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .installateur-meta-row {
+    display: flex;
+    gap: 8px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+  .installateur-meta-row span:first-child {
+    font-weight: 600;
+    color: var(--text);
+    min-width: 100px;
+  }
+  .installateur-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 8px;
+    align-items: center;
+  }
+  .inst-filter-btn {
+    padding: 6px 14px;
+    border-radius: 100px;
+    border: 1.5px solid var(--border);
+    background: transparent;
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.18s;
+    color: var(--text-muted);
+    font-family: 'DM Sans', sans-serif;
+  }
+  .inst-filter-btn:hover { border-color: var(--blue-accent); color: var(--blue-accent); }
+  .inst-filter-btn.active {
+    background: var(--blue-deep);
+    color: white;
+    border-color: var(--blue-deep);
+  }
+
+  /* PRODUCTS LAYOUT: sidebar + grid + grafik (3 Spalten) */
+  .products-layout {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+  }
+
+  /* RECHTE GRAFIK-SPALTE */
+  .grafik-spalte {
+    width: 300px;
+    flex-shrink: 0;
+    position: sticky;
+    top: 80px;
+  }
+  .grafik-spalte .section-title {
+    font-size: 1.1rem;
+    margin-bottom: 4px;
+  }
+  .grafik-spalte .section-sub {
+    font-size: 0.8rem;
+    margin-bottom: 12px;
+  }
+  .grafik-spalte .svg-tabs {
+    margin-bottom: 10px;
+  }
+  .grafik-spalte .svg-container {
+    padding: 16px;
+  }
+  .grafik-spalte .svg-legend {
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  /* SIDEBAR EXPLORER */
+  .sidebar {
+    width: 210px;
+    flex-shrink: 0;
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    position: sticky;
+    top: 80px;
+  }
+  .sidebar-header {
+    background: var(--blue-deep);
+    color: white;
+    padding: 14px 18px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .sidebar-header svg { opacity: 0.7; }
+  .sidebar-section-label {
+    padding: 12px 18px 4px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+  }
+  .sidebar-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 18px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    color: var(--text-muted);
+    border-left: 3px solid transparent;
+    transition: all 0.15s;
+    background: transparent;
+    border-top: none;
+    border-right: none;
+    border-bottom: none;
+    width: 100%;
+    text-align: left;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .sidebar-item:hover {
+    background: var(--blue-light);
+    color: var(--blue-accent);
+    border-left-color: var(--blue-accent);
+  }
+  .sidebar-item.active {
+    background: var(--blue-light);
+    color: var(--blue-deep);
+    border-left-color: var(--blue-deep);
+    font-weight: 600;
+  }
+  .sidebar-item .icon { font-size: 1rem; width: 20px; text-align: center; }
+  .sidebar-count {
+    margin-left: auto;
+    background: var(--border);
+    color: var(--text-muted);
+    border-radius: 100px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 1px 7px;
+    min-width: 20px;
+    text-align: center;
+  }
+  .sidebar-item.active .sidebar-count {
+    background: var(--blue-deep);
+    color: white;
+  }
+  .sidebar-divider {
+    height: 1px;
+    background: var(--border);
+    margin: 6px 0;
+  }
+
+  /* PRODUCT GRID */
+  .products-right { flex: 1; min-width: 0; }
+  .products-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 16px;
+    padding: 0 4px;
+  }
+  .products-topbar-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.15rem;
+    color: var(--blue-deep);
+  }
+  .products-count {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+  }
+  .product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 18px;
+  }
+  .product-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    flex-direction: column;
+    border: 1.5px solid transparent;
+  }
+  .product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 32px rgba(10,37,64,0.13);
+    border-color: var(--blue-accent);
+  }
+  .product-card.hidden { display: none; }
+  .card-img {
+    height: 160px;
+    background: var(--blue-light);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--blue-accent);
+    font-size: 3rem;
+  }
+  .card-body { padding: 20px; flex: 1; display: flex; flex-direction: column; gap: 8px; }
+  .card-category {
+    font-size: 0.73rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--blue-accent);
+  }
+  .card-name {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.1rem;
+    color: var(--blue-deep);
+    line-height: 1.3;
+  }
+  .card-desc {
+    font-size: 0.87rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+    flex: 1;
+  }
+  .card-meta {
+    margin-top: 8px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .card-meta-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+  }
+  .card-meta-row span:first-child { font-weight: 600; color: var(--text); min-width: 90px; }
+  .cert-badge {
+    display: inline-block;
+    background: #e8f7ef;
+    color: #1a7a4a;
+    border: 1px solid #b2dfc4;
+    border-radius: 100px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 2px 10px;
+  }
+  .card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+    color: var(--blue-accent);
+    font-size: 0.83rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: gap 0.2s;
+  }
+  .card-link:hover { gap: 10px; }
+
+  .no-results {
+    grid-column: 1/-1;
+    text-align: center;
+    padding: 60px 20px;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+  }
+
+  /* ABOUT SECTION */
+  .about-section {
+    margin-top: 72px;
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 48px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+  .about-text h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.8rem;
+    color: var(--blue-deep);
+    margin-bottom: 16px;
+  }
+  .about-text p {
+    color: var(--text-muted);
+    line-height: 1.8;
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+  }
+  .about-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .stat-box {
+    background: var(--blue-light);
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+  }
+  .stat-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2rem;
+    color: var(--blue-deep);
+  }
+  .stat-label {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  /* CONTACT */
+  .contact-section {
+    margin-top: 64px;
+    background: var(--blue-deep);
+    border-radius: var(--radius);
+    padding: 48px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 32px;
+    flex-wrap: wrap;
+  }
+  .contact-section h2 {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.8rem;
+    margin-bottom: 8px;
+  }
+  .contact-section p { color: rgba(255,255,255,0.65); font-size: 0.95rem; }
+  .contact-form { display: flex; flex-direction: column; gap: 12px; min-width: 280px; }
+  .contact-form input,
+  .contact-form textarea {
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.08);
+    color: white;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    outline: none;
+    transition: border 0.2s;
+  }
+  .contact-form input::placeholder,
+  .contact-form textarea::placeholder { color: rgba(255,255,255,0.4); }
+  .contact-form input:focus,
+  .contact-form textarea:focus { border-color: var(--blue-accent); }
+  .contact-form textarea { resize: vertical; min-height: 80px; }
+  .btn-primary {
+    background: var(--blue-accent);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 24px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .btn-primary:hover { background: #1a6fa8; }
+
+  /* FOOTER */
+  footer {
+    background: var(--blue-deep);
+    color: rgba(255,255,255,0.5);
+    text-align: center;
+    padding: 24px;
+    font-size: 0.82rem;
+    margin-top: 80px;
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 0 20px; }
+    .hero { padding: 48px 20px; }
+    .about-section { grid-template-columns: 1fr; }
+    .contact-section { flex-direction: column; }
+  }
+
+  /* ─── PASSWORT-OVERLAY ─────────────────────────── */
+  #pw-overlay {
+    position: fixed; inset: 0; z-index: 99999;
+    background: linear-gradient(135deg, var(--blue-deep) 0%, var(--blue-mid) 100%);
+    display: flex; align-items: center; justify-content: center;
+    transition: opacity 0.5s ease;
+  }
+  #pw-overlay.hidden { display: none; }
+  #pw-box {
+    background: white; border-radius: 20px;
+    padding: 52px 48px; max-width: 420px; width: 90%;
+    text-align: center; box-shadow: 0 24px 80px rgba(0,0,0,0.35);
+    position: relative; overflow: hidden;
+  }
+  #pw-box::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, var(--blue-accent), #5bc0f8);
+  }
+  .pw-logo {
+    font-family: 'DM Serif Display', serif; font-size: 1.4rem;
+    color: var(--blue-deep); margin-bottom: 28px;
+  }
+  .pw-logo span { color: var(--blue-accent); }
+  #pw-box h2 {
+    font-family: 'DM Serif Display', serif; font-size: 1.6rem;
+    color: var(--blue-deep); margin-bottom: 10px;
+  }
+  #pw-box p { color: var(--text-muted); font-size: 0.88rem; margin-bottom: 32px; line-height: 1.7; }
+  .pw-field-wrap { display: flex; flex-direction: column; gap: 10px; }
+  .pw-field-wrap input {
+    padding: 14px 18px; border-radius: 10px;
+    border: 2px solid var(--border); font-family: 'DM Sans', sans-serif;
+    font-size: 1rem; outline: none; transition: border-color 0.2s;
+    text-align: center; letter-spacing: 0.1em;
+  }
+  .pw-field-wrap input:focus { border-color: var(--blue-accent); }
+  .pw-field-wrap button {
+    padding: 14px; background: var(--blue-deep); color: white;
+    border: none; border-radius: 10px; font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: background 0.2s;
+  }
+  .pw-field-wrap button:hover { background: var(--blue-accent); }
+  .pw-error { color: #c0392b; font-size: 0.82rem; margin-top: 14px; display: none; }
+  .pw-error.visible { display: block; }
+  .pw-hint { font-size: 0.75rem; color: var(--text-muted); margin-top: 16px; opacity: 0.7; }
+
+  /* ─── NAV TOUR-BUTTON ───────────────────────────── */
+  .nav-tour-btn {
+    background: rgba(30,127,194,0.2); color: rgba(255,255,255,0.85);
+    border: 1px solid rgba(30,127,194,0.45); border-radius: 100px;
+    padding: 6px 16px; font-size: 0.8rem; font-weight: 600;
+    cursor: pointer; transition: all 0.2s; font-family: 'DM Sans', sans-serif;
+    white-space: nowrap;
+  }
+  .nav-tour-btn:hover { background: var(--blue-accent); color: white; border-color: var(--blue-accent); }
+
+  /* TOUR PAGE */
+  #tour-page {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    overflow: hidden; /* kein Scrollen möglich */
+    background: var(--bg);
+    transition: opacity 0.6s ease;
+  }
+  #tour-page.hidden { display: none; }
+  #tour-page main { overflow: hidden; }
+
+  /* Wrapper um jedes erklärte Element */
+  .t-step-wrap {
+    position: relative; /* Kontext für absolute Kind-Elemente */
+  }
+
+  /* Highlight-Rahmen: deckt den Wrapper vollständig ab */
+  .t-hl {
+    display: none; /* standardmäßig unsichtbar */
+    position: absolute;
+    inset: -6px;
+    border-radius: 12px;
+    border: 2.5px solid #1e7fc2;
+    box-shadow: 0 0 0 9999px rgba(10,37,64,0.65);
+    z-index: 1000;
+    pointer-events: none;
+  }
+  /* Nur der aktive Schritt zeigt Highlight + Popup */
+  .t-step-wrap.t-active .t-hl { display: block; }
+  .t-step-wrap.t-active .t-popup { display: flex; }
+
+  /* Popup */
+  .t-popup {
+    display: none;
+    position: absolute;
+    z-index: 10000;
+    background: white;
+    border-radius: 16px;
+    padding: 22px 24px 18px;
+    width: 290px;
+    box-shadow: 0 12px 48px rgba(10,37,64,0.22);
+    flex-direction: column;
+    gap: 10px;
+    pointer-events: all;
+    border: 1px solid rgba(10,37,64,0.06);
+  }
+  .t-popup::before {
+    content:''; display:block; height:3px; border-radius:3px;
+    background:linear-gradient(90deg,#1e7fc2,#5bc0f8);
+    margin-bottom:4px; border-radius:2px;
+  }
+  .t-popup-below { top: calc(100% + 16px); left: 0; }
+  .t-popup-right  { top: 0; left: calc(100% + 16px); }
+  .t-popup-left   { top: 0; right: calc(100% + 16px); }
+  .t-popup-above { bottom: calc(100% + 16px); left: 0; }
+
+  .t-popup-step  { font-size:0.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#1e7fc2; }
+  .t-popup-title { font-family:'DM Serif Display',serif;font-size:1.15rem;color:#0a2540;margin-top:2px; }
+  .t-popup-desc  { font-size:0.84rem;color:#6b7a8d;line-height:1.65; }
+  .t-popup-footer { display:flex;justify-content:space-between;align-items:center;margin-top:8px;padding-top:10px;border-top:1px solid #eef2f7; }
+  .t-dots { display:flex;gap:5px;align-items:center; }
+  .t-dot { width:7px;height:7px;border-radius:50%;background:#dce3ec;transition:background 0.2s; }
+  .t-dot-active { background:#1e7fc2; width:18px; border-radius:4px; }
+  .t-btn-skip { background:none;border:none;color:#6b7a8d;font-size:0.8rem;cursor:pointer;font-family:'DM Sans',sans-serif;padding:6px 4px;transition:color 0.15s; }
+  .t-btn-skip:hover { color:#0a2540; }
+  .t-btn-next { background:#0a2540;color:white;border:none;border-radius:8px;padding:9px 18px;font-size:0.83rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:background 0.2s; }
+  .t-btn-next:hover { background:#1e7fc2; }
+
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- PASSWORT-OVERLAY                                -->
+<!-- Passwort ändern: PASSWORT-Variable im Script    -->
+<!-- ═══════════════════════════════════════════════ -->
+<div id="pw-overlay">
+  <div id="pw-box">
+    <div class="pw-logo">Hochwasser<span>Schutz</span></div>
+    <h2>Zugang zur Plattform</h2>
+    <p>Diese Plattform ist passwortgeschützt.<br>Bitte geben Sie das Zugangspasswort ein.</p>
+    <div class="pw-field-wrap">
+      <input type="password" id="pw-input" placeholder="Passwort …"
+             onkeydown="if(event.key==='Enter') checkPassword()" autofocus/>
+      <button onclick="checkPassword()">Einloggen →</button>
+    </div>
+    <div id="pw-error" class="pw-error">❌ Falsches Passwort. Bitte erneut versuchen.</div>
+    <div class="pw-hint">Erstellt im Rahmen einer Masterarbeit · Prototyp</div>
+  </div>
+</div>
+
+<!-- TOUR PAGE -->
+<div id="tour-page" class="hidden">
+
+  <!-- Dunkles Overlay über die ganze Seite -->
+  <div style="position:fixed;inset:0;background:rgba(10,37,64,0.65);z-index:105;pointer-events:none;"></div>
+
+  <!-- Nav Duplikat -->
+  <nav style="pointer-events:none; position:relative; z-index:1;">
+    <div class="nav-logo">Hochwasser<span>Schutz</span></div>
+    <div class="nav-links"><a>Produkte</a><a>Hausübersicht</a><a>Über uns</a><a>Kontakt</a></div>
+  </nav>
+
+  <!-- Hero Duplikat -->
+  <div class="hero" style="pointer-events:none;">
+    <div class="hero-inner">
+      <div class="hero-tag">Webbasierte Plattform - Prototyp</div>
+      <h1>Hochwasserschutzelemente –<br>Produkte im Überblick</h1>
+      <p>Eine prototypische Übersicht von Produkten zum Hochwasserschutz, erstellt im Rahmen einer Masterarbeit.</p>
+    </div>
+  </div>
+
+  <!-- SCHRITT 0: Willkommen (Hero) -->
+  <div class="t-step-wrap" id="tw-welcome" style="position:relative;display:block;">
+    <div class="hero" style="pointer-events:none;">
+      <div class="hero-inner">
+        <div class="hero-tag">Webbasierte Plattform - Prototyp</div>
+        <h1>Hochwasserschutzelemente –<br>Produkte im Überblick</h1>
+        <p>Eine prototypische Übersicht von Produkten zum Hochwasserschutz, erstellt im Rahmen einer Masterarbeit.</p>
+      </div>
+    </div>
+    <div class="t-hl" style="inset:-2px;border-radius:0;"></div>
+    <div class="t-popup t-popup-below" style="left:48px;top:calc(100% + 16px);">
+      <div class="t-popup-step">Schritt 1 von 5</div>
+      <div class="t-popup-title">Willkommen auf der Plattform!</div>
+      <div class="t-popup-desc">Diese Plattform gibt einen strukturierten Überblick über Produkte und Fachbetriebe zum privaten Hochwasserschutz – entstanden im Rahmen einer Masterarbeit. In 4 kurzen Schritten erklären wir Ihnen die wichtigsten Bereiche.</div>
+      <div class="t-popup-footer">
+        <div class="t-dots" id="tour-dots-0"></div>
+        <div style="display:flex;gap:8px;">
+          <button class="t-btn-skip" onclick="endTour()">Überspringen</button>
+          <button class="t-btn-next" onclick="nextStep()">Weiter →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <main style="pointer-events:none;">
+
+    <!-- SCHRITT 2: Tabs – Wrapper mit relativem Kontext -->
+    <div class="t-step-wrap" id="tw-tabs" style="display:inline-block;">
+      <div class="main-tabs" style="pointer-events:none;">
+        <div class="main-tab active">🛒 Produkte</div>
+        <div class="main-tab">🔧 Fachbetriebe & Installateure</div>
+      </div>
+      <!-- Highlight-Rahmen sitzt direkt im Wrapper -->
+      <div class="t-hl"></div>
+      <!-- Popup sitzt direkt im Wrapper, unterhalb -->
+      <div class="t-popup t-popup-below">
+        <div class="t-popup-step">Schritt 2 von 5</div>
+        <div class="t-popup-title">Produkte & Fachbetriebe</div>
+        <div class="t-popup-desc">Über diese Reiter wechseln Sie zwischen der <strong>Produktübersicht</strong> und den gelisteten <strong>Fachbetrieben & Installateuren</strong>, die Hochwasserschutzmaßnahmen umsetzen können.</div>
+        <div class="t-popup-footer">
+          <div class="t-dots" id="tour-dots-1"></div>
+          <div style="display:flex;gap:8px;">
+            <button class="t-btn-skip" onclick="endTour()">Überspringen</button>
+            <button class="t-btn-next" onclick="nextStep()">Weiter →</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;gap:24px;align-items:flex-start;">
+
+      <!-- SCHRITT 2: Sidebar -->
+      <div class="t-step-wrap" id="tw-sidebar" style="flex-shrink:0;align-self:flex-start;">
+        <aside class="sidebar" style="pointer-events:none;position:relative;">
+          <div class="sidebar-header">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+            Kategorien
+          </div>
+          <div class="sidebar-item active">Alle Produkte <span class="sidebar-count">–</span></div>
+          <div class="sidebar-item">Garagentore <span class="sidebar-count">–</span></div>
+          <div class="sidebar-item">Wasserdichte Türen <span class="sidebar-count">–</span></div>
+          <div class="sidebar-item">Wasserdichte Fenster <span class="sidebar-count">–</span></div>
+          <div class="sidebar-item">Kellerfenster <span class="sidebar-count">–</span></div>
+          <div class="sidebar-item">Barrieren-Systeme <span class="sidebar-count">–</span></div>
+          <div class="sidebar-item">Rückstausicherungen <span class="sidebar-count">–</span></div>
+          <div class="sidebar-item">Pumpen <span class="sidebar-count">–</span></div>
+          <div class="sidebar-item">Hebeanlagen <span class="sidebar-count">–</span></div>
+          <div class="sidebar-item">Messen & Modellieren <span class="sidebar-count">–</span></div>
+          <div class="sidebar-item">Sonstiges <span class="sidebar-count">–</span></div>
+        </aside>
+        <div class="t-hl"></div>
+        <div class="t-popup t-popup-right">
+          <div class="t-popup-step">Schritt 3 von 5</div>
+          <div class="t-popup-title">Kategorien filtern</div>
+          <div class="t-popup-desc">Über diesen Explorer filtern Sie die Produkte nach Kategorie – z.B. nur <strong>Pumpen</strong> oder <strong>Barrieren-Systeme</strong> anzeigen. Die Zahl zeigt jeweils, wie viele Produkte in der Kategorie vorhanden sind.</div>
+          <div class="t-popup-footer">
+            <div class="t-dots" id="tour-dots-2"></div>
+            <div style="display:flex;gap:8px;">
+              <button class="t-btn-skip" onclick="endTour()">Überspringen</button>
+              <button class="t-btn-next" onclick="nextStep()">Weiter →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCHRITT 4: Produktkarten -->
+      <div class="t-step-wrap" id="tw-products" style="flex:1;">
+        <div class="products-topbar">
+          <div class="products-topbar-title">Alle Produkte</div>
+          <div class="products-count">– Einträge</div>
+        </div>
+        <div class="product-grid">
+          <div class="product-card"><div class="product-image" style="background:var(--blue-light);"></div><div class="product-info"><div class="product-name" style="background:var(--blue-light);height:14px;border-radius:4px;width:70%;margin-bottom:8px;"></div><div style="background:var(--blue-light);height:10px;border-radius:4px;width:90%;margin-bottom:5px;"></div><div style="background:var(--blue-light);height:10px;border-radius:4px;width:60%;"></div></div></div>
+          <div class="product-card"><div class="product-image" style="background:var(--blue-light);"></div><div class="product-info"><div class="product-name" style="background:var(--blue-light);height:14px;border-radius:4px;width:80%;margin-bottom:8px;"></div><div style="background:var(--blue-light);height:10px;border-radius:4px;width:85%;margin-bottom:5px;"></div><div style="background:var(--blue-light);height:10px;border-radius:4px;width:55%;"></div></div></div>
+          <div class="product-card"><div class="product-image" style="background:var(--blue-light);"></div><div class="product-info"><div class="product-name" style="background:var(--blue-light);height:14px;border-radius:4px;width:65%;margin-bottom:8px;"></div><div style="background:var(--blue-light);height:10px;border-radius:4px;width:90%;margin-bottom:5px;"></div><div style="background:var(--blue-light);height:10px;border-radius:4px;width:70%;"></div></div></div>
+        </div>
+        <div class="t-hl"></div>
+        <div class="t-popup t-popup-above" style="left:auto;right:0;">
+          <div class="t-popup-step">Schritt 4 von 5</div>
+          <div class="t-popup-title">Produktkarten</div>
+          <div class="t-popup-desc">Hier erscheinen die gefilterten Produkte – jeweils mit <strong>Beschreibung</strong>, <strong>Hersteller</strong>, <strong>Zertifizierung</strong> und einem weiterführenden Link zur Herstellerwebsite.</div>
+          <div class="t-popup-footer">
+            <div class="t-dots" id="tour-dots-3"></div>
+            <div style="display:flex;gap:8px;">
+              <button class="t-btn-skip" onclick="endTour()">Überspringen</button>
+              <button class="t-btn-next" onclick="nextStep()">Weiter →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SCHRITT 3: Grafik -->
+      <div class="t-step-wrap" id="tw-grafik" style="flex-shrink:0;">
+        <div class="grafik-spalte" style="pointer-events:none;">
+          <div class="section-title">Hausübersicht</div>
+          <div class="section-sub">Hover über die Bereiche für Details.</div>
+          <div class="svg-tabs">
+            <div class="svg-tab active">Querschnitt</div>
+            <div class="svg-tab">Außenansicht</div>
+          </div>
+          <div style="background:var(--blue-light);border-radius:10px;height:220px;display:flex;align-items:center;justify-content:center;margin-top:8px;">
+            <svg viewBox="0 0 280 200" width="260" height="200" fill="none">
+              <rect width="280" height="200" fill="#eef4fb" rx="8"/>
+              <polygon points="140,20 240,80 40,80" fill="#d4c5b0" stroke="#b0a090" stroke-width="2"/>
+              <rect x="40" y="80" width="200" height="60" fill="#f0ebe3" stroke="#d4c5b0" stroke-width="2"/>
+              <rect x="40" y="140" width="200" height="45" fill="#c8b89a" stroke="#b0a080" stroke-width="2"/>
+              <rect x="110" y="100" width="40" height="30" fill="#b8a888" stroke="#8a7860" stroke-width="1.5"/>
+              <rect x="55" y="90" width="28" height="22" fill="#c8e4f5" stroke="#8ab8d4" stroke-width="1.5"/>
+              <rect x="197" y="90" width="28" height="22" fill="#c8e4f5" stroke="#8ab8d4" stroke-width="1.5"/>
+            </svg>
+          </div>
+        </div>
+        <div class="t-hl"></div>
+        <div class="t-popup t-popup-left">
+          <div class="t-popup-step">Schritt 5 von 5</div>
+          <div class="t-popup-title">Interaktive Hausübersicht</div>
+          <div class="t-popup-desc">Diese Grafik zeigt, wo am Gebäude welche Schutzmaßnahmen eingesetzt werden. Fahren Sie mit der Maus über die <strong>Gebäudebereiche</strong> für Details. Zwischen Querschnitt und Außenansicht kann gewechselt werden.</div>
+          <div class="t-popup-footer">
+            <div class="t-dots" id="tour-dots-4"></div>
+            <div style="display:flex;gap:8px;">
+              <button class="t-btn-skip" onclick="endTour()">Überspringen</button>
+              <button class="t-btn-next" onclick="endTour()">Zur Plattform 🚀</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<nav>
+  <div class="nav-logo">Hochwasser<span>Schutz</span></div>
+  <div class="nav-links">
+    <a href="#produkte">Produkte</a>
+    <a href="#grafik">Hausübersicht</a>
+    <a href="#ueber-uns">Über uns</a>
+    <a href="#kontakt">Kontakt</a>
+  </div>
+  <button class="nav-tour-btn" onclick="restartTour()">🗺 Tour starten</button>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">Webbasierte Plattform - Prototyp</div>
+    <h1>Hochwasserschutzelemente –<br>Produkte im Überblick</h1>
+    <p>Eine prototypische Übersicht von Produkten zum Hochwasserschutz, erstellt im Rahmen einer Masterarbeit.</p>
+  </div>
+</div>
+
+<main>
+
+  <!-- SVG SECTION (versteckt, wird in Produktlayout eingebettet) -->
+  <section class="svg-section" id="grafik" style="display:none">
+    <div class="section-title">Interaktive Hausübersicht</div>
+    <div class="section-sub">Fahren Sie mit der Maus über die Bereiche des Hauses, um zu sehen, wo welche Schutzmaßnahmen eingesetzt werden können.</div>
+
+    <div class="svg-tabs">
+      <button class="svg-tab active" onclick="showSVG('querschnitt', this)">Querschnitt</button>
+      <button class="svg-tab" onclick="showSVG('aussen', this)">Außenansicht</button>
+    </div>
+
+    <!-- QUERSCHNITT -->
+    <div class="svg-container active" id="svg-querschnitt">
+      <div class="tooltip-box" id="tooltip-quer"></div>
+      <svg class="house-svg" viewBox="0 0 680 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <!-- Sky background -->
+        <rect width="680" height="420" fill="#eef4fb"/>
+        <!-- Ground -->
+        <rect y="320" width="680" height="100" fill="#c8d8b0"/>
+        <!-- Underground / Keller fill -->
+        <rect x="80" y="270" width="520" height="50" fill="#a89880"/>
+
+        <!-- DACH -->
+        <g class="house-zone" id="zone-dach-q"
+           onmouseenter="showTooltip('tooltip-quer', event, 'Dach & Entwässerung', 'Dachrinnen, Rückstausicherungen für Regenwasser, Drainagematten.')"
+           onmouseleave="hideTooltip('tooltip-quer')">
+          <polygon points="340,30 620,180 60,180" fill="#d4c5b0" stroke="#b0a090" stroke-width="2"/>
+          <polygon class="zone-fill" points="340,30 620,180 60,180" fill="#1e7fc2" opacity="0"/>
+          <text x="340" y="140" text-anchor="middle" font-size="12" fill="#6b5a3e" font-family="DM Sans, sans-serif" font-weight="600">Dach & Entwässerung</text>
+        </g>
+
+        <!-- OBERGESCHOSS -->
+        <g class="house-zone" id="zone-og"
+           onmouseenter="showTooltip('tooltip-quer', event, 'Obergeschoss / Fenster', 'Wasserdichte Fenster & Türen als Schutz bei Hochwasser.')"
+           onmouseleave="hideTooltip('tooltip-quer')">
+          <rect x="80" y="180" width="520" height="90" fill="#f0ebe3" stroke="#d4c5b0" stroke-width="2"/>
+          <rect class="zone-fill" x="80" y="180" width="520" height="90" fill="#1e7fc2" opacity="0"/>
+          <!-- Fenster OG links -->
+          <rect x="120" y="200" width="60" height="50" fill="#c8e4f5" stroke="#8ab8d4" stroke-width="1.5"/>
+          <!-- Fenster OG rechts -->
+          <rect x="500" y="200" width="60" height="50" fill="#c8e4f5" stroke="#8ab8d4" stroke-width="1.5"/>
+          <text x="340" y="232" text-anchor="middle" font-size="11" fill="#6b5a3e" font-family="DM Sans, sans-serif" font-weight="600">Obergeschoss – Türen & Fenster</text>
+        </g>
+
+        <!-- ERDGESCHOSS -->
+        <g class="house-zone" id="zone-eg"
+           onmouseenter="showTooltip('tooltip-quer', event, 'Erdgeschoss', 'Wasserdichte Türen, Barrieren-Systeme, Sandsäcke und mobile Schutzwände.')"
+           onmouseleave="hideTooltip('tooltip-quer')">
+          <rect x="80" y="270" width="520" height="50" fill="#e8e0d4" stroke="#d4c5b0" stroke-width="2"/>
+          <rect class="zone-fill" x="80" y="270" width="520" height="50" fill="#1e7fc2" opacity="0"/>
+          <!-- Tür EG -->
+          <rect x="300" y="280" width="80" height="40" fill="#b8a888" stroke="#8a7860" stroke-width="1.5"/>
+          <text x="340" y="300" text-anchor="middle" font-size="11" fill="#6b5a3e" font-family="DM Sans, sans-serif" font-weight="600">Erdgeschoss – Barrieren & Türen</text>
+        </g>
+
+        <!-- KELLER -->
+        <g class="house-zone" id="zone-keller"
+           onmouseenter="showTooltip('tooltip-quer', event, 'Keller & Fundament', 'Rückstausicherungen, Hebeanlagen, Pumpen, Abdichtungen & Kellerfenster.')"
+           onmouseleave="hideTooltip('tooltip-quer')">
+          <rect x="80" y="320" width="520" height="80" fill="#c8b89a" stroke="#b0a080" stroke-width="2"/>
+          <rect class="zone-fill" x="80" y="320" width="520" height="80" fill="#1e7fc2" opacity="0"/>
+          <!-- Kellerfenster links -->
+          <rect x="120" y="335" width="50" height="30" fill="#a8cce0" stroke="#7ab0d0" stroke-width="1.5"/>
+          <!-- Kellerfenster rechts -->
+          <rect x="510" y="335" width="50" height="30" fill="#a8cce0" stroke="#7ab0d0" stroke-width="1.5"/>
+          <text x="340" y="368" text-anchor="middle" font-size="11" fill="#5a4a2e" font-family="DM Sans, sans-serif" font-weight="600">Keller – Pumpen & Abdichtung</text>
+        </g>
+
+        <!-- Außenwand Umriss -->
+        <rect x="80" y="180" width="520" height="220" fill="none" stroke="#b0a080" stroke-width="2"/>
+
+        <!-- Wasserstand Indikator -->
+        <line x1="40" y1="320" x2="640" y2="320" stroke="#1e7fc2" stroke-width="1.5" stroke-dasharray="6,4"/>
+        <text x="650" y="315" font-size="10" fill="#1e7fc2" font-family="DM Sans, sans-serif">HW</text>
+      </svg>
+
+      <div class="svg-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#d4c5b0"></div> Dach & Entwässerung</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#f0ebe3"></div> Obergeschoss</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#e8e0d4"></div> Erdgeschoss</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#c8b89a"></div> Keller & Fundament</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#1e7fc2"></div> Hochwasserstand (HW)</div>
+      </div>
+    </div>
+
+    <!-- AUSSENANSICHT -->
+    <div class="svg-container" id="svg-aussen">
+      <div class="tooltip-box" id="tooltip-aus"></div>
+      <svg class="house-svg" viewBox="0 0 680 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="680" height="420" fill="#deeaf5"/>
+        <!-- Himmel gradient -->
+        <defs>
+          <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#b8d8f0"/>
+            <stop offset="100%" stop-color="#deeaf5"/>
+          </linearGradient>
+        </defs>
+        <rect width="680" height="320" fill="url(#skyGrad)"/>
+        <!-- Boden -->
+        <rect y="320" width="680" height="100" fill="#b8c8a0"/>
+
+        <!-- Boden Streifen (Überflutung) -->
+        <rect y="300" width="680" height="20" fill="#7ab0d0" opacity="0.5"/>
+
+        <!-- DACH AUSSEN -->
+        <g class="house-zone"
+           onmouseenter="showTooltip('tooltip-aus', event, 'Dach & Entwässerung', 'Dachrinnen, Fallrohre mit Rückstausicherung, Drainagen.')"
+           onmouseleave="hideTooltip('tooltip-aus')">
+          <polygon points="340,20 660,190 20,190" fill="#c8a870" stroke="#a08050" stroke-width="2"/>
+          <polygon class="zone-fill" points="340,20 660,190 20,190" fill="#1e7fc2" opacity="0"/>
+          <text x="340" y="155" text-anchor="middle" font-size="12" fill="#6b4a1e" font-family="DM Sans, sans-serif" font-weight="600">Dach & Entwässerung</text>
+        </g>
+
+        <!-- FASSADE -->
+        <g class="house-zone"
+           onmouseenter="showTooltip('tooltip-aus', event, 'Fassade & Außenbereich', 'Mobile Barrieren-Systeme, Sandsäcke, wasserdichte Beschichtungen.')"
+           onmouseleave="hideTooltip('tooltip-aus')">
+          <rect x="60" y="190" width="560" height="130" fill="#f5ede0" stroke="#d4b888" stroke-width="2"/>
+          <rect class="zone-fill" x="60" y="190" width="560" height="130" fill="#1e7fc2" opacity="0"/>
+          <text x="340" y="215" text-anchor="middle" font-size="11" fill="#6b4a1e" font-family="DM Sans, sans-serif" font-weight="600">Fassade – Barrieren & Beschichtung</text>
+        </g>
+
+        <!-- HAUSTÜR -->
+        <g class="house-zone"
+           onmouseenter="showTooltip('tooltip-aus', event, 'Haustür & Eingang', 'Wasserdichte Türen, Dammbalken, Türschutz-Systeme.')"
+           onmouseleave="hideTooltip('tooltip-aus')">
+          <rect x="290" y="240" width="100" height="80" fill="#c8a870" stroke="#a08050" stroke-width="1.5" rx="4"/>
+          <rect class="zone-fill" x="290" y="240" width="100" height="80" fill="#1e7fc2" opacity="0" rx="4"/>
+          <circle cx="380" cy="280" r="5" fill="#8a6030"/>
+          <text x="340" y="292" text-anchor="middle" font-size="10" fill="#5a3810" font-family="DM Sans, sans-serif" font-weight="600">Tür</text>
+        </g>
+
+        <!-- FENSTER LINKS -->
+        <g class="house-zone"
+           onmouseenter="showTooltip('tooltip-aus', event, 'Fenster & Kellerfenster', 'Wasserdichte Fenster, Kellerfensterabdichtungen, Lichtschachte.')"
+           onmouseleave="hideTooltip('tooltip-aus')">
+          <rect x="100" y="220" width="80" height="60" fill="#b8d8f0" stroke="#7ab0d0" stroke-width="1.5" rx="3"/>
+          <rect class="zone-fill" x="100" y="220" width="80" height="60" fill="#1e7fc2" opacity="0" rx="3"/>
+          <line x1="140" y1="220" x2="140" y2="280" stroke="#7ab0d0" stroke-width="1"/>
+          <line x1="100" y1="250" x2="180" y2="250" stroke="#7ab0d0" stroke-width="1"/>
+          <text x="140" y="296" text-anchor="middle" font-size="10" fill="#3a6880" font-family="DM Sans, sans-serif" font-weight="600">Fenster</text>
+        </g>
+
+        <!-- FENSTER RECHTS -->
+        <g class="house-zone"
+           onmouseenter="showTooltip('tooltip-aus', event, 'Fenster & Kellerfenster', 'Wasserdichte Fenster, Kellerfensterabdichtungen, Lichtschachte.')"
+           onmouseleave="hideTooltip('tooltip-aus')">
+          <rect x="500" y="220" width="80" height="60" fill="#b8d8f0" stroke="#7ab0d0" stroke-width="1.5" rx="3"/>
+          <rect class="zone-fill" x="500" y="220" width="80" height="60" fill="#1e7fc2" opacity="0" rx="3"/>
+          <line x1="540" y1="220" x2="540" y2="280" stroke="#7ab0d0" stroke-width="1"/>
+          <line x1="500" y1="250" x2="580" y2="250" stroke="#7ab0d0" stroke-width="1"/>
+        </g>
+
+        <!-- GARAGENTOR -->
+        <g class="house-zone"
+           onmouseenter="showTooltip('tooltip-aus', event, 'Garagentor', 'Wasserdichte Garagentore mit Dichtungssystemen zum Schutz vor eindringendem Wasser.')"
+           onmouseleave="hideTooltip('tooltip-aus')">
+          <rect x="420" y="240" width="160" height="80" fill="#d4c0a0" stroke="#b0a080" stroke-width="1.5" rx="3"/>
+          <rect class="zone-fill" x="420" y="240" width="160" height="80" fill="#1e7fc2" opacity="0" rx="3"/>
+          <line x1="420" y1="267" x2="580" y2="267" stroke="#b0a080" stroke-width="1"/>
+          <line x1="420" y1="293" x2="580" y2="293" stroke="#b0a080" stroke-width="1"/>
+          <text x="500" y="285" text-anchor="middle" font-size="10" fill="#6b5030" font-family="DM Sans, sans-serif" font-weight="600">Garagentor</text>
+        </g>
+
+        <!-- Außenbereich -->
+        <g class="house-zone"
+           onmouseenter="showTooltip('tooltip-aus', event, 'Außenbereich & Gelände', 'Geländemodellierung, Drainagemulden, Außenbarrieren, Spundwände.')"
+           onmouseleave="hideTooltip('tooltip-aus')">
+          <rect x="0" y="320" width="680" height="100" fill="#b8c8a0" stroke="none"/>
+          <rect class="zone-fill" x="0" y="320" width="680" height="100" fill="#1e7fc2" opacity="0"/>
+          <text x="340" y="370" text-anchor="middle" font-size="11" fill="#4a6020" font-family="DM Sans, sans-serif" font-weight="600">Außenbereich – Drainagen & Barrieren</text>
+        </g>
+
+        <!-- Wasserstand -->
+        <line x1="0" y1="300" x2="680" y2="300" stroke="#1e7fc2" stroke-width="2" stroke-dasharray="8,5"/>
+        <text x="8" y="295" font-size="10" fill="#1e7fc2" font-family="DM Sans, sans-serif" font-weight="600">HW</text>
+      </svg>
+
+      <div class="svg-legend">
+        <div class="legend-item"><div class="legend-dot" style="background:#c8a870"></div> Dach</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#f5ede0"></div> Fassade</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#b8d8f0"></div> Fenster</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#d4c0a0"></div> Garagentor</div>
+        <div class="legend-item"><div class="legend-dot" style="background:#b8c8a0"></div> Außenbereich</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HAUPT-TABS -->
+  <div class="main-tabs">
+    <button class="main-tab active" onclick="showMainTab('produkte', this)">🛒 Produkte</button>
+    <button class="main-tab" onclick="showMainTab('installateure', this)">🔧 Fachbetriebe & Installateure</button>
+  </div>
+
+  <!-- PANEL: PRODUKTE -->
+  <div class="main-panel active" id="panel-produkte">
+
+  <!-- PRODUCTS -->
+  <section id="produkte">
+    <div class="section-title">Produktübersicht</div>
+    <div class="section-sub">Alle aufgeführten Produkte dienen als Beispieldaten und können jederzeit angepasst werden.</div>
+
+    <div class="products-layout">
+
+      <!-- SIDEBAR EXPLORER -->
+      <aside class="sidebar">
+        <div class="sidebar-header">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+          Kategorien
+        </div>
+        <button class="sidebar-item active" onclick="filterProducts('Alle', this)">
+          Alle Produkte
+          <span class="sidebar-count" id="count-alle">10</span>
+        </button>
+        <div class="sidebar-divider"></div>
+        <button class="sidebar-item" onclick="filterProducts('Wasserdichte Tore/Garagentore', this)">
+          Garagentore
+          <span class="sidebar-count">1</span>
+        </button>
+        <button class="sidebar-item" onclick="filterProducts('Wasserdichte Türen', this)">
+          Wasserdichte Türen
+          <span class="sidebar-count">1</span>
+        </button>
+        <button class="sidebar-item" onclick="filterProducts('Wasserdichte Fenster', this)">
+          Wasserdichte Fenster
+          <span class="sidebar-count">1</span>
+        </button>
+        <button class="sidebar-item" onclick="filterProducts('Wasserdichte Kellerfenster', this)">
+          Kellerfenster
+          <span class="sidebar-count">1</span>
+        </button>
+        <button class="sidebar-item" onclick="filterProducts('Barrieren-Systeme', this)">
+          Barrieren-Systeme
+          <span class="sidebar-count">1</span>
+        </button>
+        <button class="sidebar-item" onclick="filterProducts('Rückstausicherungen', this)">
+          Rückstausicherungen
+          <span class="sidebar-count">1</span>
+        </button>
+        <button class="sidebar-item" onclick="filterProducts('Pumpen', this)">
+          Pumpen
+          <span class="sidebar-count">1</span>
+        </button>
+        <button class="sidebar-item" onclick="filterProducts('Hebeanlagen', this)">
+          Hebeanlagen
+          <span class="sidebar-count">1</span>
+        </button>
+        <button class="sidebar-item" onclick="filterProducts('Messen und Modellieren', this)">
+          Messen & Modellieren
+          <span class="sidebar-count">1</span>
+        </button>
+        <button class="sidebar-item" onclick="filterProducts('Sonstiges', this)">
+          Sonstiges
+          <span class="sidebar-count">1</span>
+        </button>
+      </aside>
+
+      <!-- PRODUCT GRID -->
+      <div class="products-right">
+        <div class="products-topbar">
+          <div class="products-topbar-title" id="active-category-title">Alle Produkte</div>
+          <div class="products-count" id="products-count-label">10 Einträge</div>
+        </div>
+        <div class="product-grid" id="product-grid">
+          <!-- Cards rendered by JS -->
+        </div>
+      </div>
+
+      <!-- GRAFIK SPALTE RECHTS -->
+      <div class="grafik-spalte">
+        <div class="section-title">Hausübersicht</div>
+        <div class="section-sub">Hover über die Bereiche für Details.</div>
+        <div class="svg-tabs">
+          <button class="svg-tab active" onclick="showSVG('querschnitt2', this)">Querschnitt</button>
+          <button class="svg-tab" onclick="showSVG('aussen2', this)">Außenansicht</button>
+        </div>
+        <!-- QUERSCHNITT -->
+        <div class="svg-container active" id="svg-querschnitt2">
+          <div class="tooltip-box" id="tooltip-quer2"></div>
+          <svg class="house-svg" viewBox="0 0 680 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="680" height="420" fill="#eef4fb"/>
+            <rect y="320" width="680" height="100" fill="#c8d8b0"/>
+            <rect x="80" y="270" width="520" height="50" fill="#a89880"/>
+            <g class="house-zone" onmouseenter="showTooltip('tooltip-quer2', event, 'Dach & Entwässerung', 'Dachrinnen, Rückstausicherungen für Regenwasser, Drainagematten.')" onmouseleave="hideTooltip('tooltip-quer2')">
+              <polygon points="340,30 620,180 60,180" fill="#d4c5b0" stroke="#b0a090" stroke-width="2"/>
+              <polygon class="zone-fill" points="340,30 620,180 60,180" fill="#1e7fc2" opacity="0"/>
+              <text x="340" y="140" text-anchor="middle" font-size="12" fill="#6b5a3e" font-family="DM Sans, sans-serif" font-weight="600">Dach & Entwässerung</text>
+            </g>
+            <g class="house-zone" onmouseenter="showTooltip('tooltip-quer2', event, 'Obergeschoss / Fenster', 'Wasserdichte Fenster & Türen als Schutz bei Hochwasser.')" onmouseleave="hideTooltip('tooltip-quer2')">
+              <rect x="80" y="180" width="520" height="90" fill="#f0ebe3" stroke="#d4c5b0" stroke-width="2"/>
+              <rect class="zone-fill" x="80" y="180" width="520" height="90" fill="#1e7fc2" opacity="0"/>
+              <rect x="120" y="200" width="60" height="50" fill="#c8e4f5" stroke="#8ab8d4" stroke-width="1.5"/>
+              <rect x="500" y="200" width="60" height="50" fill="#c8e4f5" stroke="#8ab8d4" stroke-width="1.5"/>
+              <text x="340" y="232" text-anchor="middle" font-size="11" fill="#6b5a3e" font-family="DM Sans, sans-serif" font-weight="600">Obergeschoss – Türen & Fenster</text>
+            </g>
+            <g class="house-zone" onmouseenter="showTooltip('tooltip-quer2', event, 'Erdgeschoss', 'Wasserdichte Türen, Barrieren-Systeme, Sandsäcke und mobile Schutzwände.')" onmouseleave="hideTooltip('tooltip-quer2')">
+              <rect x="80" y="270" width="520" height="50" fill="#e8e0d4" stroke="#d4c5b0" stroke-width="2"/>
+              <rect class="zone-fill" x="80" y="270" width="520" height="50" fill="#1e7fc2" opacity="0"/>
+              <rect x="300" y="280" width="80" height="40" fill="#b8a888" stroke="#8a7860" stroke-width="1.5"/>
+              <text x="340" y="300" text-anchor="middle" font-size="11" fill="#6b5a3e" font-family="DM Sans, sans-serif" font-weight="600">Erdgeschoss – Barrieren & Türen</text>
+            </g>
+            <g class="house-zone" onmouseenter="showTooltip('tooltip-quer2', event, 'Keller & Fundament', 'Rückstausicherungen, Hebeanlagen, Pumpen, Abdichtungen & Kellerfenster.')" onmouseleave="hideTooltip('tooltip-quer2')">
+              <rect x="80" y="320" width="520" height="80" fill="#c8b89a" stroke="#b0a080" stroke-width="2"/>
+              <rect class="zone-fill" x="80" y="320" width="520" height="80" fill="#1e7fc2" opacity="0"/>
+              <rect x="120" y="335" width="50" height="30" fill="#a8cce0" stroke="#7ab0d0" stroke-width="1.5"/>
+              <rect x="510" y="335" width="50" height="30" fill="#a8cce0" stroke="#7ab0d0" stroke-width="1.5"/>
+              <text x="340" y="368" text-anchor="middle" font-size="11" fill="#5a4a2e" font-family="DM Sans, sans-serif" font-weight="600">Keller – Pumpen & Abdichtung</text>
+            </g>
+            <rect x="80" y="180" width="520" height="220" fill="none" stroke="#b0a080" stroke-width="2"/>
+            <line x1="40" y1="320" x2="640" y2="320" stroke="#1e7fc2" stroke-width="1.5" stroke-dasharray="6,4"/>
+            <text x="650" y="315" font-size="10" fill="#1e7fc2" font-family="DM Sans, sans-serif">HW</text>
+          </svg>
+          <div class="svg-legend">
+            <div class="legend-item"><div class="legend-dot" style="background:#d4c5b0"></div> Dach</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#f0ebe3"></div> Obergeschoss</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#e8e0d4"></div> Erdgeschoss</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#c8b89a"></div> Keller</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#1e7fc2"></div> Hochwasserstand (HW)</div>
+          </div>
+        </div>
+        <!-- AUSSENANSICHT -->
+        <div class="svg-container" id="svg-aussen2">
+          <div class="tooltip-box" id="tooltip-aus2"></div>
+          <svg class="house-svg" viewBox="0 0 680 420" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="680" height="420" fill="#deeaf5"/>
+            <defs>
+              <linearGradient id="skyGrad2" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="#b8d8f0"/>
+                <stop offset="100%" stop-color="#deeaf5"/>
+              </linearGradient>
+            </defs>
+            <rect width="680" height="320" fill="url(#skyGrad2)"/>
+            <rect y="320" width="680" height="100" fill="#b8c8a0"/>
+            <rect y="300" width="680" height="20" fill="#7ab0d0" opacity="0.5"/>
+            <g class="house-zone" onmouseenter="showTooltip('tooltip-aus2', event, 'Dach & Entwässerung', 'Dachrinnen, Fallrohre mit Rückstausicherung, Drainagen.')" onmouseleave="hideTooltip('tooltip-aus2')">
+              <polygon points="340,20 660,190 20,190" fill="#c8a870" stroke="#a08050" stroke-width="2"/>
+              <polygon class="zone-fill" points="340,20 660,190 20,190" fill="#1e7fc2" opacity="0"/>
+              <text x="340" y="155" text-anchor="middle" font-size="12" fill="#6b4a1e" font-family="DM Sans, sans-serif" font-weight="600">Dach & Entwässerung</text>
+            </g>
+            <g class="house-zone" onmouseenter="showTooltip('tooltip-aus2', event, 'Fassade & Außenbereich', 'Mobile Barrieren-Systeme, Sandsäcke, wasserdichte Beschichtungen.')" onmouseleave="hideTooltip('tooltip-aus2')">
+              <rect x="60" y="190" width="560" height="130" fill="#f5ede0" stroke="#d4b888" stroke-width="2"/>
+              <rect class="zone-fill" x="60" y="190" width="560" height="130" fill="#1e7fc2" opacity="0"/>
+              <text x="340" y="215" text-anchor="middle" font-size="11" fill="#6b4a1e" font-family="DM Sans, sans-serif" font-weight="600">Fassade – Barrieren & Beschichtung</text>
+            </g>
+            <g class="house-zone" onmouseenter="showTooltip('tooltip-aus2', event, 'Haustür & Eingang', 'Wasserdichte Türen, Dammbalken, Türschutz-Systeme.')" onmouseleave="hideTooltip('tooltip-aus2')">
+              <rect x="290" y="240" width="100" height="80" fill="#c8a870" stroke="#a08050" stroke-width="1.5" rx="4"/>
+              <rect class="zone-fill" x="290" y="240" width="100" height="80" fill="#1e7fc2" opacity="0" rx="4"/>
+              <circle cx="380" cy="280" r="5" fill="#8a6030"/>
+            </g>
+            <g class="house-zone" onmouseenter="showTooltip('tooltip-aus2', event, 'Fenster & Kellerfenster', 'Wasserdichte Fenster, Kellerfensterabdichtungen, Lichtschachte.')" onmouseleave="hideTooltip('tooltip-aus2')">
+              <rect x="100" y="220" width="80" height="60" fill="#b8d8f0" stroke="#7ab0d0" stroke-width="1.5" rx="3"/>
+              <rect class="zone-fill" x="100" y="220" width="80" height="60" fill="#1e7fc2" opacity="0" rx="3"/>
+              <line x1="140" y1="220" x2="140" y2="280" stroke="#7ab0d0" stroke-width="1"/>
+              <line x1="100" y1="250" x2="180" y2="250" stroke="#7ab0d0" stroke-width="1"/>
+            </g>
+            <g class="house-zone" onmouseenter="showTooltip('tooltip-aus2', event, 'Garagentor', 'Wasserdichte Garagentore mit Dichtungssystemen.')" onmouseleave="hideTooltip('tooltip-aus2')">
+              <rect x="420" y="240" width="160" height="80" fill="#d4c0a0" stroke="#b0a080" stroke-width="1.5" rx="3"/>
+              <rect class="zone-fill" x="420" y="240" width="160" height="80" fill="#1e7fc2" opacity="0" rx="3"/>
+              <line x1="420" y1="267" x2="580" y2="267" stroke="#b0a080" stroke-width="1"/>
+              <line x1="420" y1="293" x2="580" y2="293" stroke="#b0a080" stroke-width="1"/>
+              <text x="500" y="285" text-anchor="middle" font-size="10" fill="#6b5030" font-family="DM Sans, sans-serif" font-weight="600">Garagentor</text>
+            </g>
+            <g class="house-zone" onmouseenter="showTooltip('tooltip-aus2', event, 'Außenbereich & Gelände', 'Geländemodellierung, Drainagemulden, Außenbarrieren, Spundwände.')" onmouseleave="hideTooltip('tooltip-aus2')">
+              <rect x="0" y="320" width="680" height="100" fill="#b8c8a0" stroke="none"/>
+              <rect class="zone-fill" x="0" y="320" width="680" height="100" fill="#1e7fc2" opacity="0"/>
+              <text x="340" y="370" text-anchor="middle" font-size="11" fill="#4a6020" font-family="DM Sans, sans-serif" font-weight="600">Außenbereich</text>
+            </g>
+            <line x1="0" y1="300" x2="680" y2="300" stroke="#1e7fc2" stroke-width="2" stroke-dasharray="8,5"/>
+            <text x="8" y="295" font-size="10" fill="#1e7fc2" font-family="DM Sans, sans-serif" font-weight="600">HW</text>
+          </svg>
+          <div class="svg-legend">
+            <div class="legend-item"><div class="legend-dot" style="background:#c8a870"></div> Dach</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#f5ede0"></div> Fassade</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#b8d8f0"></div> Fenster</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#d4c0a0"></div> Garagentor</div>
+            <div class="legend-item"><div class="legend-dot" style="background:#b8c8a0"></div> Außenbereich</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  </div> <!-- Ende Panel Produkte -->
+
+  <!-- PANEL: INSTALLATEURE -->
+  <div class="main-panel" id="panel-installateure">
+    <div class="section-title">Fachbetriebe & Installateure</div>
+    <div class="section-sub">Gelistete Fachbetriebe, die Hochwasserschutzmaßnahmen installieren und umsetzen können. Gefiltert nach Produktkategorie oder Region.</div>
+
+    <!-- FILTER -->
+    <div class="installateur-filter">
+      <span class="filter-label">Kategorie:</span>
+      <button class="inst-filter-btn active" onclick="filterInstallateure('Alle', this)">Alle</button>
+      <button class="inst-filter-btn" onclick="filterInstallateure('Wasserdichte Tore/Garagentore', this)">Garagentore</button>
+      <button class="inst-filter-btn" onclick="filterInstallateure('Rückstausicherungen', this)">Rückstausicherungen</button>
+      <button class="inst-filter-btn" onclick="filterInstallateure('Barrieren-Systeme', this)">Barrieren-Systeme</button>
+      <button class="inst-filter-btn" onclick="filterInstallateure('Wasserdichte Fenster', this)">Wasserdichte Fenster</button>
+      <button class="inst-filter-btn" onclick="filterInstallateure('Wasserdichte Türen', this)">Wasserdichte Türen</button>
+      <button class="inst-filter-btn" onclick="filterInstallateure('Pumpen', this)">Pumpen</button>
+      <button class="inst-filter-btn" onclick="filterInstallateure('Hebeanlagen', this)">Hebeanlagen</button>
+      <button class="inst-filter-btn" onclick="filterInstallateure('Sonstiges', this)">Sonstiges</button>
+    </div>
+
+    <div class="installateure-grid" id="installateure-grid">
+      <!-- wird per JS geladen -->
+    </div>
+  </div> <!-- Ende Panel Installateure -->
+
+  <!-- ABOUT -->
+  <section class="about-section" id="ueber-uns">
+    <div class="about-text">
+      <h2>Über dieses Projekt</h2>
+      <p>Diese Website entstand im Rahmen einer wissenschaftlichen Arbeit mit dem Ziel, verfügbare Hochwasserschutzprodukte systematisch zu erfassen, zu kategorisieren und vergleichbar zu machen.</p>
+      <p>Die interaktiven Grafiken und die filterbare Produktliste sollen Planern, Hausbesitzern und Kommunen eine erste Orientierung bieten.</p>
+    </div>
+    <div class="about-stats">
+      <div class="stat-box">
+        <div class="stat-num">10</div>
+        <div class="stat-label">Produktkategorien</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">2</div>
+        <div class="stat-label">Interaktive Grafiken</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">∞</div>
+        <div class="stat-label">Erweiterbar</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">100%</div>
+        <div class="stat-label">Open Source</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section class="contact-section" id="kontakt">
+    <div>
+      <h2>Kontakt</h2>
+      <p>Fragen, Ergänzungen oder Feedback? Gerne melden!</p>
+    </div>
+    <div class="contact-form">
+      <input type="text" placeholder="Ihr Name"/>
+      <input type="email" placeholder="E-Mail-Adresse"/>
+      <textarea placeholder="Ihre Nachricht..."></textarea>
+      <button class="btn-primary">Nachricht senden →</button>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  © 2024 Hochwasserschutz-Produktübersicht · Erstellt im Rahmen einer wissenschaftlichen Arbeit
+</footer>
+
+<script>
+// Produktliste – wird automatisch aus Google Sheets geladen
+const products = [];
+
+function renderProducts(filter) {
+  const grid = document.getElementById('product-grid');
+  const filtered = filter === 'Alle' ? products : products.filter(p => p.category === filter);
+  const label = document.getElementById('products-count-label');
+  const title = document.getElementById('active-category-title');
+  if (title) title.textContent = filter === 'Alle' ? 'Alle Produkte' : filter;
+  if (label) label.textContent = filtered.length + ' Einträge';
+  if (!filtered.length) {
+    grid.innerHTML = '<div class="no-results">Keine Produkte in dieser Kategorie gefunden.</div>';
+    return;
+  }
+  grid.innerHTML = filtered.map(p => `
+    <div class="product-card">
+      <div class="card-img">${renderCardImage(p.icon)}</div>
+      <div class="card-body">
+        <div class="card-category">${p.category}</div>
+        <div class="card-name">${p.name}</div>
+        <div class="card-desc">${p.desc}</div>
+        <div class="card-meta">
+          <div class="card-meta-row"><span>Hersteller</span> ${p.hersteller}</div>
+          ${p.zertifizierung ? `<div class="card-meta-row"><span>Zertifizierung</span> <span class="cert-badge">${p.zertifizierung}</span></div>` : ''}
+        </div>
+        <a class="card-link" href="${p.link}">Mehr erfahren →</a>
+      </div>
+    </div>
+  `).join('');
+}
+
+function filterProducts(cat, btn) {
+  document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderProducts(cat);
+}
+
+function showSVG(id, btn) {
+  // Nur SVG-Container im gleichen übergeordneten Element umschalten
+  const parent = btn.closest('.grafik-spalte') || btn.closest('.svg-section');
+  parent.querySelectorAll('.svg-container').forEach(c => c.classList.remove('active'));
+  parent.querySelectorAll('.svg-tab').forEach(b => b.classList.remove('active'));
+  document.getElementById('svg-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function showTooltip(tooltipId, event, title, text) {
+  const tt = document.getElementById(tooltipId);
+  tt.innerHTML = `<strong>${title}</strong><br>${text}`;
+  tt.classList.add('visible');
+  const rect = tt.parentElement.getBoundingClientRect();
+  const svgRect = event.target.closest('svg').getBoundingClientRect();
+  let x = event.clientX - rect.left + 12;
+  let y = event.clientY - rect.top + 12;
+  if (x + 240 > rect.width) x = event.clientX - rect.left - 240;
+  tt.style.left = x + 'px';
+  tt.style.top = y + 'px';
+  // keep updating on move
+  tt._moveHandler = (e) => {
+    let nx = e.clientX - rect.left + 12;
+    let ny = e.clientY - rect.top + 12;
+    if (nx + 240 > rect.width) nx = e.clientX - rect.left - 240;
+    tt.style.left = nx + 'px';
+    tt.style.top = ny + 'px';
+  };
+  document.addEventListener('mousemove', tt._moveHandler);
+}
+
+function hideTooltip(tooltipId) {
+  const tt = document.getElementById(tooltipId);
+  tt.classList.remove('visible');
+  if (tt._moveHandler) document.removeEventListener('mousemove', tt._moveHandler);
+}
+
+// ═══════════════════════════════════════════════
+// GOOGLE SHEETS ANBINDUNG
+// Hier die Sheet-ID eintragen (zwischen den Anführungszeichen)
+// ═══════════════════════════════════════════════
+const SHEET_ID = '1srcqqMJx7AXFF3EBIFVNaGJ23GKTxxuHLJDgNLQhzJc';
+const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
+
+// Zeigt einen Ladezustand im Produktraster
+function showLoading() {
+  document.getElementById('product-grid').innerHTML = `
+    <div class="no-results">
+      <div style="font-size:2rem;margin-bottom:12px">⏳</div>
+      Produkte werden geladen...
+    </div>`;
+}
+
+// Lädt Produkte aus Google Sheets und gibt sie als Array zurück
+async function loadFromSheets() {
+  showLoading();
+  try {
+    const response = await fetch(SHEET_URL);
+    const text = await response.text();
+    // Google gibt kein reines JSON zurück – wir müssen den Wrapper entfernen
+    const json = JSON.parse(text.substring(47).slice(0, -2));
+    const allRows = json.table.rows;
+
+    // Erste Zeile als Spaltenüberschriften verwenden (Google gibt keine Labels zurück)
+    const headerRow = allRows[0].c.map(c => c ? c.v.toLowerCase().trim() : '');
+    const rows = allRows.slice(1); // Rest sind echte Datenzeilen
+
+    return rows
+      .filter(row => row.c && row.c[0] && row.c[0].v) // leere Zeilen überspringen
+      .map(row => {
+        const obj = {};
+        headerRow.forEach((col, i) => {
+          obj[col] = row.c[i] ? (row.c[i].v || '') : '';
+        });
+        return {
+          name: obj['name'] || '',
+          category: obj['category'] || 'Sonstiges',
+          desc: obj['desc'] || '',
+          hersteller: obj['hersteller'] || '',
+          zertifizierung: obj['zertifizierung'] || '',
+          link: obj['link'] || '#',
+          icon: obj['icon'] || ''
+        };
+      });
+  } catch (e) {
+    console.error('Fehler beim Laden der Tabelle:', e);
+    return null; // null = Fehler aufgetreten
+  }
+}
+
+// Gibt den richtigen Bildbereich zurück – URL oder Emoji
+function renderCardImage(icon) {
+  if (icon && (icon.startsWith('http://') || icon.startsWith('https://'))) {
+    // Es ist eine Bild-URL
+    return `<img src="${icon}" alt="Produktbild" style="width:100%;height:100%;object-fit:contain;">`;
+  }
+  // Es ist ein Emoji oder leer
+  return icon || '📦';
+}
+
+// Aktualisiert die Zahlen in der Sidebar basierend auf geladenen Produkten
+function updateSidebarCounts() {
+  document.querySelectorAll('.sidebar-item').forEach(btn => {
+    const countEl = btn.querySelector('.sidebar-count');
+    if (!countEl) return;
+    const onclick = btn.getAttribute('onclick') || '';
+    const match = onclick.match(/'([^']+)'/);
+    if (!match) return;
+    const cat = match[1];
+    const count = cat === 'Alle'
+      ? products.length
+      : products.filter(p => p.category === cat).length;
+    countEl.textContent = count;
+  });
+}
+
+// Installateure Daten
+const installateure = [];
+
+// Lädt Installateure aus dem zweiten Tabellenblatt (gid=1)
+async function loadInstallateure() {
+  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=1`;
+  try {
+    const response = await fetch(url);
+    const text = await response.text();
+    const json = JSON.parse(text.substring(47).slice(0, -2));
+    const allRows = json.table.rows;
+    if (!allRows || allRows.length < 2) return [];
+    const headerRow = allRows[0].c.map(c => c ? c.v.toLowerCase().trim() : '');
+    return allRows.slice(1)
+      .filter(row => row.c && row.c[0] && row.c[0].v)
+      .map(row => {
+        const obj = {};
+        headerRow.forEach((col, i) => {
+          obj[col] = row.c[i] ? (row.c[i].v || '') : '';
+        });
+        return {
+          name: obj['name'] || '',
+          region: obj['region'] || '',
+          kategorien: obj['kategorien'] || '',
+          zertifizierung: obj['zertifizierung'] || '',
+          erfahrung: obj['erfahrung'] || '',
+          umsatz: obj['umsatz'] || '',
+          website: obj['website'] || '#',
+          telefon: obj['telefon'] || '',
+          email: obj['email'] || ''
+        };
+      });
+  } catch (e) {
+    console.error('Fehler beim Laden der Installateure:', e);
+    return [];
+  }
+}
+
+// Rendert Installateure-Karten
+function renderInstallateure(filter) {
+  const grid = document.getElementById('installateure-grid');
+  const filtered = filter === 'Alle'
+    ? installateure
+    : installateure.filter(i => i.kategorien.includes(filter));
+  if (!filtered.length) {
+    grid.innerHTML = '<div class="no-results">Keine Fachbetriebe in dieser Kategorie gefunden.</div>';
+    return;
+  }
+  grid.innerHTML = filtered.map(i => `
+    <div class="installateur-card">
+      <div class="installateur-name">${i.name}</div>
+      ${i.region ? `<div class="installateur-region">📍 ${i.region}</div>` : ''}
+      ${i.kategorien ? `<div class="installateur-kategorien">
+        ${i.kategorien.split(',').map(k => `<span class="kat-badge">${k.trim()}</span>`).join('')}
+      </div>` : ''}
+      <div class="installateur-meta">
+        ${i.zertifizierung ? `<div class="installateur-meta-row"><span>Zertifizierung</span> ${i.zertifizierung}</div>` : ''}
+        ${i.erfahrung ? `<div class="installateur-meta-row"><span>Erfahrung</span> ${i.erfahrung}</div>` : ''}
+        ${i.umsatz ? `<div class="installateur-meta-row"><span>Umsatz</span> ${i.umsatz}</div>` : ''}
+        ${i.telefon ? `<div class="installateur-meta-row"><span>Telefon</span> ${i.telefon}</div>` : ''}
+        ${i.email ? `<div class="installateur-meta-row"><span>E-Mail</span> ${i.email}</div>` : ''}
+      </div>
+      ${i.website && i.website !== '#' ? `<a class="card-link" href="${i.website}" target="_blank">Website besuchen →</a>` : ''}
+    </div>
+  `).join('');
+}
+
+function filterInstallateure(cat, btn) {
+  document.querySelectorAll('.inst-filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderInstallateure(cat);
+}
+
+// Tab-Umschaltung
+function showMainTab(id, btn) {
+  document.querySelectorAll('.main-tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.main-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('panel-' + id).classList.add('active');
+}
+
+// ═══════════════════════════════════════════════
+// PASSWORTSCHUTZ
+// Passwort hier ändern:
+// ═══════════════════════════════════════════════
+const PASSWORT = 'hochwasser2024';
+
+function checkPassword() {
+  const input = document.getElementById('pw-input').value;
+  const error = document.getElementById('pw-error');
+  if (input === PASSWORT) {
+    sessionStorage.setItem('pw_ok', '1');
+    const overlay = document.getElementById('pw-overlay');
+    overlay.style.transition = 'opacity 0.5s ease';
+    overlay.style.opacity = '0';
+    setTimeout(() => overlay.classList.add('hidden'), 500);
+    error.classList.remove('visible');
+  } else {
+    error.classList.add('visible');
+    document.getElementById('pw-input').value = '';
+    document.getElementById('pw-input').focus();
+    document.getElementById('pw-input').style.borderColor = '#c0392b';
+    setTimeout(() => document.getElementById('pw-input').style.borderColor = '', 1200);
+  }
+}
+
+// Beim Laden prüfen ob bereits eingeloggt (bleibt für die Browser-Session gespeichert)
+if (sessionStorage.getItem('pw_ok') === '1') {
+  document.getElementById('pw-overlay').classList.add('hidden');
+}
+
+// ═══════════════════════════════════════════════
+// TOUR – reine CSS-Klassen-Umschaltung, kein Positioning
+// ═══════════════════════════════════════════════
+const tourWrappers = ['tw-welcome', 'tw-tabs', 'tw-sidebar', 'tw-products', 'tw-grafik'];
+const TOUR_TOTAL = tourWrappers.length;
+let currentStep = 0;
+
+function renderTourDots() {
+  // Dynamisch Dots für jeden Schritt rendern
+  tourWrappers.forEach((_, stepIdx) => {
+    const container = document.getElementById('tour-dots-' + stepIdx);
+    if (!container) return;
+    container.innerHTML = tourWrappers.map((__, i) =>
+      `<div class="t-dot${i === currentStep ? ' t-dot-active' : ''}"></div>`
+    ).join('');
+  });
+}
+
+function startTour() {
+  if (localStorage.getItem('tourSeen')) return;
+  document.getElementById('tour-page').classList.remove('hidden');
+  showStep(0);
+}
+
+function showStep(index) {
+  tourWrappers.forEach(id => document.getElementById(id).classList.remove('t-active'));
+  document.getElementById(tourWrappers[index]).classList.add('t-active');
+  currentStep = index;
+  renderTourDots();
+}
+
+function nextStep() {
+  currentStep++;
+  if (currentStep >= tourWrappers.length) endTour();
+  else showStep(currentStep);
+}
+
+function endTour() {
+  localStorage.setItem('tourSeen', '1');
+  const tp = document.getElementById('tour-page');
+  tp.style.transition = 'opacity 0.6s ease';
+  tp.style.opacity = '0';
+  setTimeout(() => tp.classList.add('hidden'), 650);
+}
+
+function restartTour() {
+  localStorage.removeItem('tourSeen');
+  const tp = document.getElementById('tour-page');
+  tp.classList.remove('hidden');
+  tp.style.opacity = '1';
+  showStep(0);
+}
+
+// Initialisierung
+async function init() {
+  const sheetProducts = await loadFromSheets();
+  if (sheetProducts && sheetProducts.length > 0) {
+    products.length = 0;
+    sheetProducts.forEach(p => products.push(p));
+    console.log(`✅ ${products.length} Produkte aus Google Sheets geladen`);
+  } else {
+    console.warn('⚠️ Google Sheets nicht erreichbar – Beispieldaten werden verwendet');
+  }
+  updateSidebarCounts();
+  renderProducts('Alle');
+
+  // Installateure laden
+  const inst = await loadInstallateure();
+  inst.forEach(i => installateure.push(i));
+  console.log(`✅ ${installateure.length} Installateure geladen`);
+  renderInstallateure('Alle');
+
+  // Tour anzeigen (nur beim ersten Besuch)
+  startTour();
+}
+
+init();
+</script>
+</body>
+</html>
