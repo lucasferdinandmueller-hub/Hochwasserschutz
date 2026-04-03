@@ -30,33 +30,307 @@
   }
 
 
-  nav {   /* Navigationsleiste */
+  nav {
     background: var(--blue-deep);
-    padding: 0 48px;
+    padding: 0 32px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
-    height: 64px;
+    gap: 16px;
+    height: 60px;
     position: sticky;
     top: 0;
     z-index: 100;
   }
-  .nav-logo { /* Logo Navigationsleiste */
+  .nav-logo {
     font-family: 'DM Serif Display', serif;
     color: #fff;
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     letter-spacing: 0.02em;
+    flex-shrink: 0;
   }
-  .nav-logo span { color: var(--blue-accent); } /* Logo Navigationsleiste */
-  .nav-links { display: flex; gap: 32px; } 
-  .nav-links a {
-    color: rgba(255,255,255,0.75);
-    text-decoration: none;
-    font-size: 0.9rem;
-    font-weight: 500;
-    transition: color 0.2s;
+  .nav-logo span { color: var(--blue-accent); }
+
+  /* Breadcrumb */
+  .nav-breadcrumb {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 0.8rem; color: rgba(255,255,255,0.5);
+    flex: 1;
   }
-  .nav-links a:hover { color: #fff; }
+  .nav-breadcrumb .bc-sep { opacity: 0.4; }
+  #bc-current { color: rgba(255,255,255,0.85); font-weight: 500; }
+
+  /* Right side of nav */
+  .nav-right { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+
+  /* Search */
+  .nav-search-wrap {
+    display: flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,0.1); border-radius: 100px;
+    padding: 7px 14px;
+    border: 1px solid rgba(255,255,255,0.15);
+    transition: background 0.2s;
+  }
+  .nav-search-wrap:focus-within { background: rgba(255,255,255,0.18); }
+  .nav-search-wrap svg { opacity: 0.55; flex-shrink: 0; stroke: white; }
+  #nav-search {
+    background: transparent; border: none; outline: none;
+    color: white; font-family: 'DM Sans', sans-serif;
+    font-size: 0.84rem; width: 160px;
+  }
+  #nav-search::placeholder { color: rgba(255,255,255,0.4); }
+
+  /* Hamburger (mobile only) */
+  .nav-hamburger {
+    display: none; flex-direction: column; gap: 5px;
+    background: transparent; border: none; cursor: pointer; padding: 4px;
+  }
+  .nav-hamburger span {
+    display: block; width: 22px; height: 2px;
+    background: rgba(255,255,255,0.8); border-radius: 2px;
+    transition: all 0.2s;
+  }
+
+  /* Mobile dropdown menu */
+  .mobile-menu {
+    background: var(--blue-deep);
+    display: flex; flex-direction: column;
+    border-top: 1px solid rgba(255,255,255,0.1);
+    position: sticky; top: 60px; z-index: 99;
+  }
+  .mobile-menu.hidden { display: none; }
+  .mobile-tab {
+    padding: 14px 24px; color: rgba(255,255,255,0.8);
+    background: transparent; border: none;
+    text-align: left; font-size: 0.9rem; font-weight: 500;
+    cursor: pointer; font-family: 'DM Sans', sans-serif;
+    border-bottom: 1px solid rgba(255,255,255,0.07);
+    transition: background 0.15s;
+  }
+  .mobile-tab:hover { background: rgba(255,255,255,0.08); }
+
+  /* ─── LAYOUT: PRODUCTS ─────────────────────────── */
+  .products-layout {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+  }
+  .products-left-col {
+    width: 230px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    position: sticky;
+    top: 80px;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+  }
+
+  /* ─── LAYOUT: INSTALLATEURE ─────────────────────── */
+  .inst-layout {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+  }
+  .inst-left-col {
+    width: 230px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    position: sticky;
+    top: 80px;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+  }
+  .inst-right-col { flex: 1; min-width: 0; }
+
+  /* PLZ Suche */
+  .plz-box {
+    background: var(--surface); border-radius: var(--radius);
+    box-shadow: var(--shadow); padding: 16px;
+  }
+  .plz-box-title {
+    font-size: 0.78rem; font-weight: 700; color: var(--blue-deep);
+    margin-bottom: 10px; letter-spacing: 0.02em;
+  }
+  .plz-row { display: flex; gap: 6px; }
+  .plz-input {
+    flex: 1; padding: 9px 12px; border-radius: 8px;
+    border: 1.5px solid var(--border); font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem; outline: none; transition: border-color 0.2s;
+  }
+  .plz-input:focus { border-color: var(--blue-accent); }
+  .plz-btn {
+    padding: 9px 12px; background: var(--blue-accent); color: white;
+    border: none; border-radius: 8px; font-size: 0.82rem; font-weight: 600;
+    cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background 0.2s;
+    white-space: nowrap;
+  }
+  .plz-btn:hover { background: var(--blue-mid); }
+  .plz-info { font-size: 0.78rem; color: var(--text-muted); margin-top: 8px; }
+
+  /* Inst filter inside left col */
+  .inst-filter-wrap {
+    background: var(--surface); border-radius: var(--radius);
+    box-shadow: var(--shadow); overflow: hidden;
+  }
+  .inst-filter-label {
+    background: var(--blue-deep); color: white;
+    padding: 10px 14px; font-size: 0.72rem; font-weight: 700;
+    letter-spacing: 0.1em; text-transform: uppercase;
+  }
+  .inst-filter-wrap .installateur-filter {
+    display: flex; flex-direction: column; gap: 0; padding: 6px 0;
+  }
+  .inst-filter-wrap .inst-filter-btn {
+    border-radius: 0; border: none; border-left: 3px solid transparent;
+    text-align: left; padding: 8px 14px; width: 100%;
+    font-size: 0.84rem;
+  }
+  .inst-filter-wrap .inst-filter-btn.active {
+    background: var(--blue-light); color: var(--blue-deep);
+    border-left-color: var(--blue-deep); font-weight: 600;
+  }
+
+  /* Karten-Platzhalter */
+  .map-placeholder {
+    background: var(--surface); border-radius: var(--radius);
+    box-shadow: var(--shadow); overflow: hidden;
+    border: 2px dashed var(--border);
+    min-height: 200px; display: flex; align-items: center; justify-content: center;
+  }
+  .map-ph-inner { text-align: center; padding: 24px 16px; }
+  .map-ph-icon { font-size: 2.4rem; margin-bottom: 10px; }
+  .map-ph-title {
+    font-family: 'DM Serif Display', serif; font-size: 1rem;
+    color: var(--blue-deep); margin-bottom: 8px;
+  }
+  .map-ph-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.6; }
+  .map-ph-desc span {
+    display: inline-block; margin-top: 6px;
+    background: var(--blue-light); color: var(--blue-accent);
+    border-radius: 100px; padding: 2px 10px; font-size: 0.72rem; font-weight: 600;
+  }
+
+  /* Kategorie-Info Panel */
+  .category-info-panel {
+    background: var(--blue-light); border-radius: var(--radius);
+    padding: 16px 20px; margin-bottom: 16px;
+    display: flex; gap: 14px; align-items: flex-start;
+    border-left: 4px solid var(--blue-accent);
+  }
+  .cat-info-icon { font-size: 1.8rem; flex-shrink: 0; }
+  .cat-info-title {
+    font-family: 'DM Serif Display', serif; font-size: 1rem;
+    color: var(--blue-deep); margin-bottom: 4px;
+  }
+  .cat-info-desc { font-size: 0.83rem; color: var(--text-muted); line-height: 1.6; }
+
+  /* ─── GRAFIK-SPALTE (now in left col) ────────────── */
+  .grafik-spalte {
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    padding: 16px;
+    overflow: hidden;
+  }
+  .grafik-spalte .section-title {
+    font-size: 1rem;
+    margin-bottom: 4px;
+  }
+  .grafik-spalte .section-sub {
+    font-size: 0.78rem;
+    margin-bottom: 10px;
+  }
+  .grafik-spalte .svg-tabs {
+    margin-bottom: 10px;
+  }
+  .grafik-spalte .svg-container {
+    padding: 8px;
+  }
+  .grafik-spalte .svg-legend {
+    flex-direction: column;
+    gap: 5px;
+    margin-top: 10px;
+  }
+
+  /* ─── MOBILE FIRST ───────────────────────────────── */
+  @media (max-width: 768px) {
+    nav { padding: 0 16px; height: 56px; }
+    .nav-breadcrumb { display: none; }
+    .nav-search-wrap { display: none; }
+    .nav-info-btn { display: none; }
+    .nav-hamburger { display: flex; }
+
+    .hero { padding: 36px 20px 32px; }
+    .hero h1 { font-size: 1.7rem; }
+
+    main { padding: 24px 16px 60px; }
+
+    /* Tabs werden zu vollbreiten Buttons */
+    .main-tabs { width: 100%; }
+    .main-tab { flex: 1; text-align: center; padding: 10px 8px; font-size: 0.82rem; }
+
+    /* Layout: alles gestapelt */
+    .products-layout { flex-direction: column; gap: 16px; }
+    .products-left-col {
+      width: 100%; position: static;
+      max-height: none; overflow: visible;
+      flex-direction: row; flex-wrap: wrap; gap: 12px;
+    }
+    /* Sidebar wird zu horizontalen Chips */
+    .sidebar {
+      width: 100%; overflow-x: auto;
+      display: flex; flex-direction: row;
+      border-radius: var(--radius);
+    }
+    .sidebar-header { display: none; }
+    .sidebar-section-label { display: none; }
+    .sidebar-divider { display: none; }
+    .sidebar-item {
+      white-space: nowrap; border-left: none;
+      border-bottom: 3px solid transparent;
+      padding: 10px 14px; flex-shrink: 0;
+    }
+    .sidebar-item.active {
+      border-bottom-color: var(--blue-accent);
+      background: var(--blue-light);
+    }
+    .sidebar-count { display: none; }
+    /* Grafik full width unterhalb */
+    .grafik-spalte { width: 100%; }
+    .products-right { width: 100%; }
+
+    /* Installateure layout */
+    .inst-layout { flex-direction: column; gap: 16px; }
+    .inst-left-col { width: 100%; position: static; max-height: none; }
+    .inst-filter-wrap .installateur-filter {
+      flex-direction: row; flex-wrap: wrap; padding: 8px;
+    }
+    .inst-filter-wrap .inst-filter-btn {
+      border-radius: 100px; border: 1.5px solid var(--border);
+      border-left: 1.5px solid var(--border); padding: 6px 12px;
+      width: auto;
+    }
+    .inst-filter-wrap .inst-filter-btn.active { border-color: var(--blue-deep); }
+    .map-placeholder { min-height: 140px; }
+
+    /* Produktkarten: 1 Spalte */
+    .product-grid { grid-template-columns: 1fr; }
+    .installateure-grid { grid-template-columns: 1fr; }
+
+    /* Info modal */
+    #info-box { padding: 0; }
+    .info-header { padding: 24px 20px 20px; }
+    .info-body { padding: 20px 20px 8px; }
+    .info-footer { padding: 0 20px 20px; flex-direction: column; gap: 8px; }
+    .info-btn-close, .info-btn-noshow { width: 100%; }
+  }
+
+  @media (min-width: 769px) and (max-width: 1100px) {
+    .product-grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); }
+  }
 
   /* Titel bzw. Überschrift */
   .hero {
@@ -324,38 +598,8 @@
     border-color: var(--blue-deep);
   }
 
-  /* PRODUCTS LAYOUT: sidebar + grid + grafik (3 Spalten) */
-  .products-layout {
-    display: flex;
-    gap: 24px;
-    align-items: flex-start;
-  }
-
-  /* RECHTE GRAFIK-SPALTE */
-  .grafik-spalte {
-    width: 300px;
-    flex-shrink: 0;
-    position: sticky;
-    top: 80px;
-  }
-  .grafik-spalte .section-title {
-    font-size: 1.1rem;
-    margin-bottom: 4px;
-  }
-  .grafik-spalte .section-sub {
-    font-size: 0.8rem;
-    margin-bottom: 12px;
-  }
-  .grafik-spalte .svg-tabs {
-    margin-bottom: 10px;
-  }
-  .grafik-spalte .svg-container {
-    padding: 16px;
-  }
-  .grafik-spalte .svg-legend {
-    flex-direction: column;
-    gap: 6px;
-  }
+  /* PRODUCTS LAYOUT: sidebar + grid (3-Spalter entfernt, jetzt 2 Spalten) */
+  .products-right { flex: 1; min-width: 0; }
 
   /* SIDEBAR EXPLORER */
   .sidebar {
@@ -663,12 +907,7 @@
     margin-top: 80px;
   }
 
-  @media (max-width: 768px) {
-    nav { padding: 0 20px; }
-    .hero { padding: 48px 20px; }
-    .about-section { grid-template-columns: 1fr; }
-    .contact-section { flex-direction: column; }
-  }
+  /* responsive handled by mobile-first CSS above */
 
   /* ─── PASSWORT-OVERLAY ─────────────────────────── */
   #pw-overlay {
@@ -874,14 +1113,27 @@
 
 <nav>
   <div class="nav-logo">Hochwasser<span>Schutz</span></div>
-  <div class="nav-links">
-    <a href="#produkte">Produkte</a>
-    <a href="#grafik">Hausübersicht</a>
-    <a href="#ueber-uns">Über uns</a>
-    <a href="#kontakt">Kontakt</a>
+  <div class="nav-breadcrumb" id="nav-breadcrumb">
+    <span>Startseite</span>
+    <span class="bc-sep">›</span>
+    <span id="bc-current">Übersicht</span>
   </div>
-  <button class="nav-info-btn" onclick="showInfoModal()">ℹ️ Info</button>
+  <div class="nav-right">
+    <div class="nav-search-wrap">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <input type="text" id="nav-search" placeholder="Produkte suchen …" oninput="searchProducts(this.value)"/>
+    </div>
+    <button class="nav-info-btn" onclick="showInfoModal()">ℹ️ Info</button>
+    <button class="nav-hamburger" id="nav-hamburger" onclick="toggleMobileMenu()" aria-label="Menü">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
 </nav>
+<div class="mobile-menu hidden" id="mobile-menu">
+  <button class="mobile-tab" onclick="showMainTab('produkte',this);toggleMobileMenu()">🛒 Produkte</button>
+  <button class="mobile-tab" onclick="showMainTab('installateure',this);toggleMobileMenu()">🔧 Fachbetriebe</button>
+  <button class="mobile-tab" onclick="showInfoModal();toggleMobileMenu()">ℹ️ Info</button>
+</div>
 
 <div class="hero">
   <div class="hero-inner">
@@ -1096,6 +1348,9 @@
 
     <div class="products-layout">
 
+      <!-- LEFT COLUMN: Sidebar + Hausübersicht -->
+      <div class="products-left-col">
+
       <!-- SIDEBAR EXPLORER -->
       <aside class="sidebar">
         <div class="sidebar-header">
@@ -1149,18 +1404,7 @@
         </button>
       </aside>
 
-      <!-- PRODUCT GRID -->
-      <div class="products-right">
-        <div class="products-topbar">
-          <div class="products-topbar-title" id="active-category-title">Alle Produkte</div>
-          <div class="products-count" id="products-count-label">10 Einträge</div>
-        </div>
-        <div class="product-grid" id="product-grid">
-          <!-- Cards rendered by JS -->
-        </div>
-      </div>
-
-      <!-- GRAFIK SPALTE RECHTS -->
+      <!-- HAUSÜBERSICHT direkt unter Sidebar (Proximity) -->
       <div class="grafik-spalte">
         <div class="section-title">Hausübersicht</div>
         <div class="section-sub">Hover über die Bereiche für Details.</div>
@@ -1270,77 +1514,93 @@
             <div class="legend-item"><div class="legend-dot" style="background:#b8c8a0"></div> Außenbereich</div>
           </div>
         </div>
-      </div>
+      </div><!-- end grafik-spalte -->
 
-    </div>
+      </div><!-- end products-left-col -->
+
+      <!-- RIGHT COLUMN: Category Info + Products -->
+      <div class="products-right">
+
+        <!-- KATEGORIE-INFO (erscheint beim Filtern) -->
+        <div class="category-info-panel" id="category-info" style="display:none;">
+          <div class="cat-info-icon" id="cat-info-icon">📦</div>
+          <div class="cat-info-body">
+            <div class="cat-info-title" id="cat-info-title">–</div>
+            <div class="cat-info-desc" id="cat-info-desc">Platzhalter – hier erscheint eine Erklärung zur ausgewählten Produktkategorie.</div>
+          </div>
+        </div>
+
+        <div class="products-topbar">
+          <div class="products-topbar-title" id="active-category-title">Alle Produkte</div>
+          <div class="products-count" id="products-count-label">– Einträge</div>
+        </div>
+        <div class="product-grid" id="product-grid">
+          <!-- Cards rendered by JS -->
+        </div>
+      </div><!-- end products-right -->
+
+    </div><!-- end products-layout -->
   </section>
 
   </div> <!-- Ende Panel Produkte -->
 
   <!-- PANEL: INSTALLATEURE -->
   <div class="main-panel" id="panel-installateure">
-    <div class="section-title">Fachbetriebe & Installateure</div>
-    <div class="section-sub">Gelistete Fachbetriebe, die Hochwasserschutzmaßnahmen installieren und umsetzen können. Gefiltert nach Produktkategorie oder Region.</div>
+    <div class="inst-layout">
 
-    <!-- FILTER -->
-    <div class="installateur-filter">
-      <span class="filter-label">Kategorie:</span>
-      <button class="inst-filter-btn active" onclick="filterInstallateure('Alle', this)">Alle</button>
-      <button class="inst-filter-btn" onclick="filterInstallateure('Wasserdichte Tore/Garagentore', this)">Garagentore</button>
-      <button class="inst-filter-btn" onclick="filterInstallateure('Rückstausicherungen', this)">Rückstausicherungen</button>
-      <button class="inst-filter-btn" onclick="filterInstallateure('Barrieren-Systeme', this)">Barrieren-Systeme</button>
-      <button class="inst-filter-btn" onclick="filterInstallateure('Wasserdichte Fenster', this)">Wasserdichte Fenster</button>
-      <button class="inst-filter-btn" onclick="filterInstallateure('Wasserdichte Türen', this)">Wasserdichte Türen</button>
-      <button class="inst-filter-btn" onclick="filterInstallateure('Pumpen', this)">Pumpen</button>
-      <button class="inst-filter-btn" onclick="filterInstallateure('Hebeanlagen', this)">Hebeanlagen</button>
-      <button class="inst-filter-btn" onclick="filterInstallateure('Sonstiges', this)">Sonstiges</button>
-    </div>
+      <!-- LINKE SPALTE: Filter + PLZ + Kartenplatzhalter -->
+      <div class="inst-left-col">
 
-    <div class="installateure-grid" id="installateure-grid">
-      <!-- wird per JS geladen -->
-    </div>
+        <!-- PLZ SUCHE -->
+        <div class="plz-box">
+          <div class="plz-box-title">📍 Betriebe in meiner Nähe</div>
+          <div class="plz-row">
+            <input type="text" id="plz-input" class="plz-input" placeholder="Postleitzahl …" maxlength="5" oninput="filterByPlz(this.value)"/>
+            <button class="plz-btn" onclick="filterByPlz(document.getElementById('plz-input').value)">Suchen</button>
+          </div>
+          <div id="plz-info" class="plz-info"></div>
+        </div>
+
+        <!-- KATEGORIE FILTER -->
+        <div class="inst-filter-wrap">
+          <div class="inst-filter-label">Kategorie</div>
+          <div class="installateur-filter">
+            <button class="inst-filter-btn active" onclick="filterInstallateure('Alle', this)">Alle</button>
+            <button class="inst-filter-btn" onclick="filterInstallateure('Wasserdichte Tore/Garagentore', this)">Garagentore</button>
+            <button class="inst-filter-btn" onclick="filterInstallateure('Rückstausicherungen', this)">Rückstausicherungen</button>
+            <button class="inst-filter-btn" onclick="filterInstallateure('Barrieren-Systeme', this)">Barrieren-Systeme</button>
+            <button class="inst-filter-btn" onclick="filterInstallateure('Wasserdichte Fenster', this)">Wasserdichte Fenster</button>
+            <button class="inst-filter-btn" onclick="filterInstallateure('Wasserdichte Türen', this)">Wasserdichte Türen</button>
+            <button class="inst-filter-btn" onclick="filterInstallateure('Pumpen', this)">Pumpen</button>
+            <button class="inst-filter-btn" onclick="filterInstallateure('Hebeanlagen', this)">Hebeanlagen</button>
+            <button class="inst-filter-btn" onclick="filterInstallateure('Sonstiges', this)">Sonstiges</button>
+          </div>
+        </div>
+
+        <!-- KARTEN-PLATZHALTER -->
+        <div class="map-placeholder">
+          <div class="map-ph-inner">
+            <div class="map-ph-icon">🗺</div>
+            <div class="map-ph-title">Kartenansicht</div>
+            <div class="map-ph-desc">Hier erscheint eine interaktive Karte mit den Standorten der Fachbetriebe.<br><span>Geplantes Feature</span></div>
+          </div>
+        </div>
+
+      </div><!-- end inst-left-col -->
+
+      <!-- RECHTE SPALTE: Betriebskarten -->
+      <div class="inst-right-col">
+        <div class="products-topbar">
+          <div class="products-topbar-title" id="inst-category-title">Alle Fachbetriebe</div>
+          <div class="products-count" id="inst-count-label">– Einträge</div>
+        </div>
+        <div class="installateure-grid" id="installateure-grid">
+          <!-- wird per JS geladen -->
+        </div>
+      </div><!-- end inst-right-col -->
+
+    </div><!-- end inst-layout -->
   </div> <!-- Ende Panel Installateure -->
-
-  <!-- ABOUT -->
-  <section class="about-section" id="ueber-uns">
-    <div class="about-text">
-      <h2>Über dieses Projekt</h2>
-      <p>Diese Website entstand im Rahmen einer wissenschaftlichen Arbeit mit dem Ziel, verfügbare Hochwasserschutzprodukte systematisch zu erfassen, zu kategorisieren und vergleichbar zu machen.</p>
-      <p>Die interaktiven Grafiken und die filterbare Produktliste sollen Planern, Hausbesitzern und Kommunen eine erste Orientierung bieten.</p>
-    </div>
-    <div class="about-stats">
-      <div class="stat-box">
-        <div class="stat-num">10</div>
-        <div class="stat-label">Produktkategorien</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-num">2</div>
-        <div class="stat-label">Interaktive Grafiken</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-num">∞</div>
-        <div class="stat-label">Erweiterbar</div>
-      </div>
-      <div class="stat-box">
-        <div class="stat-num">100%</div>
-        <div class="stat-label">Open Source</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- CONTACT -->
-  <section class="contact-section" id="kontakt">
-    <div>
-      <h2>Kontakt</h2>
-      <p>Fragen, Ergänzungen oder Feedback? Gerne melden!</p>
-    </div>
-    <div class="contact-form">
-      <input type="text" placeholder="Ihr Name"/>
-      <input type="email" placeholder="E-Mail-Adresse"/>
-      <textarea placeholder="Ihre Nachricht..."></textarea>
-      <button class="btn-primary">Nachricht senden →</button>
-    </div>
-  </section>
 
 </main>
 
@@ -1349,8 +1609,84 @@
 </footer>
 
 <script>
-// Produktliste – wird automatisch aus Google Sheets geladen
-const products = [];
+// ═══════════════════════════════════════════════
+// BEISPIEL-FALLBACKDATEN (werden durch Google Sheets ersetzt)
+// ═══════════════════════════════════════════════
+const products = [
+  {
+    name: 'FloodBreaker Pro 200',
+    category: 'Barrieren-Systeme',
+    desc: 'Mobile Hochwasserbarriere aus Aluminium, bis 200 cm Schutzhöhe. Schnell auf- und abbaubar, geeignet für Einzelgebäude und größere Areale.',
+    hersteller: 'AquaShield GmbH',
+    zertifizierung: 'DIN EN 13564',
+    link: '#',
+    icon: 'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&h=300&fit=crop'
+  },
+  {
+    name: 'DrainPump 900 Tauchpumpe',
+    category: 'Pumpen',
+    desc: 'Leistungsstarke Tauchpumpe für den Keller. 900 l/min Förderleistung, automatischer Schwimmerschalter, wartungsarm.',
+    hersteller: 'Jung Pumpen',
+    zertifizierung: 'CE',
+    link: '#',
+    icon: '🔧'
+  },
+  {
+    name: 'AquaDoor Steel 90',
+    category: 'Wasserdichte Türen',
+    desc: 'Wasserdichte Stahltür mit umlaufender Gummidichtung und Druckverriegelung. Schutzniveau bis 1 m Wasserstand.',
+    hersteller: 'FloodSafe Europe',
+    zertifizierung: 'DIN EN 1027',
+    link: '#',
+    icon: '🚪'
+  }
+];
+
+// ═══════════════════════════════════════════════
+// KATEGORIE-INFORMATIONEN (Platzhalter)
+// ═══════════════════════════════════════════════
+const categoryInfo = {
+  'Barrieren-Systeme': {
+    icon: '🛡',
+    desc: 'Barrieren-Systeme werden vor gefährdeten Öffnungen aufgestellt und verhindern das Eindringen von Wasser. Mobile Varianten lassen sich schnell aufbauen, stationäre sind dauerhaft installiert.'
+  },
+  'Pumpen': {
+    icon: '💧',
+    desc: 'Pumpen fördern eingedrungenes Wasser aktiv ab. Tauchpumpen eignen sich für überflutete Keller, Schmutzwasserpumpen auch für feste Partikel. Der automatische Schwimmerschalter aktiviert die Pumpe selbstständig.'
+  },
+  'Wasserdichte Türen': {
+    icon: '🚪',
+    desc: 'Wasserdichte Türen verfügen über umlaufende Dichtungen und druckfeste Rahmen. Sie schützen Gebäudeeingänge vor eindringendem Hochwasser und sind in verschiedenen Schutzniveaus erhältlich.'
+  },
+  'Wasserdichte Fenster': {
+    icon: '🪟',
+    desc: 'Hochwasserfeste Fenster kombinieren verstärktes Glas mit wasserdichten Rahmen und Dichtungen. Sie halten dem Wasserdruck stand und verhindern Undichtigkeiten an der Fassade.'
+  },
+  'Wasserdichte Kellerfenster': {
+    icon: '🔲',
+    desc: 'Kellerfenster sind besonders gefährdet, da sie unter dem Geländeniveau liegen. Spezielle Abdichtungen, Aufsatzkästen und Lichtschachtabdeckungen schützen diese schwachen Punkte.'
+  },
+  'Wasserdichte Tore/Garagentore': {
+    icon: '🏠',
+    desc: 'Garagentore mit Hochwasserschutz verfügen über integrierte Dichtungssysteme an der Unterseite und den Seiten. Beim Schließen wird automatisch abgedichtet – ohne zusätzlichen Aufwand.'
+  },
+  'Rückstausicherungen': {
+    icon: '🔒',
+    desc: 'Rückstausicherungen verhindern, dass Abwasser bei Starkregen aus Kanalisation und Abflüssen ins Haus drückt. Rückstauverschlüsse oder Hebeanalgen sind die gängigsten Lösungen.'
+  },
+  'Hebeanlagen': {
+    icon: '⬆️',
+    desc: 'Hebeanlagen pumpen Abwasser aus tiefer gelegenen Bereichen (Keller, Tiefgaragen) aktiv in die Kanalisation. Sie kommen zum Einsatz, wenn kein natürliches Gefälle vorhanden ist.'
+  },
+  'Messen und Modellieren': {
+    icon: '📡',
+    desc: 'Mess- und Modellierungstools erfassen Wasserstände, Bodenfeuchtigkeit und Risikobereiche in Echtzeit. Sie helfen bei der Planung und geben frühzeitig Warnungen bei steigendem Hochwasserrisiko.'
+  },
+  'Sonstiges': {
+    icon: '📦',
+    desc: 'Weitere Produkte und Maßnahmen, die keiner der Hauptkategorien zuzuordnen sind – z. B. Dichtmassen, Beschichtungen oder Schutzfolien.'
+  }
+};
 
 function renderProducts(filter) {
   const grid = document.getElementById('product-grid');
@@ -1359,6 +1695,24 @@ function renderProducts(filter) {
   const title = document.getElementById('active-category-title');
   if (title) title.textContent = filter === 'Alle' ? 'Alle Produkte' : filter;
   if (label) label.textContent = filtered.length + ' Einträge';
+
+  // Breadcrumb aktualisieren
+  const bc = document.getElementById('bc-current');
+  if (bc) bc.textContent = filter === 'Alle' ? 'Alle Produkte' : filter;
+
+  // Kategorie-Info anzeigen/verstecken
+  const infoPanel = document.getElementById('category-info');
+  if (infoPanel) {
+    if (filter !== 'Alle' && categoryInfo[filter]) {
+      document.getElementById('cat-info-icon').textContent = categoryInfo[filter].icon;
+      document.getElementById('cat-info-title').textContent = filter;
+      document.getElementById('cat-info-desc').textContent = categoryInfo[filter].desc;
+      infoPanel.style.display = 'flex';
+    } else {
+      infoPanel.style.display = 'none';
+    }
+  }
+
   if (!filtered.length) {
     grid.innerHTML = '<div class="no-results">Keine Produkte in dieser Kategorie gefunden.</div>';
     return;
@@ -1384,6 +1738,51 @@ function filterProducts(cat, btn) {
   document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   renderProducts(cat);
+}
+
+// Suche
+function searchProducts(query) {
+  const q = query.toLowerCase().trim();
+  const bc = document.getElementById('bc-current');
+  if (!q) { renderProducts('Alle'); return; }
+  const grid = document.getElementById('product-grid');
+  const filtered = products.filter(p =>
+    p.name.toLowerCase().includes(q) ||
+    p.desc.toLowerCase().includes(q) ||
+    p.category.toLowerCase().includes(q) ||
+    p.hersteller.toLowerCase().includes(q)
+  );
+  if (bc) bc.textContent = `Suche: "${query}"`;
+  document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'));
+  document.getElementById('category-info').style.display = 'none';
+  const label = document.getElementById('products-count-label');
+  const title = document.getElementById('active-category-title');
+  if (title) title.textContent = `Suchergebnisse für „${query}"`;
+  if (label) label.textContent = filtered.length + ' Einträge';
+  if (!filtered.length) {
+    grid.innerHTML = '<div class="no-results">Keine Produkte für diese Suche gefunden.</div>';
+    return;
+  }
+  grid.innerHTML = filtered.map(p => `
+    <div class="product-card">
+      <div class="card-img">${renderCardImage(p.icon)}</div>
+      <div class="card-body">
+        <div class="card-category">${p.category}</div>
+        <div class="card-name">${p.name}</div>
+        <div class="card-desc">${p.desc}</div>
+        <div class="card-meta">
+          <div class="card-meta-row"><span>Hersteller</span> ${p.hersteller}</div>
+          ${p.zertifizierung ? `<div class="card-meta-row"><span>Zertifizierung</span> <span class="cert-badge">${p.zertifizierung}</span></div>` : ''}
+        </div>
+        <a class="card-link" href="${p.link}">Mehr erfahren →</a>
+      </div>
+    </div>
+  `).join('');
+}
+
+// Mobile Menü
+function toggleMobileMenu() {
+  document.getElementById('mobile-menu').classList.toggle('hidden');
 }
 
 function showSVG(id, btn) {
@@ -1503,7 +1902,20 @@ function updateSidebarCounts() {
 }
 
 // Installateure Daten
-const installateure = [];
+const installateure = [
+  {
+    name: 'Hochwasserschutz Rhein GmbH',
+    region: 'Köln / Bonn',
+    plz: '50667',
+    kategorien: 'Barrieren-Systeme, Wasserdichte Türen',
+    zertifizierung: 'ISO 9001',
+    erfahrung: '15 Jahre',
+    umsatz: '2–5 Mio. €',
+    website: '#',
+    telefon: '+49 221 12345678',
+    email: 'info@beispiel.de'
+  }
+];
 
 // Lädt Installateure aus dem zweiten Tabellenblatt (gid=1)
 async function loadInstallateure() {
@@ -1540,17 +1952,30 @@ async function loadInstallateure() {
   }
 }
 
-// Rendert Installateure-Karten
-function renderInstallateure(filter) {
-  const grid = document.getElementById('installateure-grid');
-  const filtered = filter === 'Alle'
-    ? installateure
-    : installateure.filter(i => i.kategorien.includes(filter));
-  if (!filtered.length) {
-    grid.innerHTML = '<div class="no-results">Keine Fachbetriebe in dieser Kategorie gefunden.</div>';
+// PLZ-Filter
+function filterByPlz(plz) {
+  const info = document.getElementById('plz-info');
+  if (!plz || plz.length < 4) {
+    if (info) info.textContent = '';
+    renderInstallateure('Alle');
     return;
   }
-  grid.innerHTML = filtered.map(i => `
+  const filtered = installateure.filter(i => i.plz && i.plz.startsWith(plz.substring(0,2)));
+  if (info) info.textContent = filtered.length
+    ? `${filtered.length} Betrieb(e) im Bereich ${plz} gefunden`
+    : 'Keine Betriebe in diesem Bereich gefunden.';
+  const grid = document.getElementById('installateure-grid');
+  const countLabel = document.getElementById('inst-count-label');
+  if (countLabel) countLabel.textContent = filtered.length + ' Einträge';
+  if (!filtered.length) {
+    grid.innerHTML = '<div class="no-results">Keine Fachbetriebe für diese Postleitzahl gefunden.</div>';
+    return;
+  }
+  grid.innerHTML = filtered.map(renderInstCard).join('');
+}
+
+function renderInstCard(i) {
+  return `
     <div class="installateur-card">
       <div class="installateur-name">${i.name}</div>
       ${i.region ? `<div class="installateur-region">📍 ${i.region}</div>` : ''}
@@ -1566,7 +1991,24 @@ function renderInstallateure(filter) {
       </div>
       ${i.website && i.website !== '#' ? `<a class="card-link" href="${i.website}" target="_blank">Website besuchen →</a>` : ''}
     </div>
-  `).join('');
+  `;
+}
+
+// Rendert Installateure-Karten
+function renderInstallateure(filter) {
+  const grid = document.getElementById('installateure-grid');
+  const countLabel = document.getElementById('inst-count-label');
+  const titleEl = document.getElementById('inst-category-title');
+  const filtered = filter === 'Alle'
+    ? installateure
+    : installateure.filter(i => i.kategorien.includes(filter));
+  if (titleEl) titleEl.textContent = filter === 'Alle' ? 'Alle Fachbetriebe' : filter;
+  if (countLabel) countLabel.textContent = filtered.length + ' Einträge';
+  if (!filtered.length) {
+    grid.innerHTML = '<div class="no-results">Keine Fachbetriebe in dieser Kategorie gefunden.</div>';
+    return;
+  }
+  grid.innerHTML = filtered.map(renderInstCard).join('');
 }
 
 function filterInstallateure(cat, btn) {
