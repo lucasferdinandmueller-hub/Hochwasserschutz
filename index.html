@@ -1780,7 +1780,7 @@ async function loadFromSheets() {
     const allRows = json.table.rows;
 
     // Erste Zeile als Spaltenüberschriften verwenden (Google gibt keine Labels zurück)
-    const headerRow = allRows[0].c.map(c => c ? c.v.toLowerCase().trim() : '');
+    const headerRow = allRows[0].c.map(c => (c && c.v) ? c.v.toLowerCase().trim() : '');
     const rows = allRows.slice(1); // Rest sind echte Datenzeilen
 
     return rows
@@ -1862,7 +1862,7 @@ async function loadInstallateure() {
     const json = JSON.parse(text.substring(47).slice(0, -2));
     const allRows = json.table.rows;
     if (!allRows || allRows.length < 2) return [];
-    const headerRow = allRows[0].c.map(c => c ? c.v.toLowerCase().trim() : '');
+    const headerRow = allRows[0].c.map(c => (c && c.v) ? c.v.toLowerCase().trim() : '');
     return allRows.slice(1)
       .filter(row => row.c && row.c[0] && row.c[0].v)
       .map(row => {
@@ -2010,7 +2010,7 @@ async function init() {
   renderInstallateure('Alle');
 
   // Tour anzeigen (nur beim ersten Besuch)
-  startTour();
+  // Tour entfernt
 }
 
 // ═══════════════════════════════════════════════
