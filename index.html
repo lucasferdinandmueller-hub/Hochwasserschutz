@@ -1591,7 +1591,10 @@ const categoryInfo = {
 
 function renderProducts(filter) {
   const grid = document.getElementById('product-grid');
-  const filtered = filter === 'Alle' ? products : products.filter(p => p.category === filter);
+  const visibleProducts = products.filter(hasProductContent);
+  const filtered = filter === 'Alle'
+    ? visibleProducts
+    : visibleProducts.filter(p => p.category === filter);
   const label = document.getElementById('products-count-label');
   const title = document.getElementById('active-category-title');
   if (title) title.textContent = filter === 'Alle' ? 'Alle Produkte' : filter;
@@ -1677,7 +1680,7 @@ function searchProducts(query) {
   const bc = document.getElementById('bc-current');
   if (!q) { renderProducts('Alle'); return; }
   const grid = document.getElementById('product-grid');
-  const filtered = products.filter(p =>
+  const filtered = products.filter(hasProductContent).filter(p =>
     p.name.toLowerCase().includes(q) ||
     p.desc.toLowerCase().includes(q) ||
     p.category.toLowerCase().includes(q) ||
@@ -1758,7 +1761,53 @@ function hideTooltip(tooltipId) {
 // Hier die Sheet-ID eintragen (zwischen den Anführungszeichen)
 // ═══════════════════════════════════════════════
 const SHEET_ID = '1srcqqMJx7AXFF3EBIFVNaGJ23GKTxxuHLJDgNLQhzJc';
-const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json`;
+const PRODUCTS_GID = '1204750315';
+const INSTALLATEURE_GID = '1268153956';
+const SHEET_URL = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${PRODUCTS_GID}`;
+
+function normalizeHeader(value) {
+  return String(value || '').toLowerCase().trim().replace(/\s+/g, ' ');
+}
+
+function parseGoogleSheetResponse(text) {
+  const json = JSON.parse(text.substring(47).slice(0, -2));
+  const cols = (json.table.cols || []).map(col => normalizeHeader(col.label || col.id || ''));
+  const rows = json.table.rows || [];
+  if (!rows.length) return { headers: cols, rows: [] };
+
+  const fallbackHeaders = rows[0].c.map(c => normalizeHeader(c && c.v ? c.v : ''));
+  const hasColumnLabels = cols.some(Boolean);
+
+  return {
+    headers: hasColumnLabels ? cols : fallbackHeaders,
+    rows: hasColumnLabels ? rows : rows.slice(1)
+  };
+}
+
+function showDataWarning(message) {
+  const grid = document.getElementById('product-grid');
+  if (!grid) return;
+  grid.innerHTML = `
+    <div class="no-results">
+      <div style="font-size:2rem;margin-bottom:12px">⚠️</div>
+      ${message}
+    </div>`;
+}
+
+function sanitizeCell(value) {
+  if (value === null || value === undefined) return '';
+  return String(value).trim();
+}
+
+function hasProductContent(product) {
+  return [product.name, product.category, product.desc, product.hersteller, product.link]
+    .some(value => sanitizeCell(value) && sanitizeCell(value) !== '#');
+}
+
+function hasInstallateurContent(entry) {
+  return [entry.name, entry.region, entry.kategorien, entry.website, entry.telefon, entry.email, entry.plz]
+    .some(value => sanitizeCell(value) && sanitizeCell(value) !== '#');
+}
 
 // Zeigt einen Ladezustand im Produktraster
 function showLoading() {
@@ -1774,39 +1823,39 @@ async function loadFromSheets() {
   showLoading();
   try {
     const response = await fetch(SHEET_URL);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const text = await response.text();
-    // Google gibt kein reines JSON zurück – wir müssen den Wrapper entfernen
-    const json = JSON.parse(text.substring(47).slice(0, -2));
-    const allRows = json.table.rows;
-
-    // Erste Zeile als Spaltenüberschriften verwenden (Google gibt keine Labels zurück)
-    const headerRow = allRows[0].c.map(c => (c && c.v) ? c.v.toLowerCase().trim() : '');
-    const rows = allRows.slice(1); // Rest sind echte Datenzeilen
+    const { headers, rows } = parseGoogleSheetResponse(text);
 
     return rows
       .filter(row => row.c && row.c[0] && row.c[0].v) // leere Zeilen überspringen
       .map(row => {
         const obj = {};
-        headerRow.forEach((col, i) => {
-          obj[col] = row.c[i] ? (row.c[i].v || '') : '';
+        headers.forEach((col, i) => {
+          obj[col] = sanitizeCell(row.c[i] ? (row.c[i].v || row.c[i].f || '') : '');
         });
         return {
-          name: obj['name'] || '',
-          category: obj['category'] || 'Sonstiges',
-          desc: obj['desc'] || '',
-          hersteller: obj['hersteller'] || '',
-          zertifizierung: obj['zertifizierung'] || '',
-          kosten: obj['kosten'] || '',
-          specs: obj['specs'] || '',
-          installation: obj['installation'] || '',
-          wartung: obj['wartung'] || '',
-          aktualisiert: obj['aktualisiert'] || '',
-          link: obj['link'] || '#',
-          icon: obj['icon'] || ''
+          name: sanitizeCell(obj['name']),
+          category: sanitizeCell(obj['category']) || 'Sonstiges',
+          desc: sanitizeCell(obj['desc']),
+          hersteller: sanitizeCell(obj['hersteller']),
+          zertifizierung: sanitizeCell(obj['zertifizierung']),
+          kosten: sanitizeCell(obj['kosten']),
+          specs: sanitizeCell(obj['specs']),
+          installation: sanitizeCell(obj['installation']),
+          wartung: sanitizeCell(obj['wartung']),
+          aktualisiert: sanitizeCell(obj['aktualisiert']),
+          link: sanitizeCell(obj['link']) || '#',
+          icon: sanitizeCell(obj['icon'])
         };
-      });
+      })
+      .filter(hasProductContent);
   } catch (e) {
     console.error('Fehler beim Laden der Tabelle:', e);
+    const details = window.location.protocol === 'file:'
+      ? 'Die Seite wird direkt als lokale Datei geöffnet. Dabei blockiert der Browser häufig den Abruf externer Google-Sheets-Daten.'
+      : 'Bitte prüfe, ob das Google Sheet veröffentlicht oder öffentlich lesbar ist.';
+    showDataWarning(`Google-Sheets-Daten konnten nicht geladen werden.<br><br>${details}`);
     return null; // null = Fehler aufgetreten
   }
 }
@@ -1844,33 +1893,34 @@ const installateure = [
 
 // Lädt Installateure aus dem zweiten Tabellenblatt (gid=1)
 async function loadInstallateure() {
-  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=1`;
+  const url = `https://docs.google.com/spreadsheets/d/${SHEET_ID}/gviz/tq?tqx=out:json&gid=${INSTALLATEURE_GID}`;
   try {
     const response = await fetch(url);
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
     const text = await response.text();
-    const json = JSON.parse(text.substring(47).slice(0, -2));
-    const allRows = json.table.rows;
-    if (!allRows || allRows.length < 2) return [];
-    const headerRow = allRows[0].c.map(c => (c && c.v) ? c.v.toLowerCase().trim() : '');
-    return allRows.slice(1)
+    const { headers, rows } = parseGoogleSheetResponse(text);
+    if (!rows.length) return [];
+    return rows
       .filter(row => row.c && row.c[0] && row.c[0].v)
       .map(row => {
         const obj = {};
-        headerRow.forEach((col, i) => {
-          obj[col] = row.c[i] ? (row.c[i].v || '') : '';
+        headers.forEach((col, i) => {
+          obj[col] = sanitizeCell(row.c[i] ? (row.c[i].v || row.c[i].f || '') : '');
         });
         return {
-          name: obj['name'] || '',
-          region: obj['region'] || '',
-          kategorien: obj['kategorien'] || '',
-          zertifizierung: obj['zertifizierung'] || '',
-          erfahrung: obj['erfahrung'] || '',
-          umsatz: obj['umsatz'] || '',
-          website: obj['website'] || '#',
-          telefon: obj['telefon'] || '',
-          email: obj['email'] || ''
+          name: sanitizeCell(obj['name']),
+          region: sanitizeCell(obj['region']),
+          plz: sanitizeCell(obj['plz']),
+          kategorien: sanitizeCell(obj['kategorien']),
+          zertifizierung: sanitizeCell(obj['zertifizierung']),
+          erfahrung: sanitizeCell(obj['erfahrung']),
+          umsatz: sanitizeCell(obj['umsatz']),
+          website: sanitizeCell(obj['website']) || '#',
+          telefon: sanitizeCell(obj['telefon']),
+          email: sanitizeCell(obj['email'])
         };
-      });
+      })
+      .filter(hasInstallateurContent);
   } catch (e) {
     console.error('Fehler beim Laden der Installateure:', e);
     return [];
@@ -1885,7 +1935,9 @@ function filterByPlz(plz) {
     renderInstallateure('Alle');
     return;
   }
-  const filtered = installateure.filter(i => i.plz && i.plz.startsWith(plz.substring(0,2)));
+  const filtered = installateure
+    .filter(hasInstallateurContent)
+    .filter(i => i.plz && i.plz.startsWith(plz.substring(0,2)));
   if (info) info.textContent = filtered.length
     ? `${filtered.length} Betrieb(e) im Bereich ${plz} gefunden`
     : 'Keine Betriebe in diesem Bereich gefunden.';
@@ -1924,9 +1976,10 @@ function renderInstallateure(filter) {
   const grid = document.getElementById('installateure-grid');
   const countLabel = document.getElementById('inst-count-label');
   const titleEl = document.getElementById('inst-category-title');
+  const visibleInstallateure = installateure.filter(hasInstallateurContent);
   const filtered = filter === 'Alle'
-    ? installateure
-    : installateure.filter(i => i.kategorien.includes(filter));
+    ? visibleInstallateure
+    : visibleInstallateure.filter(i => i.kategorien.includes(filter));
   if (titleEl) titleEl.textContent = filter === 'Alle' ? 'Alle Fachbetriebe' : filter;
   if (countLabel) countLabel.textContent = filtered.length + ' Einträge';
   if (!filtered.length) {
@@ -1997,6 +2050,7 @@ async function init() {
 
   // Installateure laden
   const inst = await loadInstallateure();
+  installateure.length = 0;
   inst.forEach(i => installateure.push(i));
   console.log(`✅ ${installateure.length} Installateure geladen`);
   renderInstallateure('Alle');
