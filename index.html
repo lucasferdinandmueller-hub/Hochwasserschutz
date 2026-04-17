@@ -115,13 +115,20 @@
     align-items: flex-start;
   }
   .products-left-col {
-    width: 230px;
+    width: 460px;
     flex-shrink: 0;
     display: flex;
-    flex-direction: column;
-    gap: 20px;
-    position: sticky;
-    top: 80px;
+    flex-direction: row;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .products-left-col .grafik-spalte {
+    flex: 1;
+    min-width: 0;
+  }
+  .products-left-col .sidebar {
+    width: 200px;
+    flex-shrink: 0;
   }
 
   /* ─── LAYOUT: INSTALLATEURE ─────────────────────── */
@@ -211,21 +218,6 @@
     border-radius: 100px; padding: 2px 10px; font-size: 0.72rem; font-weight: 600;
   }
 
-  /* Kategorie-Info Panel */
-  .category-info-panel {
-    background: var(--blue-light); border-radius: var(--radius);
-    padding: 16px 20px; margin-bottom: 16px;
-    display: flex; gap: 14px; align-items: flex-start;
-    border-left: 4px solid var(--blue-accent);
-    min-height: 80px;
-  }
-  .cat-info-icon { font-size: 1.8rem; flex-shrink: 0; }
-  .cat-info-title {
-    font-family: 'DM Serif Display', serif; font-size: 1rem;
-    color: var(--blue-deep); margin-bottom: 4px;
-  }
-  .cat-info-desc { font-size: 0.83rem; color: var(--text-muted); line-height: 1.6; }
-
   /* ─── GRAFIK-SPALTE (now in left col) ────────────── */
   .grafik-spalte {
     background: var(--surface);
@@ -272,41 +264,47 @@
     .main-tab { flex: 1; text-align: center; padding: 10px 8px; font-size: 0.82rem; }
 
     /* Layout: alles gestapelt */
-    .products-layout { flex-direction: column; gap: 16px; }
-    /* Linke Spalte: Grafik + Filter nebeneinander als Grid */
+    .products-layout { flex-direction: column; gap: 16px; overflow: hidden; }
+    .products-left-wrapper {
+      width: 100%; max-width: 100%; position: static;
+      max-height: none; overflow: visible; gap: 10px;
+    }
     .products-left-col {
-      width: 100%; position: static;
-      display: grid;
-      grid-template-columns: 55% 45%;
-      gap: 10px;
-      align-items: start;
+      width: 100%; max-width: 100%; position: static;
+      flex-direction: column; gap: 10px;
     }
-    /* Grafik nimmt linke Gitterzelle */
-    .grafik-spalte { width: 100%; }
-    /* Sidebar: kompakte vertikale Liste in rechter Gitterzelle */
+    .products-left-col .grafik-spalte { width: 100%; flex: none; }
+    .products-left-col .sidebar { width: 100%; flex-shrink: unset; }
+    /* Sidebar: horizontale Chips mit Scroll */
     .sidebar {
-      width: 100%;
-      display: flex; flex-direction: column;
-      border-radius: var(--radius);
-      max-height: 280px; overflow-y: auto;
+      width: 100%; max-width: 100%; overflow-x: auto; overflow-y: hidden;
+      display: flex; flex-direction: row; flex-wrap: nowrap;
+      border-radius: var(--radius); position: static;
     }
+    /* Gruppenheader in mobiler Ansicht kompakter */
+    .sidebar-group-label {
+      padding: 8px 10px 6px; font-size: 0.62rem;
+      white-space: nowrap; flex-shrink: 0; border-left: none;
+      border-bottom: 2px solid var(--blue-accent);
+    }
+    .sidebar-item.sub { padding-left: 10px; }
+    /* Info-Panel auf Mobile ausblenden */
+    .category-info-panel { display: none !important; }
     .sidebar-header { display: none; }
     .sidebar-section-label { display: none; }
     .sidebar-divider { display: none; }
     .sidebar-item {
-      white-space: normal;
-      border-left: 3px solid transparent;
-      border-bottom: none;
-      padding: 7px 10px;
-      font-size: 0.78rem;
-      flex-shrink: 0;
+      white-space: nowrap; border-left: none;
+      border-bottom: 3px solid transparent;
+      padding: 10px 14px; flex-shrink: 0;
     }
     .sidebar-item.active {
-      border-left-color: var(--blue-accent);
+      border-bottom-color: var(--blue-accent);
       background: var(--blue-light);
-      border-bottom: none;
     }
     .sidebar-count { display: none; }
+    /* Grafik full width unterhalb */
+    .grafik-spalte { width: 100%; }
     .products-right { width: 100%; }
 
     /* Installateure layout */
@@ -342,7 +340,7 @@
   /* Titel bzw. Überschrift */
   .hero {
     background: linear-gradient(135deg, var(--blue-deep) 0%, var(--blue-mid) 100%);
-    padding: 72px 48px 64px;
+    padding: 36px 48px 32px;
     color: white;
     position: relative;
     overflow: hidden;
@@ -606,18 +604,60 @@
   }
 
   /* PRODUCTS LAYOUT: sidebar + grid (3-Spalter entfernt, jetzt 2 Spalten) */
-  .products-right { flex: 1; min-width: 0; }
+
+  /* ─── PRODUCTS LEFT WRAPPER (grafik+filter oben, info unten) ── */
+  .products-left-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    flex-shrink: 0;
+    width: 460px;
+    position: sticky;
+    top: 80px;
+    /* max-height so sticky works cleanly */
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+  }
+
+  /* Category info panel: desktop only, below left col */
+  .category-info-panel {
+    background: var(--blue-light); border-radius: var(--radius);
+    padding: 14px 18px;
+    border-left: 4px solid var(--blue-accent);
+    display: none; /* shown by JS */
+    gap: 12px; align-items: flex-start;
+  }
+  .cat-info-title {
+    font-family: 'DM Serif Display', serif; font-size: 0.95rem;
+    color: var(--blue-deep); margin-bottom: 3px;
+  }
+  .cat-info-desc { font-size: 0.82rem; color: var(--text-muted); line-height: 1.6; }
+
+  /* Sidebar group header (Oberkategorie) */
+  .sidebar-group-label {
+    padding: 10px 14px 4px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--blue-deep);
+    background: var(--blue-light);
+    border-left: 3px solid var(--blue-accent);
+    margin-top: 2px;
+  }
+  /* Subcategory items: indented */
+  .sidebar-item.sub {
+    padding-left: 26px;
+    font-size: 0.82rem;
+    font-weight: 500;
+  }
 
   /* SIDEBAR EXPLORER */
   .sidebar {
-    width: 210px;
-    flex-shrink: 0;
     background: var(--surface);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
     overflow: hidden;
-    position: sticky;
-    top: 80px;
   }
   .sidebar-header {
     background: var(--blue-deep);
@@ -1237,9 +1277,8 @@
 
 <div class="hero">
   <div class="hero-inner">
-    <div class="hero-tag">Webbasierte Plattform - Prototyp</div>
-    <h1>Hochwasserschutzelemente –<br>Produkte im Überblick</h1>
-    <p>Eine prototypische Übersicht von Produkten zum Hochwasserschutz, erstellt im Rahmen einer Masterarbeit.</p>
+    <h1>Hochwasserschutzelemente –<br>Produkte und Fachbetriebe im Überblick</h1>
+    <p>Erstellt im Rahmen einer Masterarbeit.</p>
   </div>
 </div>
 
@@ -1261,11 +1300,12 @@
 
     <div class="products-layout">
 
-      <!-- LEFT COLUMN: Sidebar + Hausübersicht -->
+      <!-- LEFT WRAPPER: enthält oben [Grafik + Filter], unten [Info-Panel] -->
+      <div class="products-left-wrapper">
+
       <div class="products-left-col">
 
-
-      <!-- HAUSÜBERSICHT direkt unter Sidebar (Proximity) -->
+      <!-- HAUSÜBERSICHT -->
       <div class="grafik-spalte">
         <div class="section-title">Hausübersicht</div>
         <div class="section-sub">Klicken Sie auf einen Bereich, um den Filter zu aktivieren.</div>
@@ -1324,7 +1364,7 @@
         </div>
       </div><!-- end grafik-spalte -->
 
-      <!-- SIDEBAR EXPLORER -->
+      <!-- SIDEBAR FILTER -->
       <aside class="sidebar">
         <div class="sidebar-header">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
@@ -1335,42 +1375,52 @@
           <div class="sidebar-check"></div>
         </button>
         <div class="sidebar-divider"></div>
-        <button class="sidebar-item" onclick="activateFilter('Wasserdichte Tore/Garagentore')">
-          Garagentore
+
+        <!-- OBERKATEGORIE 1: Stationäre Elemente -->
+        <div class="sidebar-group-label">Stationäre Elemente</div>
+        <button class="sidebar-item sub" onclick="activateFilter('Wasserdichte Tore/Garagentore')">
+          (Garagen-)Tore
           <div class="sidebar-check"></div>
         </button>
-        <button class="sidebar-item" onclick="activateFilter('Wasserdichte Türen')">
-          Wasserdichte Türen
+        <button class="sidebar-item sub" onclick="activateFilter('Wasserdichte Türen')">
+          Türen
           <div class="sidebar-check"></div>
         </button>
-        <button class="sidebar-item" onclick="activateFilter('Wasserdichte Fenster')">
-          Wasserdichte Fenster
+        <button class="sidebar-item sub" onclick="activateFilter('Wasserdichte Fenster')">
+          Fenster
           <div class="sidebar-check"></div>
         </button>
-        <button class="sidebar-item" onclick="filterProducts('Barrieren-Systeme', this)">
-          Barrieren-Systeme
-          <div class="sidebar-check"></div>
-        </button>
-        <button class="sidebar-item" onclick="filterProducts('Rückstausicherungen', this)">
-          Rückstausicherungen
-          <div class="sidebar-check"></div>
-        </button>
-        <button class="sidebar-item" onclick="filterProducts('Pumpen', this)">
+        <div class="sidebar-divider"></div>
+
+        <!-- OBERKATEGORIE 2: Mobile/teilmobile Elemente -->
+        <div class="sidebar-group-label">Mobile/teilmobile Elemente</div>
+        <button class="sidebar-item sub" onclick="filterProducts('Pumpen', this)">
           Pumpen
           <div class="sidebar-check"></div>
         </button>
-        <button class="sidebar-item" onclick="filterProducts('Hebeanlagen', this)">
+        <button class="sidebar-item sub" onclick="filterProducts('Barrieren-Systeme', this)">
+          Barrierensysteme
+          <div class="sidebar-check"></div>
+        </button>
+        <button class="sidebar-item sub" onclick="filterProducts('Sandsäcke & mobiler Schutz', this)">
+          Sandsäcke u.&thinsp;Ä.
+          <div class="sidebar-check"></div>
+        </button>
+        <div class="sidebar-divider"></div>
+
+        <!-- OBERKATEGORIE 3: Rückstausicherungen -->
+        <div class="sidebar-group-label">Rückstausicherungen</div>
+        <button class="sidebar-item sub" onclick="filterProducts('Rückstausicherungen', this)">
+          Rückstauklappen
+          <div class="sidebar-check"></div>
+        </button>
+        <button class="sidebar-item sub" onclick="filterProducts('Hebeanlagen', this)">
           Hebeanlagen
           <div class="sidebar-check"></div>
         </button>
-        <button class="sidebar-item" onclick="filterProducts('Sandsäcke & mobiler Schutz', this)">
-          Sandsäcke & mobiler Schutz
-          <div class="sidebar-check"></div>
-        </button>
-        <button class="sidebar-item" onclick="filterProducts('Frühwarnung & Überwachung', this)">
-          Frühwarnung & Überwachung
-          <div class="sidebar-check"></div>
-        </button>
+        <div class="sidebar-divider"></div>
+
+        <!-- OBERKATEGORIE 4: Sonstiges -->
         <button class="sidebar-item" onclick="filterProducts('Sonstiges', this)">
           Sonstiges
           <div class="sidebar-check"></div>
@@ -1379,16 +1429,18 @@
 
       </div><!-- end products-left-col -->
 
-      <!-- RIGHT COLUMN: Category Info + Products -->
-      <div class="products-right">
-
-        <!-- KATEGORIE-INFO (erscheint beim Filtern) -->
-        <div class="category-info-panel" id="category-info" style="display:flex;visibility:hidden;">
-          <div class="cat-info-body">
-            <div class="cat-info-title" id="cat-info-title">–</div>
-            <div class="cat-info-desc" id="cat-info-desc">Platzhalter – hier erscheint eine Erklärung zur ausgewählten Produktkategorie.</div>
-          </div>
+      <!-- KATEGORIE-INFO (Desktop: unterhalb von Grafik + Filter) -->
+      <div class="category-info-panel" id="category-info">
+        <div class="cat-info-body">
+          <div class="cat-info-title" id="cat-info-title">–</div>
+          <div class="cat-info-desc" id="cat-info-desc"></div>
         </div>
+      </div>
+
+      </div><!-- end products-left-wrapper -->
+
+      <!-- RIGHT COLUMN: Products -->
+      <div class="products-right">
 
         <div class="products-topbar">
           <div class="products-topbar-title" id="active-category-title">Alle Produkte</div>
@@ -1422,7 +1474,7 @@
         </div>
 
         <!-- KATEGORIE FILTER -->
-        <div class="inst-filter-wrap" style="display:none;">
+        <div class="inst-filter-wrap">
           <div class="inst-filter-label">Kategorie</div>
           <div class="installateur-filter">
             <button class="inst-filter-btn active" onclick="filterInstallateure('Alle', this)">Alle</button>
@@ -1618,9 +1670,9 @@ function renderProducts(filter) {
     if (filter !== 'Alle' && categoryInfo[filter]) {
       document.getElementById('cat-info-title').textContent = filter;
       document.getElementById('cat-info-desc').textContent = categoryInfo[filter].desc;
-      infoPanel.style.visibility = 'visible'; infoPanel.style.display = 'flex';
+      infoPanel.style.display = 'flex';
     } else {
-      infoPanel.style.visibility = 'hidden'; infoPanel.style.display = 'flex';
+      infoPanel.style.display = 'none';
     }
   }
 
@@ -2098,7 +2150,7 @@ Sie haben das Recht auf Auskunft, Berichtigung und Löschung Ihrer Daten. Bei Fr
     body: `<strong>Fragen, Feedback oder Einreichungen?</strong><br><br>
 Diese Plattform befindet sich im Prototyp-Stadium. Für Rückmeldungen, Fehlerhinweise oder Anfragen zur Aufnahme von Produkten und Betrieben:<br><br>
 <strong>E-Mail:</strong> [E-Mail eintragen]<br><br>
-<strong>Hinweis für Hersteller und Montagebetriebe:</strong><br>
+<strong>Hinweis für Hersteller und Installationsbetriebe:</strong><br>
 Einreichungen für die Plattform erfolgen über ein standardisiertes Formular. Bitte nehmen Sie zunächst per E-Mail Kontakt auf.<br><br>
 <em>Antwortzeit: in der Regel innerhalb von 5 Werktagen.</em>`
   }
