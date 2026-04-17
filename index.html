@@ -273,32 +273,40 @@
 
     /* Layout: alles gestapelt */
     .products-layout { flex-direction: column; gap: 16px; }
+    /* Linke Spalte: Grafik + Filter nebeneinander als Grid */
     .products-left-col {
       width: 100%; position: static;
-      max-height: none; overflow: visible;
-      flex-direction: row; flex-wrap: wrap; gap: 12px;
+      display: grid;
+      grid-template-columns: 55% 45%;
+      gap: 10px;
+      align-items: start;
     }
-    /* Sidebar wird zu horizontalen Chips */
+    /* Grafik nimmt linke Gitterzelle */
+    .grafik-spalte { width: 100%; }
+    /* Sidebar: kompakte vertikale Liste in rechter Gitterzelle */
     .sidebar {
-      width: 100%; overflow-x: auto;
-      display: flex; flex-direction: row;
+      width: 100%;
+      display: flex; flex-direction: column;
       border-radius: var(--radius);
+      max-height: 280px; overflow-y: auto;
     }
     .sidebar-header { display: none; }
     .sidebar-section-label { display: none; }
     .sidebar-divider { display: none; }
     .sidebar-item {
-      white-space: nowrap; border-left: none;
-      border-bottom: 3px solid transparent;
-      padding: 10px 14px; flex-shrink: 0;
+      white-space: normal;
+      border-left: 3px solid transparent;
+      border-bottom: none;
+      padding: 7px 10px;
+      font-size: 0.78rem;
+      flex-shrink: 0;
     }
     .sidebar-item.active {
-      border-bottom-color: var(--blue-accent);
+      border-left-color: var(--blue-accent);
       background: var(--blue-light);
+      border-bottom: none;
     }
     .sidebar-count { display: none; }
-    /* Grafik full width unterhalb */
-    .grafik-spalte { width: 100%; }
     .products-right { width: 100%; }
 
     /* Installateure layout */
@@ -1240,7 +1248,7 @@
   <!-- HAUPT-TABS -->
   <div class="main-tabs">
     <button class="main-tab active" onclick="showMainTab('produkte', this)">Produkte</button>
-    <button class="main-tab" onclick="showMainTab('installateure', this)">Fachbetriebe & Installateure</button>
+    <button class="main-tab" onclick="showMainTab('installateure', this)">Fachbetriebe & Monteure</button>
   </div>
 
   <!-- PANEL: PRODUKTE -->
@@ -1414,7 +1422,7 @@
         </div>
 
         <!-- KATEGORIE FILTER -->
-        <div class="inst-filter-wrap">
+        <div class="inst-filter-wrap" style="display:none;">
           <div class="inst-filter-label">Kategorie</div>
           <div class="installateur-filter">
             <button class="inst-filter-btn active" onclick="filterInstallateure('Alle', this)">Alle</button>
@@ -2090,7 +2098,7 @@ Sie haben das Recht auf Auskunft, Berichtigung und Löschung Ihrer Daten. Bei Fr
     body: `<strong>Fragen, Feedback oder Einreichungen?</strong><br><br>
 Diese Plattform befindet sich im Prototyp-Stadium. Für Rückmeldungen, Fehlerhinweise oder Anfragen zur Aufnahme von Produkten und Betrieben:<br><br>
 <strong>E-Mail:</strong> [E-Mail eintragen]<br><br>
-<strong>Hinweis für Hersteller und Installationsbetriebe:</strong><br>
+<strong>Hinweis für Hersteller und Montagebetriebe:</strong><br>
 Einreichungen für die Plattform erfolgen über ein standardisiertes Formular. Bitte nehmen Sie zunächst per E-Mail Kontakt auf.<br><br>
 <em>Antwortzeit: in der Regel innerhalb von 5 Werktagen.</em>`
   }
