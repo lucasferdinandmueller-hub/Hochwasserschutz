@@ -115,14 +115,23 @@
     align-items: flex-start;
   }
   .products-left-col {
-    width: 230px;
+    width: 460px;
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 14px;
     position: sticky;
     top: 80px;
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
   }
+  .products-top-row {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .products-top-row .grafik-spalte { flex: 1; min-width: 0; }
+  .products-top-row .sidebar { width: 200px; flex-shrink: 0; }
 
   /* ─── LAYOUT: INSTALLATEURE ─────────────────────── */
   .inst-layout {
@@ -307,33 +316,47 @@
 
     /* Layout: alles gestapelt */
     .products-layout { flex-direction: column; gap: 16px; }
+    .products-layout { flex-direction: column; gap: 16px; overflow: hidden; }
     .products-left-col {
-      width: 100%; position: static;
-      max-height: none; overflow: visible;
-      flex-direction: row; flex-wrap: wrap; gap: 12px;
+      width: 100%; max-width: 100%; position: static;
+      max-height: none; overflow: visible; flex-direction: column; gap: 10px;
     }
-    /* Sidebar wird zu horizontalen Chips */
+    .products-top-row {
+      flex-direction: column; gap: 10px;
+    }
+    .products-top-row .grafik-spalte { width: 100%; flex: none; }
+    .products-top-row .sidebar { width: 100%; flex-shrink: unset; }
+    /* Sidebar: horizontale Chips */
     .sidebar {
-      width: 100%; overflow-x: auto;
-      display: flex; flex-direction: row;
-      border-radius: var(--radius);
+      width: 100%; max-width: 100%; overflow-x: auto; overflow-y: hidden;
+      display: flex; flex-direction: row; flex-wrap: nowrap;
+      border-radius: var(--radius); position: static;
     }
+    .sidebar-group-label {
+      padding: 8px 10px 6px; font-size: 0.62rem;
+      white-space: nowrap; flex-shrink: 0; border-left: none;
+      border-bottom: 2px solid var(--blue-accent); margin-top: 0;
+    }
+    .sidebar-item.sub { padding-left: 10px; font-size: 0.78rem; }
     .sidebar-header { display: none; }
     .sidebar-section-label { display: none; }
     .sidebar-divider { display: none; }
     .sidebar-item {
       white-space: nowrap; border-left: none;
       border-bottom: 3px solid transparent;
-      padding: 10px 14px; flex-shrink: 0;
+      padding: 10px 12px; flex-shrink: 0; font-size: 0.82rem;
     }
     .sidebar-item.active {
       border-bottom-color: var(--blue-accent);
-      background: var(--blue-light);
+      background: var(--blue-light); border-left: none;
     }
+    .category-info-panel { display: none !important; }
     .sidebar-count { display: none; }
-    /* Grafik full width unterhalb */
     .grafik-spalte { width: 100%; }
     .products-right { width: 100%; }
+    /* Tabs auf Mobile */
+    .main-tabs { width: 100%; margin-left: 0; margin-right: 0; }
+    .main-tab { flex: 1; text-align: center; padding: 12px 8px; font-size: 0.85rem; }
 
     /* Installateure layout */
     .inst-layout { flex-direction: column; gap: 16px; }
@@ -502,33 +525,38 @@
   }
   .tooltip-box.visible { opacity: 1; }
 
-  /* HAUPT-TABS (Produkte / Installateure) */
+  /* HAUPT-TABS */
   .main-tabs {
     display: flex;
-    gap: 4px;
-    margin-bottom: 28px;
+    gap: 6px;
+    margin-bottom: 36px;
     background: var(--surface);
-    padding: 6px;
+    padding: 8px;
     border-radius: var(--radius);
     box-shadow: var(--shadow);
     width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
   }
   .main-tab {
-    padding: 10px 24px;
+    padding: 14px 40px;
     border-radius: 8px;
     border: none;
     background: transparent;
-    font-size: 0.92rem;
+    font-size: 1rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.2s;
     color: var(--text-muted);
+    opacity: 0.45;
     font-family: 'DM Sans', sans-serif;
+    letter-spacing: 0.01em;
   }
-  .main-tab:hover { color: var(--blue-deep); }
+  .main-tab:hover { opacity: 0.75; color: var(--blue-deep); }
   .main-tab.active {
     background: var(--blue-deep);
     color: white;
+    opacity: 1;
   }
   .main-panel { display: none; }
   .main-panel.active { display: block; }
@@ -536,7 +564,7 @@
   /* INSTALLATEURE */
   .installateure-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: 1fr;
     gap: 20px;
     margin-top: 24px;
   }
@@ -745,6 +773,34 @@
     background: var(--border);
     margin: 6px 0;
   }
+  /* Oberkategorie-Label */
+  .sidebar-group-label {
+    padding: 8px 14px 4px;
+    font-size: 0.67rem; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.1em;
+    color: var(--blue-deep);
+    background: var(--blue-light);
+    border-left: 3px solid var(--blue-accent);
+    margin-top: 2px;
+  }
+  /* Unterkategorie-Items: eingerückt */
+  .sidebar-item.sub {
+    padding-left: 22px;
+    font-size: 0.81rem;
+    font-weight: 500;
+  }
+  /* Kategorie-Info Panel unterhalb des Filters */
+  .category-info-panel {
+    background: var(--blue-light); border-radius: var(--radius);
+    padding: 14px 18px;
+    border-left: 4px solid var(--blue-accent);
+    gap: 12px; align-items: flex-start;
+  }
+  .cat-info-title {
+    font-family: 'DM Serif Display', serif; font-size: 0.95rem;
+    color: var(--blue-deep); margin-bottom: 3px; font-weight: 600;
+  }
+  .cat-info-desc { font-size: 0.82rem; color: var(--text-muted); line-height: 1.6; }
 
   /* PRODUCT GRID */
   .products-right { flex: 1; min-width: 0; }
@@ -1292,7 +1348,7 @@
   <!-- HAUPT-TABS -->
   <div class="main-tabs">
     <button class="main-tab active" onclick="showMainTab('produkte', this)">Produkte</button>
-    <button class="main-tab" onclick="showMainTab('installateure', this)">Fachbetriebe & Installateure</button>
+    <button class="main-tab" onclick="showMainTab('installateure', this)">Fachbetriebe & Monteure</button>
   </div>
 
   <!-- PANEL: PRODUKTE -->
@@ -1305,11 +1361,12 @@
 
     <div class="products-layout">
 
-      <!-- LEFT COLUMN: Sidebar + Hausübersicht -->
+      <!-- LEFT COLUMN: [Grafik | Filter] oben, Info unten -->
       <div class="products-left-col">
 
+      <div class="products-top-row">
 
-      <!-- HAUSÜBERSICHT direkt unter Sidebar (Proximity) -->
+      <!-- HAUSÜBERSICHT -->
       <div class="grafik-spalte">
         <div class="section-title">Hausübersicht</div>
         <div class="section-sub">Klicken Sie auf einen Bereich, um den Filter zu aktivieren.</div>
@@ -1368,7 +1425,7 @@
         </div>
       </div><!-- end grafik-spalte -->
 
-      <!-- SIDEBAR EXPLORER -->
+      <!-- SIDEBAR KATEGORIENFILTER -->
       <aside class="sidebar">
         <div class="sidebar-header">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
@@ -1379,60 +1436,59 @@
           <div class="sidebar-check"></div>
         </button>
         <div class="sidebar-divider"></div>
-        <button class="sidebar-item" onclick="activateFilter('Wasserdichte Türen')">
-          Türen
-          <div class="sidebar-check"></div>
+
+        <div class="sidebar-group-label">Stationäre Elemente</div>
+        <button class="sidebar-item sub" onclick="activateFilter('Wasserdichte Türen')">
+          Türen<div class="sidebar-check"></div>
         </button>
-        <button class="sidebar-item" onclick="activateFilter('Wasserdichte Fenster')">
-          Fenster
-          <div class="sidebar-check"></div>
+        <button class="sidebar-item sub" onclick="activateFilter('Wasserdichte Fenster')">
+          Fenster<div class="sidebar-check"></div>
         </button>
-        <button class="sidebar-item" onclick="activateFilter('Wasserdichte Tore/Garagentore')">
-          (Garagen-)Tore
-          <div class="sidebar-check"></div>
+        <button class="sidebar-item sub" onclick="activateFilter('Wasserdichte Tore/Garagentore')">
+          (Garagen-)Tore<div class="sidebar-check"></div>
         </button>
-        <button class="sidebar-item" onclick="filterProducts('Barrieren-Systeme', this)">
-          Barrieren-Systeme
-          <div class="sidebar-check"></div>
+        <div class="sidebar-divider"></div>
+
+        <div class="sidebar-group-label">Mobile/teilmobile Elemente</div>
+        <button class="sidebar-item sub" onclick="filterProducts('Pumpen', this)">
+          Pumpen<div class="sidebar-check"></div>
         </button>
-        <button class="sidebar-item" onclick="filterProducts('Rückstausicherungen', this)">
-          Rückstausicherungen
-          <div class="sidebar-check"></div>
+        <button class="sidebar-item sub" onclick="filterProducts('Barrieren-Systeme', this)">
+          Barrierensysteme<div class="sidebar-check"></div>
         </button>
-        <button class="sidebar-item" onclick="filterProducts('Pumpen', this)">
-          Pumpen
-          <div class="sidebar-check"></div>
+        <button class="sidebar-item sub" onclick="filterProducts('Sandsäcke & mobiler Schutz', this)">
+          Sandsäcke u.&thinsp;Ä.<div class="sidebar-check"></div>
         </button>
-        <button class="sidebar-item" onclick="filterProducts('Hebeanlagen', this)">
-          Hebeanlagen
-          <div class="sidebar-check"></div>
+        <div class="sidebar-divider"></div>
+
+        <div class="sidebar-group-label">Rückstausicherungen</div>
+        <button class="sidebar-item sub" onclick="filterProducts('Rückstausicherungen', this)">
+          Rückstauklappen<div class="sidebar-check"></div>
         </button>
-        <button class="sidebar-item" onclick="filterProducts('Sandsäcke & mobiler Schutz', this)">
-          Sandsäcke & mobiler Schutz
-          <div class="sidebar-check"></div>
+        <button class="sidebar-item sub" onclick="filterProducts('Hebeanlagen', this)">
+          Hebeanlagen<div class="sidebar-check"></div>
         </button>
-        <button class="sidebar-item" onclick="filterProducts('Frühwarnung & Überwachung', this)">
-          Frühwarnung & Überwachung
-          <div class="sidebar-check"></div>
-        </button>
+        <div class="sidebar-divider"></div>
+
         <button class="sidebar-item" onclick="filterProducts('Sonstiges', this)">
-          Sonstiges
-          <div class="sidebar-check"></div>
+          Sonstiges<div class="sidebar-check"></div>
         </button>
       </aside>
 
+      </div><!-- end products-top-row -->
+
+      <!-- KATEGORIE-INFO: unterhalb, gleiche Breite -->
+      <div class="category-info-panel" id="category-info" style="display:none;">
+        <div class="cat-info-body">
+          <div class="cat-info-title" id="cat-info-title">–</div>
+          <div class="cat-info-desc" id="cat-info-desc"></div>
+        </div>
+      </div>
+
       </div><!-- end products-left-col -->
 
-      <!-- RIGHT COLUMN: Category Info + Products -->
+      <!-- RIGHT COLUMN: Produkte -->
       <div class="products-right">
-
-        <!-- KATEGORIE-INFO (erscheint beim Filtern) -->
-        <div class="category-info-panel" id="category-info" style="display:flex;visibility:hidden;">
-          <div class="cat-info-body">
-            <div class="cat-info-title" id="cat-info-title">–</div>
-            <div class="cat-info-desc" id="cat-info-desc">Platzhalter – hier erscheint eine Erklärung zur ausgewählten Produktkategorie.</div>
-          </div>
-        </div>
 
         <div class="products-topbar">
           <div class="products-topbar-title" id="active-category-title">Alle Produkte</div>
@@ -1679,9 +1735,9 @@ function renderProducts(filter) {
     if (filter !== 'Alle' && categoryInfo[filter]) {
       document.getElementById('cat-info-title').textContent = filter;
       document.getElementById('cat-info-desc').textContent = categoryInfo[filter].desc;
-      infoPanel.style.visibility = 'visible'; infoPanel.style.display = 'flex';
+      infoPanel.style.display = 'flex';
     } else {
-      infoPanel.style.visibility = 'hidden'; infoPanel.style.display = 'flex';
+      infoPanel.style.display = 'none';
     }
   }
 
