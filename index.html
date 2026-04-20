@@ -131,11 +131,15 @@
   .sidebar-below {
     width: 100%;
     position: static;
+    overflow: visible; /* überschreibt sidebar overflow:hidden */
     display: flex;
     flex-direction: row;
     flex-wrap: nowrap;
     overflow-x: auto;
-    overflow-y: hidden;
+    overflow-y: visible;
+    background: var(--surface);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
   }
   .sidebar-below .sidebar-header { display: none; }
   .sidebar-below .sidebar-group-label {
@@ -1835,9 +1839,33 @@ function toggleCardDetail(btn) {
   btn.setAttribute('aria-expanded', panel.classList.contains('open'));
 }
 
+// Karte: welche Kategorien mit welcher Zone verknüpft sind
+const zoneCategories = {
+  'Wasserdichte Fenster': 'Wasserdichte Fenster',
+  'Wasserdichte Türen': 'Wasserdichte Türen',
+  'Wasserdichte Tore/Garagentore': 'Wasserdichte Tore/Garagentore'
+};
+
+function highlightZone(cat) {
+  // Alle Zonen zurücksetzen
+  document.querySelectorAll('.zone-fill').forEach(z => {
+    z.style.fillOpacity = '0';
+  });
+  if (!cat || !zoneCategories[cat]) return;
+  // Passende Zone dauerhaft hervorheben
+  document.querySelectorAll('.house-zone').forEach(zone => {
+    const onclick = zone.getAttribute('onclick') || '';
+    if (onclick.includes(cat)) {
+      const fill = zone.querySelector('.zone-fill');
+      if (fill) fill.style.fillOpacity = '0.45';
+    }
+  });
+}
+
 function filterProducts(cat, btn) {
   document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
+  highlightZone(cat);
   renderProducts(cat);
 }
 
@@ -1852,8 +1880,9 @@ function activateFilter(cat) {
   // Kein automatisches Scrollen – verhindert unerwünschtes Springen
 }
 
-// Suche
+// Suche: Zonen zurücksetzen
 function searchProducts(query) {
+  highlightZone(null);
   const q = query.toLowerCase().trim();
   const bc = document.getElementById('bc-current');
   if (!q) { renderProducts('Alle'); return; }
@@ -2255,7 +2284,10 @@ function initMap() {
   const mapEl = document.getElementById('inst-map');
   if (!mapEl || leafletMap) return;
 
-  // Karte auf Deutschland zentriert
+  // Quadratisch machen: Höhe = Breite
+  const w = mapEl.offsetWidth;
+  if (w > 0) mapEl.style.height = w + 'px';
+
   leafletMap = L.map('inst-map', { zoomControl: true }).setView([51.1657, 10.4515], 6);
 
   L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
