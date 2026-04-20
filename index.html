@@ -124,60 +124,39 @@
     gap: 14px;
     position: sticky;
     top: 80px;
-    max-height: calc(100vh - 100px);
-    overflow-y: auto;
   }
-  /* Sidebar unterhalb der Grafik: horizontal scrollbar wie vorher */
-  .sidebar-below {
-    width: 100%;
-    position: static;
-    overflow: visible; /* überschreibt sidebar overflow:hidden */
+  /* Grafik + Filter nebeneinander */
+  .products-top-row {
     display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    overflow-y: visible;
-    background: var(--surface);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
+    gap: 14px;
+    align-items: flex-start;
   }
-  .sidebar-below .sidebar-header { display: none; }
-  .sidebar-below .sidebar-group-label {
-    padding: 8px 10px 6px; font-size: 0.62rem;
-    white-space: nowrap; flex-shrink: 0; border-left: none;
-    border-bottom: 2px solid var(--blue-accent); margin-top: 0;
-    background: var(--blue-light);
+  .products-top-row .grafik-spalte {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
   }
-  .sidebar-below .sidebar-item {
-    white-space: nowrap; border-left: none;
-    border-bottom: 3px solid transparent;
-    padding: 8px 12px; flex-shrink: 0; font-size: 0.82rem;
+  .products-top-row .sidebar {
+    width: 190px;
+    flex-shrink: 0;
+    position: static;
+    top: auto;
   }
-  .sidebar-below .sidebar-item.active {
-    border-bottom-color: var(--blue-accent);
-    background: var(--blue-light); border-left: none;
-  }
-  .sidebar-below .sidebar-divider { display: none; }
-  .sidebar-below .sidebar-item.sub { padding-left: 10px; }
 
-  /* Quadratische Karte */
-  .inst-map-square {
+  /* Quadratische Karte: padding-bottom Trick damit Leaflet die Höhe kennt */
+  .inst-map-wrap {
     width: 100%;
-    aspect-ratio: 1 / 1;
+    position: relative;
+    padding-bottom: 100%;
     border-radius: var(--radius);
     box-shadow: var(--shadow);
     overflow: hidden;
   }
-
-  .products-top-row {
-    display: flex;
-    gap: 16px;
-    align-items: flex-start;
+  .inst-map-wrap #inst-map {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
   }
-  .products-top-row .grafik-spalte { flex: 1; min-width: 0; }
-  .products-top-row .sidebar { width: 200px; flex-shrink: 0; }
-
-  /* ─── LAYOUT: INSTALLATEURE ─────────────────────── */
   .inst-layout {
     display: flex;
     gap: 24px;
@@ -1473,10 +1452,11 @@
 
     <div class="products-layout">
 
-      <!-- LEFT COLUMN: Grafik oben (voll), Filter darunter -->
+      <!-- LEFT COLUMN: Grafik links, Filter rechts -->
       <div class="products-left-col">
+      <div class="products-top-row">
 
-      <!-- HAUSÜBERSICHT oben: volle Breite der linken Spalte -->
+      <!-- HAUSÜBERSICHT -->
       <div class="grafik-spalte">
         <div class="section-title">Hausübersicht</div>
         <div class="section-sub">Klicken Sie auf einen Bereich, um den Filter zu aktivieren.</div>
@@ -1535,8 +1515,8 @@
         </div>
       </div><!-- end grafik-spalte -->
 
-      <!-- KATEGORIENFILTER darunter: volle Breite -->
-      <aside class="sidebar sidebar-below">
+      <!-- KATEGORIENFILTER rechts neben Grafik -->
+      <aside class="sidebar">
         <div class="sidebar-header">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
           Kategorien
@@ -1585,6 +1565,7 @@
         </button>
       </aside>
 
+      </div><!-- end products-top-row -->
       </div><!-- end products-left-col -->
 
       <!-- RIGHT COLUMN: Produkte -->
@@ -1607,7 +1588,9 @@
       <div class="inst-left-col">
 
         <!-- KARTE: volle Breite, quadratisch -->
-        <div id="inst-map" class="inst-map-square"></div>
+        <div class="inst-map-wrap">
+          <div id="inst-map"></div>
+        </div>
 
         <!-- UNTERE REIHE: PLZ links, Filter rechts -->
         <div class="inst-top-row">
@@ -2301,10 +2284,6 @@ let mapMarkers = [];
 function initMap() {
   const mapEl = document.getElementById('inst-map');
   if (!mapEl || leafletMap) return;
-
-  // Quadratisch: Höhe = Breite, Fallback 400px
-  const w = mapEl.offsetWidth || 400;
-  mapEl.style.height = w + 'px';
 
   leafletMap = L.map('inst-map', { zoomControl: true }).setView([51.1657, 10.4515], 6);
 
