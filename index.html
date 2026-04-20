@@ -4,7 +4,9 @@
 <meta charset="UTF-8"> <!-- Zeichenkodierung -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Mobile Phone Darstellung -->
 <title>Hochwasserschutzprodukte – Informationsplattform</title> <!-- Name der Seite -->
-<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"> <!-- Schriftarten -->
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"/>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <style> /* CSS Bereich startet hier (wäre auch als eigene "Datei" möglich*/
   :root {/* Gilt für die ganze Seite*/
     --bg: #f2f4f7; 
@@ -138,6 +140,20 @@
     display: flex;
     gap: 24px;
     align-items: flex-start;
+  }
+  /* Wrapper für PLZ + Filter nebeneinander */
+  .inst-top-row {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+  }
+  .inst-top-row .plz-box {
+    width: 180px;
+    flex-shrink: 0;
+  }
+  .inst-top-row .inst-filter-wrap {
+    flex: 1;
+    min-width: 0;
   }
   /* Wrapper für PLZ + [Filter | Karte] */
   .inst-left-col {
@@ -1356,9 +1372,8 @@
 
 <div class="hero">
   <div class="hero-inner">
-    <div class="hero-tag">Webbasierte Plattform - Prototyp</div>
-    <h1>Hochwasserschutzelemente –<br>Produkte im Überblick</h1>
-    <p>Eine prototypische Übersicht von Produkten zum Hochwasserschutz, erstellt im Rahmen einer Masterarbeit.</p>
+    <h1>Hochwasserschutzelemente –<br>Produkte und Fachbetriebe im Überblick</h1>
+    <p>Eine Übersicht von Produkten und Fachbetrieben zum privaten Hochwasserschutz.</p>
   </div>
 </div>
 
@@ -1525,31 +1540,23 @@
   <div class="main-panel" id="panel-installateure">
     <div class="inst-layout">
 
-      <!-- LINKE SPALTE: PLZ oben, dann [Filter | Karte] nebeneinander -->
+      <!-- LINKE SPALTE: [PLZ | Filter] oben, Karte unten -->
       <div class="inst-left-col">
 
-        <!-- PLZ SUCHE -->
-        <div class="plz-box">
-          <div class="plz-box-title">Betriebe in meiner Nähe</div>
-          <div class="plz-row">
-            <input type="text" id="plz-input" class="plz-input" placeholder="Postleitzahl …" maxlength="5" oninput="filterByPlz(this.value)"/>
-            <button class="plz-btn" onclick="filterByPlz(document.getElementById('plz-input').value)">Suchen</button>
-          </div>
-          <div id="plz-info" class="plz-info"></div>
-        </div>
+        <!-- OBERE REIHE: PLZ links, Filter rechts -->
+        <div class="inst-top-row">
 
-        <!-- FILTER + KARTE nebeneinander: Karte links, Filter rechts -->
-        <div class="inst-mid-row">
-
-          <!-- KARTEN-PLATZHALTER -->
-          <div class="map-placeholder">
-            <div class="map-ph-inner">
-              <div class="map-ph-title">Kartenansicht</div>
-              <div class="map-ph-desc">Hier erscheint eine interaktive Karte mit den Standorten der Fachbetriebe.<br><span>Geplantes Feature</span></div>
+          <!-- PLZ SUCHE -->
+          <div class="plz-box">
+            <div class="plz-box-title">Betriebe in meiner Nähe</div>
+            <div class="plz-row">
+              <input type="text" id="plz-input" class="plz-input" placeholder="Postleitzahl …" maxlength="5" oninput="filterByPlz(this.value)"/>
+              <button class="plz-btn" onclick="filterByPlz(document.getElementById('plz-input').value)">Suchen</button>
             </div>
+            <div id="plz-info" class="plz-info"></div>
           </div>
 
-          <!-- KATEGORIE FILTER (Sidebar-Stil mit Gruppen) -->
+          <!-- KATEGORIE FILTER -->
           <div class="inst-filter-wrap inst-sidebar">
             <div class="inst-filter-label">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
@@ -1578,7 +1585,10 @@
             <button class="inst-filter-btn" onclick="filterInstallateure('Sonstiges', this)">Sonstiges<div class="sidebar-check"></div></button>
           </div>
 
-        </div><!-- end inst-mid-row -->
+        </div><!-- end inst-top-row -->
+
+        <!-- KARTE: volle Breite unterhalb -->
+        <div id="inst-map" style="height:280px;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;"></div>
 
       </div><!-- end inst-left-col -->
 
@@ -1605,12 +1615,6 @@
       <div class="footer-tagline">Webbasierte Informationsplattform zum privaten Hochwasserschutz · Prototyp im Rahmen einer Masterarbeit · RWTH Aachen University</div>
     </div>
     <div class="footer-links">
-      <div class="footer-col">
-        <div class="footer-col-title">Plattform</div>
-        <a href="#produkte" onclick="showMainTab('produkte', document.querySelector('.main-tab'))">Produkte</a>
-        <a href="#panel-installateure" onclick="showMainTab('installateure', document.querySelectorAll('.main-tab')[1])">Fachbetriebe</a>
-        <a href="#" onclick="showInfoModal(); return false;">Info & Hilfe</a>
-      </div>
       <div class="footer-col">
         <div class="footer-col-title">Rechtliches</div>
         <a href="#" onclick="showLegalModal('impressum'); return false;">Impressum</a>
@@ -2058,7 +2062,9 @@ async function loadInstallateure() {
           website: sanitizeCell(obj['website']) || '#',
           telefon: sanitizeCell(obj['telefon']),
           email: sanitizeCell(obj['email']),
-          logo_url: sanitizeCell(obj['logo_url'])
+          logo_url: sanitizeCell(obj['logo_url']),
+          lat: sanitizeCell(obj['lat']),
+          lng: sanitizeCell(obj['lng'])
         };
       })
       .filter(hasInstallateurContent);
@@ -2134,6 +2140,7 @@ function renderInstallateure(filter) {
     return;
   }
   grid.innerHTML = filtered.map(renderInstCard).join('');
+  updateMapMarkers(filtered);
 }
 
 function filterInstallateure(cat, btn) {
@@ -2201,9 +2208,49 @@ async function init() {
   inst.forEach(i => installateure.push(i));
   console.log(`✅ ${installateure.length} Installateure geladen`);
   renderInstallateure('Alle');
+  initMap();
+}
 
-  // Tour anzeigen (nur beim ersten Besuch)
-  // Tour entfernt
+// ═══════════════════════════════════════════════
+// LEAFLET KARTENANSICHT
+// ═══════════════════════════════════════════════
+let leafletMap = null;
+let mapMarkers = [];
+
+function initMap() {
+  const mapEl = document.getElementById('inst-map');
+  if (!mapEl || leafletMap) return;
+
+  // Karte auf Deutschland zentriert
+  leafletMap = L.map('inst-map', { zoomControl: true }).setView([51.1657, 10.4515], 6);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+    maxZoom: 18
+  }).addTo(leafletMap);
+
+  updateMapMarkers(installateure.filter(hasInstallateurContent));
+}
+
+function updateMapMarkers(list) {
+  if (!leafletMap) return;
+  // Alte Marker entfernen
+  mapMarkers.forEach(m => m.remove());
+  mapMarkers = [];
+
+  const withCoords = list.filter(i => i.lat && i.lng && !isNaN(parseFloat(i.lat)));
+  withCoords.forEach(i => {
+    const marker = L.marker([parseFloat(i.lat), parseFloat(i.lng)])
+      .bindPopup(`<strong>${i.name}</strong><br>${i.region || ''}`);
+    marker.addTo(leafletMap);
+    mapMarkers.push(marker);
+  });
+
+  // Kartenausschnitt anpassen wenn Marker vorhanden
+  if (withCoords.length > 0) {
+    const group = L.featureGroup(mapMarkers);
+    leafletMap.fitBounds(group.getBounds().pad(0.2));
+  }
 }
 
 // ═══════════════════════════════════════════════
