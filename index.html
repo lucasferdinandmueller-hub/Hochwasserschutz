@@ -766,6 +766,13 @@
     position: sticky;
     top: 80px;
   }
+  /* sidebar-below überschreibt overflow:hidden der Basis-Sidebar */
+  .sidebar.sidebar-below {
+    overflow-x: auto !important;
+    overflow-y: visible !important;
+    position: static !important;
+    width: 100% !important;
+  }
   .sidebar-header {
     background: var(--blue-light);
     color: var(--blue-deep);
@@ -2218,6 +2225,16 @@ function showMainTab(id, btn) {
   document.querySelectorAll('.main-panel').forEach(p => p.classList.remove('active'));
   btn.classList.add('active');
   document.getElementById('panel-' + id).classList.add('active');
+  // Karte initialisieren sobald Panel sichtbar ist
+  if (id === 'installateure') {
+    setTimeout(() => {
+      if (!leafletMap) {
+        initMap();
+      } else {
+        leafletMap.invalidateSize();
+      }
+    }, 50);
+  }
 }
 
 // ═══════════════════════════════════════════════
@@ -2271,7 +2288,7 @@ async function init() {
   inst.forEach(i => installateure.push(i));
   console.log(`✅ ${installateure.length} Installateure geladen`);
   renderInstallateure('Alle');
-  initMap();
+  // Karte wird beim ersten Öffnen des Tabs initialisiert
 }
 
 // ═══════════════════════════════════════════════
@@ -2284,9 +2301,9 @@ function initMap() {
   const mapEl = document.getElementById('inst-map');
   if (!mapEl || leafletMap) return;
 
-  // Quadratisch machen: Höhe = Breite
-  const w = mapEl.offsetWidth;
-  if (w > 0) mapEl.style.height = w + 'px';
+  // Quadratisch: Höhe = Breite, Fallback 400px
+  const w = mapEl.offsetWidth || 400;
+  mapEl.style.height = w + 'px';
 
   leafletMap = L.map('inst-map', { zoomControl: true }).setView([51.1657, 10.4515], 6);
 
