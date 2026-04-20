@@ -766,13 +766,35 @@
     position: sticky;
     top: 80px;
   }
-  /* sidebar-below überschreibt overflow:hidden der Basis-Sidebar */
+  /* sidebar-below: vertikal unterhalb der Grafik */
   .sidebar.sidebar-below {
-    overflow-x: auto !important;
+    overflow-x: visible !important;
     overflow-y: visible !important;
     position: static !important;
     width: 100% !important;
+    display: flex !important;
+    flex-direction: column !important;
   }
+  .sidebar.sidebar-below .sidebar-header { display: flex; }
+  .sidebar.sidebar-below .sidebar-group-label {
+    white-space: normal;
+    border-bottom: none;
+    border-left: 3px solid var(--blue-accent);
+    margin-top: 2px;
+    padding: 8px 14px 4px;
+  }
+  .sidebar.sidebar-below .sidebar-item {
+    white-space: normal;
+    border-left: 3px solid transparent;
+    border-bottom: none;
+    padding: 8px 14px;
+  }
+  .sidebar.sidebar-below .sidebar-item.active {
+    border-left-color: var(--blue-deep);
+    background: var(--blue-light);
+    border-bottom: none;
+  }
+  .sidebar.sidebar-below .sidebar-divider { display: block; }
   .sidebar-header {
     background: var(--blue-light);
     color: var(--blue-deep);
@@ -1563,14 +1585,6 @@
         </button>
       </aside>
 
-      <!-- KATEGORIE-INFO: unterhalb -->
-      <div class="category-info-panel" id="category-info" style="display:none;">
-        <div class="cat-info-body">
-          <div class="cat-info-title" id="cat-info-title">–</div>
-          <div class="cat-info-desc" id="cat-info-desc"></div>
-        </div>
-      </div>
-
       </div><!-- end products-left-col -->
 
       <!-- RIGHT COLUMN: Produkte -->
@@ -1795,18 +1809,6 @@ function renderProducts(filter) {
   const bc = document.getElementById('bc-current');
   if (bc) bc.textContent = filter === 'Alle' ? 'Alle Produkte' : filter;
 
-  // Kategorie-Info anzeigen/verstecken
-  const infoPanel = document.getElementById('category-info');
-  if (infoPanel) {
-    if (filter !== 'Alle' && categoryInfo[filter]) {
-      document.getElementById('cat-info-title').textContent = filter;
-      document.getElementById('cat-info-desc').textContent = categoryInfo[filter].desc;
-      infoPanel.style.display = 'flex';
-    } else {
-      infoPanel.style.display = 'none';
-    }
-  }
-
   if (!filtered.length) {
     grid.innerHTML = '<div class="no-results">Keine Produkte in dieser Kategorie gefunden.</div>';
     return;
@@ -1856,7 +1858,7 @@ const zoneCategories = {
 function highlightZone(cat) {
   // Alle Zonen zurücksetzen
   document.querySelectorAll('.zone-fill').forEach(z => {
-    z.style.fillOpacity = '0';
+    z.setAttribute('fill-opacity', '0');
   });
   if (!cat || !zoneCategories[cat]) return;
   // Passende Zone dauerhaft hervorheben
@@ -1864,7 +1866,7 @@ function highlightZone(cat) {
     const onclick = zone.getAttribute('onclick') || '';
     if (onclick.includes(cat)) {
       const fill = zone.querySelector('.zone-fill');
-      if (fill) fill.style.fillOpacity = '0.45';
+      if (fill) fill.setAttribute('fill-opacity', '0.45');
     }
   });
 }
@@ -1902,11 +1904,10 @@ function searchProducts(query) {
   );
   if (bc) bc.textContent = `Suche: "${query}"`;
   document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'));
-  document.getElementById('category-info').style.display = 'none';
-  const label = document.getElementById('products-count-label');
+  const label2 = document.getElementById('products-count-label');
   const title = document.getElementById('active-category-title');
   if (title) title.textContent = `Suchergebnisse für „${query}"`;
-  if (label) label.textContent = filtered.length + ' Einträge';
+  if (label2) label2.textContent = filtered.length + ' Einträge';
   if (!filtered.length) {
     grid.innerHTML = '<div class="no-results">Keine Produkte für diese Suche gefunden.</div>';
     return;
