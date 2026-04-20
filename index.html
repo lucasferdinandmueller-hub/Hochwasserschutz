@@ -117,7 +117,7 @@
     align-items: flex-start;
   }
   .products-left-col {
-    width: 460px;
+    width: 500px;
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
@@ -127,6 +127,44 @@
     max-height: calc(100vh - 100px);
     overflow-y: auto;
   }
+  /* Sidebar unterhalb der Grafik: horizontal scrollbar wie vorher */
+  .sidebar-below {
+    width: 100%;
+    position: static;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+  .sidebar-below .sidebar-header { display: none; }
+  .sidebar-below .sidebar-group-label {
+    padding: 8px 10px 6px; font-size: 0.62rem;
+    white-space: nowrap; flex-shrink: 0; border-left: none;
+    border-bottom: 2px solid var(--blue-accent); margin-top: 0;
+    background: var(--blue-light);
+  }
+  .sidebar-below .sidebar-item {
+    white-space: nowrap; border-left: none;
+    border-bottom: 3px solid transparent;
+    padding: 8px 12px; flex-shrink: 0; font-size: 0.82rem;
+  }
+  .sidebar-below .sidebar-item.active {
+    border-bottom-color: var(--blue-accent);
+    background: var(--blue-light); border-left: none;
+  }
+  .sidebar-below .sidebar-divider { display: none; }
+  .sidebar-below .sidebar-item.sub { padding-left: 10px; }
+
+  /* Quadratische Karte */
+  .inst-map-square {
+    width: 100%;
+    aspect-ratio: 1 / 1;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+  }
+
   .products-top-row {
     display: flex;
     gap: 16px;
@@ -157,7 +195,7 @@
   }
   /* Wrapper für PLZ + [Filter | Karte] */
   .inst-left-col {
-    width: 460px;
+    width: 500px;
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
@@ -383,9 +421,10 @@
     .category-info-panel { display: none !important; }
     .sidebar-count { display: none; }
     .grafik-spalte { width: 100%; }
-    .products-right { width: 100% !important; max-width: 100% !important; }
-    .inst-right-col { width: 100% !important; max-width: 100% !important; }
+    .products-right { width: 100% !important; max-width: 100% !important; border-left: none; padding-left: 0; }
+    .inst-right-col { width: 100% !important; max-width: 100% !important; border-left: none; padding-left: 0; }
     .product-grid { max-width: 100% !important; }
+    .inst-map-square { aspect-ratio: 4/3; } /* auf Mobile etwas flacher */
     /* Tabs auf Mobile */
     .main-tabs { width: 100%; margin-left: 0; margin-right: 0; }
     .main-tab { flex: 1; text-align: center; padding: 12px 8px; font-size: 0.85rem; }
@@ -835,8 +874,16 @@
   .cat-info-desc { font-size: 0.82rem; color: var(--text-muted); line-height: 1.6; }
 
   /* PRODUCT GRID */
-  .products-right { flex: 1; min-width: 0; max-width: 52%; }
-  .inst-right-col { flex: 1; min-width: 0; max-width: 52%; }
+  .products-right {
+    flex: 1; min-width: 0; max-width: 46%;
+    border-left: 2px solid var(--border);
+    padding-left: 24px;
+  }
+  .inst-right-col {
+    flex: 1; min-width: 0; max-width: 46%;
+    border-left: 2px solid var(--border);
+    padding-left: 24px;
+  }
 
   .products-topbar {
     display: flex;
@@ -1393,12 +1440,10 @@
 
     <div class="products-layout">
 
-      <!-- LEFT COLUMN: [Grafik | Filter] oben, Info unten -->
+      <!-- LEFT COLUMN: Grafik oben (voll), Filter darunter -->
       <div class="products-left-col">
 
-      <div class="products-top-row">
-
-      <!-- HAUSÜBERSICHT -->
+      <!-- HAUSÜBERSICHT oben: volle Breite der linken Spalte -->
       <div class="grafik-spalte">
         <div class="section-title">Hausübersicht</div>
         <div class="section-sub">Klicken Sie auf einen Bereich, um den Filter zu aktivieren.</div>
@@ -1457,8 +1502,8 @@
         </div>
       </div><!-- end grafik-spalte -->
 
-      <!-- SIDEBAR KATEGORIENFILTER -->
-      <aside class="sidebar">
+      <!-- KATEGORIENFILTER darunter: volle Breite -->
+      <aside class="sidebar sidebar-below">
         <div class="sidebar-header">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
           Kategorien
@@ -1507,9 +1552,7 @@
         </button>
       </aside>
 
-      </div><!-- end products-top-row -->
-
-      <!-- KATEGORIE-INFO: unterhalb, gleiche Breite -->
+      <!-- KATEGORIE-INFO: unterhalb -->
       <div class="category-info-panel" id="category-info" style="display:none;">
         <div class="cat-info-body">
           <div class="cat-info-title" id="cat-info-title">–</div>
@@ -1521,11 +1564,6 @@
 
       <!-- RIGHT COLUMN: Produkte -->
       <div class="products-right">
-
-        <div class="products-topbar">
-          <div class="products-topbar-title" id="active-category-title">Alle Produkte</div>
-          <div class="products-count" id="products-count-label">– Einträge</div>
-        </div>
         <div class="product-grid" id="product-grid">
           <!-- Cards rendered by JS -->
         </div>
@@ -1540,10 +1578,13 @@
   <div class="main-panel" id="panel-installateure">
     <div class="inst-layout">
 
-      <!-- LINKE SPALTE: [PLZ | Filter] oben, Karte unten -->
+      <!-- LINKE SPALTE: Karte oben (voll+quadratisch), PLZ+Filter darunter -->
       <div class="inst-left-col">
 
-        <!-- OBERE REIHE: PLZ links, Filter rechts -->
+        <!-- KARTE: volle Breite, quadratisch -->
+        <div id="inst-map" class="inst-map-square"></div>
+
+        <!-- UNTERE REIHE: PLZ links, Filter rechts -->
         <div class="inst-top-row">
 
           <!-- PLZ SUCHE -->
@@ -1587,17 +1628,10 @@
 
         </div><!-- end inst-top-row -->
 
-        <!-- KARTE: volle Breite unterhalb -->
-        <div id="inst-map" style="height:280px;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;"></div>
-
       </div><!-- end inst-left-col -->
 
       <!-- RECHTE SPALTE: Betriebskarten -->
       <div class="inst-right-col">
-        <div class="products-topbar">
-          <div class="products-topbar-title" id="inst-category-title">Alle Fachbetriebe</div>
-          <div class="products-count" id="inst-count-label">– Einträge</div>
-        </div>
         <div class="installateure-grid" id="installateure-grid">
           <!-- wird per JS geladen -->
         </div>
