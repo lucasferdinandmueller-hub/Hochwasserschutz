@@ -362,8 +362,9 @@
     main { padding: 24px 16px 60px; }
 
     /* Tabs werden zu vollbreiten Buttons */
-    .main-tabs { width: 100%; }
-    .main-tab { flex: 1; text-align: center; padding: 10px 8px; font-size: 0.82rem; }
+    .main-tabs { width: 100%; border-radius: var(--radius) var(--radius) 0 0; margin-bottom: 0; padding-bottom: 0; }
+    .main-tab { flex: 1; text-align: center; padding: 10px 8px; font-size: 0.82rem; border-radius: 8px 8px 0 0; }
+    .main-panel.active { border-radius: 0 0 var(--radius) var(--radius); padding-top: 20px; }
 
     /* Layout: alles gestapelt */
     .products-layout { flex-direction: column; gap: 16px; }
@@ -409,8 +410,7 @@
     .product-grid { max-width: 100% !important; }
     .inst-map-square { aspect-ratio: 4/3; } /* auf Mobile etwas flacher */
     /* Tabs auf Mobile */
-    .main-tabs { width: 100%; margin-left: 0; margin-right: 0; }
-    .main-tab { flex: 1; text-align: center; padding: 12px 8px; font-size: 0.85rem; }
+    /* Tabs auf Mobile – bereits oben geregelt */
 
     /* Installateure layout */
     .inst-layout { flex-direction: column; gap: 16px; }
@@ -583,18 +583,20 @@
   .main-tabs {
     display: flex;
     gap: 6px;
-    margin-bottom: 36px;
+    margin-bottom: 0;
     background: var(--surface);
-    padding: 8px;
-    border-radius: var(--radius);
+    padding: 8px 8px 0 8px;
+    border-radius: var(--radius) var(--radius) 0 0;
     box-shadow: var(--shadow);
     width: fit-content;
     margin-left: auto;
     margin-right: auto;
+    position: relative;
+    z-index: 1;
   }
   .main-tab {
     padding: 14px 40px;
-    border-radius: 8px;
+    border-radius: 8px 8px 0 0;
     border: none;
     background: transparent;
     font-size: 1rem;
@@ -605,6 +607,7 @@
     opacity: 0.45;
     font-family: 'DM Sans', sans-serif;
     letter-spacing: 0.01em;
+    position: relative;
   }
   .main-tab:hover { opacity: 0.75; color: var(--blue-deep); }
   .main-tab.active {
@@ -612,8 +615,26 @@
     color: white;
     opacity: 1;
   }
+  .main-tab.active::after {
+    content: '';
+    position: absolute;
+    bottom: -3px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--blue-accent);
+    border-radius: 0;
+  }
+  /* Panel direkt unterhalb der Tabs – nahtloser Übergang */
   .main-panel { display: none; }
-  .main-panel.active { display: block; }
+  .main-panel.active {
+    display: block;
+    background: var(--bg);
+    border-radius: 0 var(--radius) var(--radius) var(--radius);
+    padding-top: 36px;
+    /* Schmale Verbindungslinie zur Tab-Leiste */
+    box-shadow: 0 -1px 0 0 var(--blue-deep);
+  }
 
   /* INSTALLATEURE */
   .installateure-grid {
@@ -1777,20 +1798,34 @@ const categoryInfo = {
   }
 };
 
+// Aktive Kategorien für Produkte (Mehrfachauswahl)
+let activeProductKategorien = new Set(['Alle']);
+
 function renderProducts(filter) {
+  if (filter !== undefined) {
+    activeProductKategorien = new Set([filter]);
+  }
+
   const grid = document.getElementById('product-grid');
   const visibleProducts = products.filter(hasProductContent);
-  const filtered = filter === 'Alle'
-    ? visibleProducts
-    : visibleProducts.filter(p => p.category === filter);
+
+  let filtered;
+  if (activeProductKategorien.has('Alle') || activeProductKategorien.size === 0) {
+    filtered = visibleProducts;
+  } else {
+    filtered = visibleProducts.filter(p => activeProductKategorien.has(p.category));
+  }
+
   const label = document.getElementById('products-count-label');
   const title = document.getElementById('active-category-title');
-  if (title) title.textContent = filter === 'Alle' ? 'Alle Produkte' : filter;
+  const labelText = (activeProductKategorien.has('Alle') || activeProductKategorien.size === 0)
+    ? 'Alle Produkte'
+    : [...activeProductKategorien].join(', ');
+  if (title) title.textContent = labelText;
   if (label) label.textContent = filtered.length + ' Einträge';
 
-  // Breadcrumb aktualisieren
   const bc = document.getElementById('bc-current');
-  if (bc) bc.textContent = filter === 'Alle' ? 'Alle Produkte' : filter;
+  if (bc) bc.textContent = activeProductKategorien.has('Alle') ? 'Alle Produkte' : [...activeProductKategorien].join(', ');
 
   if (!filtered.length) {
     grid.innerHTML = '<div class="no-results">Keine Produkte in dieser Kategorie gefunden.</div>';
@@ -1824,57 +1859,42 @@ function renderProducts(filter) {
   `).join('');
 }
 
-function toggleCardDetail(btn) {
-  btn.classList.toggle('open');
-  const panel = btn.nextElementSibling;
-  panel.classList.toggle('open');
-  btn.setAttribute('aria-expanded', panel.classList.contains('open'));
-}
-
-// Karte: welche Kategorien mit welcher Zone verknüpft sind
-const zoneCategories = {
-  'Wasserdichte Fenster': 'Wasserdichte Fenster',
-  'Wasserdichte Türen': 'Wasserdichte Türen',
-  'Wasserdichte Tore/Garagentore': 'Wasserdichte Tore/Garagentore'
-};
-
-// Aktuell aktive Zone (für persistentes Highlight)
-let activeZoneCategory = null;
-
-function highlightZone(cat) {
-  activeZoneCategory = cat;
-  // Alle Zonen zurücksetzen
-  document.querySelectorAll('.zone-fill').forEach(z => {
-    z.setAttribute('fill-opacity', '0');
-  });
-  if (!cat || !zoneCategories[cat]) return;
-  // Passende Zone dauerhaft hervorheben
-  document.querySelectorAll('.house-zone').forEach(zone => {
-    const onclick = zone.getAttribute('onclick') || '';
-    if (onclick.includes(cat)) {
-      const fill = zone.querySelector('.zone-fill');
-      if (fill) fill.setAttribute('fill-opacity', '0.45');
-    }
-  });
-}
-
-// Hover-Effekt: nur anzeigen wenn Zone nicht aktiv ist
-function hoverZone(cat, on) {
-  if (activeZoneCategory === cat) return; // aktive Zone nicht durch hover überschreiben
-  document.querySelectorAll('.house-zone').forEach(zone => {
-    const onclick = zone.getAttribute('onclick') || '';
-    if (onclick.includes(cat)) {
-      const fill = zone.querySelector('.zone-fill');
-      if (fill) fill.setAttribute('fill-opacity', on ? '0.25' : '0');
-    }
-  });
-}
-
 function filterProducts(cat, btn) {
-  document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'));
-  if (btn) btn.classList.add('active');
-  highlightZone(cat);
-  renderProducts(cat);
+  if (cat === 'Alle') {
+    activeProductKategorien = new Set(['Alle']);
+    document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'));
+    if (btn) btn.classList.add('active');
+    highlightZone(null);
+  } else {
+    activeProductKategorien.delete('Alle');
+    document.querySelectorAll('.sidebar-item').forEach(b => {
+      if (b.getAttribute('onclick') && b.getAttribute('onclick').includes("'Alle'")) b.classList.remove('active');
+    });
+
+    if (activeProductKategorien.has(cat)) {
+      activeProductKategorien.delete(cat);
+      if (btn) btn.classList.remove('active');
+    } else {
+      activeProductKategorien.add(cat);
+      if (btn) btn.classList.add('active');
+    }
+
+    if (activeProductKategorien.size === 0) {
+      activeProductKategorien.add('Alle');
+      document.querySelectorAll('.sidebar-item').forEach(b => {
+        if (b.getAttribute('onclick') && b.getAttribute('onclick').includes("'Alle'")) b.classList.add('active');
+      });
+      highlightZone(null);
+    } else {
+      const zoneCats = [...activeProductKategorien].filter(c => zoneCategories[c]);
+      if (zoneCats.length === 1) {
+        highlightZone(zoneCats[0]);
+      } else {
+        highlightZone(null);
+      }
+    }
+  }
+  renderProducts();
 }
 
 // Wird von der Hausgrafik aufgerufen – sucht den passenden Sidebar-Button
@@ -1894,7 +1914,13 @@ function searchProducts(query) {
   highlightZone(null);
   const q = query.toLowerCase().trim();
   const bc = document.getElementById('bc-current');
-  if (!q) { renderProducts('Alle'); return; }
+  if (!q) {
+    activeProductKategorien = new Set(['Alle']);
+    document.querySelectorAll('.sidebar-item').forEach(b => b.classList.remove('active'));
+    document.querySelector('.sidebar-item')?.classList.add('active');
+    renderProducts();
+    return;
+  }
   const grid = document.getElementById('product-grid');
   const filtered = products.filter(hasProductContent).filter(p =>
     p.name.toLowerCase().includes(q) ||
