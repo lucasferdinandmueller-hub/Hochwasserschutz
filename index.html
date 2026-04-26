@@ -1474,8 +1474,8 @@
 
   <!-- ZONE: Fenster -->
   <g class="house-zone"
-     onmouseenter="showTooltip('tooltip-aussen-neu', event, 'Wasserdichte Fenster', 'Hochwasserfeste Fenster und Kellerfenster – verstärktes Glas, wasserdichte Rahmen und Dichtungen.')"
-     onmouseleave="hideTooltip('tooltip-aussen-neu')"
+     onmouseenter="hoverZone('Wasserdichte Fenster', true); showTooltip('tooltip-aussen-neu', event, 'Wasserdichte Fenster', 'Hochwasserfeste Fenster und Kellerfenster – verstärktes Glas, wasserdichte Rahmen und Dichtungen.')"
+     onmouseleave="hoverZone('Wasserdichte Fenster', false); hideTooltip('tooltip-aussen-neu')"
      onclick="activateFilter('Wasserdichte Fenster')"
      style="cursor:pointer">
     <rect x="45.34" y="174.53" width="18.35" height="20.46"
@@ -1485,8 +1485,8 @@
 
   <!-- ZONE: Tür -->
   <g class="house-zone"
-     onmouseenter="showTooltip('tooltip-aussen-neu', event, 'Wasserdichte Türen', 'Wasserdichte Türen mit umlaufender Dichtung – schützen Hauseingänge vor eindringendem Hochwasser.')"
-     onmouseleave="hideTooltip('tooltip-aussen-neu')"
+     onmouseenter="hoverZone('Wasserdichte Türen', true); showTooltip('tooltip-aussen-neu', event, 'Wasserdichte Türen', 'Wasserdichte Türen mit umlaufender Dichtung – schützen Hauseingänge vor eindringendem Hochwasser.')"
+     onmouseleave="hoverZone('Wasserdichte Türen', false); hideTooltip('tooltip-aussen-neu')"
      onclick="activateFilter('Wasserdichte Türen')"
      style="cursor:pointer">
     <rect x="74.03" y="174.73" width="15.83" height="29.51"
@@ -1496,8 +1496,8 @@
 
   <!-- ZONE: Garagentor -->
   <g class="house-zone"
-     onmouseenter="showTooltip('tooltip-aussen-neu', event, 'Wasserdichte Tore & Garagentore', 'Garagentore mit integrierten Dichtungssystemen – beim Schließen automatisch abgedichtet.')"
-     onmouseleave="hideTooltip('tooltip-aussen-neu')"
+     onmouseenter="hoverZone('Wasserdichte Tore/Garagentore', true); showTooltip('tooltip-aussen-neu', event, 'Wasserdichte Tore &amp; Garagentore', 'Garagentore mit integrierten Dichtungssystemen – beim Schließen automatisch abgedichtet.')"
+     onmouseleave="hoverZone('Wasserdichte Tore/Garagentore', false); hideTooltip('tooltip-aussen-neu')"
      onclick="activateFilter('Wasserdichte Tore/Garagentore')"
      style="cursor:pointer">
     <rect x="113.82" y="176.84" width="56.96" height="27.28"
@@ -1598,9 +1598,9 @@
           <!-- PLZ SUCHE -->
           <div class="plz-box">
             <div class="plz-box-title">Betriebe in meiner Nähe</div>
-            <div class="plz-row">
-              <input type="text" id="plz-input" class="plz-input" placeholder="Postleitzahl …" maxlength="5" oninput="filterByPlz(this.value)"/>
-              <button class="plz-btn" onclick="filterByPlz(document.getElementById('plz-input').value)">Suchen</button>
+            <div class="plz-row" style="flex-direction:column;gap:8px;">
+              <input type="text" id="plz-input" class="plz-input" placeholder="Postleitzahl eingeben …" maxlength="5" oninput="filterByPlz(this.value)" style="width:100%;"/>
+              <button class="plz-btn" onclick="filterByPlz(document.getElementById('plz-input').value)" style="width:100%;padding:10px 12px;">Suchen</button>
             </div>
             <div id="plz-info" class="plz-info"></div>
           </div>
@@ -1818,7 +1818,7 @@ function renderProducts(filter) {
           ${p.wartung ? `<div class="detail-row"><span>Wartung</span>${p.wartung}</div>` : ''}
           ${p.aktualisiert ? `<div class="detail-row"><span>Letzte Aktualisierung</span>${p.aktualisiert}</div>` : ''}
         </div>` : ''}
-        <a class="card-link" href="${p.link}" target="_blank">Mehr erfahren →</a>
+        ${p.link && p.link !== '#' ? `<a class="card-link" href="${p.link}" target="_blank">Zur Website des Anbieters →</a>` : ''}
       </div>
     </div>
   `).join('');
@@ -1838,7 +1838,11 @@ const zoneCategories = {
   'Wasserdichte Tore/Garagentore': 'Wasserdichte Tore/Garagentore'
 };
 
+// Aktuell aktive Zone (für persistentes Highlight)
+let activeZoneCategory = null;
+
 function highlightZone(cat) {
+  activeZoneCategory = cat;
   // Alle Zonen zurücksetzen
   document.querySelectorAll('.zone-fill').forEach(z => {
     z.setAttribute('fill-opacity', '0');
@@ -1850,6 +1854,18 @@ function highlightZone(cat) {
     if (onclick.includes(cat)) {
       const fill = zone.querySelector('.zone-fill');
       if (fill) fill.setAttribute('fill-opacity', '0.45');
+    }
+  });
+}
+
+// Hover-Effekt: nur anzeigen wenn Zone nicht aktiv ist
+function hoverZone(cat, on) {
+  if (activeZoneCategory === cat) return; // aktive Zone nicht durch hover überschreiben
+  document.querySelectorAll('.house-zone').forEach(zone => {
+    const onclick = zone.getAttribute('onclick') || '';
+    if (onclick.includes(cat)) {
+      const fill = zone.querySelector('.zone-fill');
+      if (fill) fill.setAttribute('fill-opacity', on ? '0.25' : '0');
     }
   });
 }
@@ -1874,6 +1890,7 @@ function activateFilter(cat) {
 
 // Suche: Zonen zurücksetzen
 function searchProducts(query) {
+  activeZoneCategory = null;
   highlightZone(null);
   const q = query.toLowerCase().trim();
   const bc = document.getElementById('bc-current');
@@ -1906,7 +1923,7 @@ function searchProducts(query) {
           <div class="card-meta-row"><span>Hersteller</span> ${p.hersteller}</div>
           ${p.zertifizierung ? `<div class="card-meta-row"><span>Zertifizierung</span> <span class="cert-badge">${p.zertifizierung}</span></div>` : ''}
         </div>
-        <a class="card-link" href="${p.link}">Mehr erfahren →</a>
+        ${p.link && p.link !== '#' ? `<a class="card-link" href="${p.link}" target="_blank">Zur Website des Anbieters →</a>` : ''}
       </div>
     </div>
   `).join('');
@@ -2118,7 +2135,8 @@ async function loadInstallateure() {
           email: sanitizeCell(obj['email']),
           logo_url: sanitizeCell(obj['logo_url']),
           lat: sanitizeCell(obj['lat']),
-          lng: sanitizeCell(obj['lng'])
+          lng: sanitizeCell(obj['lng']),
+          radius_km: sanitizeCell(obj['radius_km'])
         };
       })
       .filter(hasInstallateurContent);
@@ -2178,16 +2196,28 @@ function renderInstCard(i) {
     + link
     + '</div>';
 }
-// Rendert Installateure-Karten
+// Aktive Kategorien für Installateure (Mehrfachauswahl)
+let activeInstKategorien = new Set(['Alle']);
+
 function renderInstallateure(filter) {
   const grid = document.getElementById('installateure-grid');
   const countLabel = document.getElementById('inst-count-label');
   const titleEl = document.getElementById('inst-category-title');
   const visibleInstallateure = installateure.filter(hasInstallateurContent);
-  const filtered = filter === 'Alle'
-    ? visibleInstallateure
-    : visibleInstallateure.filter(i => i.kategorien.includes(filter));
-  if (titleEl) titleEl.textContent = filter === 'Alle' ? 'Alle Fachbetriebe' : filter;
+
+  let filtered;
+  if (activeInstKategorien.has('Alle') || activeInstKategorien.size === 0) {
+    filtered = visibleInstallateure;
+  } else {
+    filtered = visibleInstallateure.filter(i =>
+      [...activeInstKategorien].some(k => i.kategorien.includes(k))
+    );
+  }
+
+  const labelText = activeInstKategorien.has('Alle') || activeInstKategorien.size === 0
+    ? 'Alle Fachbetriebe'
+    : [...activeInstKategorien].join(', ');
+  if (titleEl) titleEl.textContent = labelText;
   if (countLabel) countLabel.textContent = filtered.length + ' Einträge';
   if (!filtered.length) {
     grid.innerHTML = '<div class="no-results">Keine Fachbetriebe in dieser Kategorie gefunden.</div>';
@@ -2198,9 +2228,37 @@ function renderInstallateure(filter) {
 }
 
 function filterInstallateure(cat, btn) {
-  document.querySelectorAll('.inst-filter-btn').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  renderInstallateure(cat);
+  if (cat === 'Alle') {
+    // "Alle" deselektiert alle spezifischen Filter
+    activeInstKategorien = new Set(['Alle']);
+    document.querySelectorAll('.inst-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+  } else {
+    // Spezifische Kategorie toggling
+    activeInstKategorien.delete('Alle');
+    document.querySelectorAll('.inst-filter-btn').forEach(b => {
+      if (b.textContent.trim() === 'Alle Betriebe' || b.getAttribute('onclick')?.includes("'Alle'")) {
+        b.classList.remove('active');
+      }
+    });
+
+    if (activeInstKategorien.has(cat)) {
+      activeInstKategorien.delete(cat);
+      btn.classList.remove('active');
+    } else {
+      activeInstKategorien.add(cat);
+      btn.classList.add('active');
+    }
+
+    // Wenn nichts mehr ausgewählt → zurück zu "Alle"
+    if (activeInstKategorien.size === 0) {
+      activeInstKategorien.add('Alle');
+      document.querySelectorAll('.inst-filter-btn').forEach(b => {
+        if (b.getAttribute('onclick')?.includes("'Alle'")) b.classList.add('active');
+      });
+    }
+  }
+  renderInstallateure();
 }
 
 // Tab-Umschaltung
@@ -2271,7 +2329,7 @@ async function init() {
   installateure.length = 0;
   inst.forEach(i => installateure.push(i));
   console.log(`✅ ${installateure.length} Installateure geladen`);
-  renderInstallateure('Alle');
+  renderInstallateure();
   // Karte wird beim ersten Öffnen des Tabs initialisiert
 }
 
@@ -2280,6 +2338,7 @@ async function init() {
 // ═══════════════════════════════════════════════
 let leafletMap = null;
 let mapMarkers = [];
+let activeRadiusCircle = null;
 
 function initMap() {
   const mapEl = document.getElementById('inst-map');
@@ -2297,14 +2356,32 @@ function initMap() {
 
 function updateMapMarkers(list) {
   if (!leafletMap) return;
-  // Alte Marker entfernen
+  // Alte Marker und Kreis entfernen
   mapMarkers.forEach(m => m.remove());
   mapMarkers = [];
+  if (activeRadiusCircle) { activeRadiusCircle.remove(); activeRadiusCircle = null; }
 
   const withCoords = list.filter(i => i.lat && i.lng && !isNaN(parseFloat(i.lat)));
   withCoords.forEach(i => {
     const marker = L.marker([parseFloat(i.lat), parseFloat(i.lng)])
-      .bindPopup(`<strong>${i.name}</strong><br>${i.region || ''}`);
+      .bindPopup(`<strong>${i.name}</strong><br>${i.region || ''}${i.radius_km ? '<br><em>Einsatzgebiet: ' + i.radius_km + ' km</em>' : ''}`);
+    
+    // Radius-Kreis beim Klick auf Marker anzeigen
+    marker.on('click', function() {
+      if (activeRadiusCircle) { activeRadiusCircle.remove(); activeRadiusCircle = null; }
+      const km = parseFloat(i.radius_km);
+      if (km && !isNaN(km)) {
+        activeRadiusCircle = L.circle([parseFloat(i.lat), parseFloat(i.lng)], {
+          radius: km * 1000,
+          color: '#1e7fc2',
+          fillColor: '#1e7fc2',
+          fillOpacity: 0.08,
+          weight: 2,
+          dashArray: '6,4'
+        }).addTo(leafletMap);
+      }
+    });
+
     marker.addTo(leafletMap);
     mapMarkers.push(marker);
   });
