@@ -560,7 +560,7 @@
     cursor: pointer;
     transition: opacity 0.2s;
   }
-  .house-zone:hover .zone-fill { opacity: 1 !important; }
+  /* hover handled via JS */
   .house-zone .zone-fill { opacity: 0; transition: opacity 0.25s; }
   .tooltip-box {
     position: fixed;
@@ -1144,9 +1144,8 @@
   /* responsive handled by mobile-first CSS above */
 
 
-  /* Zone hover effect */
-  .house-zone:hover .zone-fill { fill-opacity: 0.35 !important; }
-  .house-zone .zone-fill { fill-opacity: 0; transition: fill-opacity 0.2s; }
+  /* Zone hover effect – handled via JS hoverZone() */
+  .house-zone .zone-fill { transition: fill-opacity 0.2s, fill 0.2s; }
   /* ─── PROGRESSIVE DISCLOSURE ────────────────────── */
   .card-detail-toggle {
     display: flex; align-items: center; gap: 6px;
@@ -1438,6 +1437,7 @@
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       <input type="text" id="nav-search" placeholder="Produkte suchen …" oninput="searchProducts(this.value)"/>
     </div>
+    <button class="nav-info-btn" onclick="startTour()" style="margin-right:4px;">Tour 🗺</button>
     <button class="nav-info-btn" onclick="showInfoModal()">Info</button>
     <button class="nav-hamburger" id="nav-hamburger" onclick="toggleMobileMenu()" aria-label="Menü">
       <span></span><span></span><span></span>
@@ -1905,6 +1905,7 @@ function activateFilter(cat) {
     if (b.getAttribute('onclick') && b.getAttribute('onclick').includes(cat)) found = b;
   });
   filterProducts(cat, found);
+  highlightZone(cat);
   // Kein automatisches Scrollen – verhindert unerwünschtes Springen
 }
 
@@ -2321,6 +2322,11 @@ function checkPassword() {
     overlay.style.opacity = '0';
     setTimeout(() => overlay.classList.add('hidden'), 500);
     error.classList.remove('visible');
+    // Tour beim ersten Login automatisch starten
+    if (!localStorage.getItem('tourSeen')) {
+      localStorage.setItem('tourSeen', '1');
+      setTimeout(startTour, 700);
+    }
   } else {
     error.classList.add('visible');
     document.getElementById('pw-input').value = '';
@@ -2336,6 +2342,291 @@ if (sessionStorage.getItem('pw_ok') === '1') {
 }
 
 
+
+// ═══════════════════════════════════════════════
+// HAUS-ZONEN HIGHLIGHT
+// ═══════════════════════════════════════════════
+
+// Mapping von Kategorie zu Zone-Klasse im SVG
+const zoneCategories = {
+  'Wasserdichte Türen': 'zone-tueren',
+  'Wasserdichte Fenster': 'zone-fenster',
+  'Wasserdichte Tore/Garagentore': 'zone-garagen'
+};
+
+// Aktiv gehighlightete Zone (durch Klick/Filter)
+let activeZoneCategory = null;
+
+// Beim Hover temporär aufleuchten lassen
+function hoverZone(cat, entering) {
+  const fill = getZoneFill(cat);
+  if (!fill) return;
+  // Nur anzeigen wenn diese Zone NICHT aktiv ist
+  if (activeZoneCategory === cat) return;
+  fill.style.fillOpacity = entering ? '0.35' : '0';
+}
+
+// Dauerhaft aktive Zone setzen (grün)
+function highlightZone(cat) {
+  // Alle Zonen zurücksetzen
+  document.querySelectorAll('.zone-fill').forEach(el => {
+    el.style.fill = '#1e7fc2';
+    el.style.fillOpacity = '0';
+  });
+  activeZoneCategory = cat;
+  if (!cat) return;
+  const fill = getZoneFill(cat);
+  if (!fill) return;
+  fill.style.fill = '#27ae60';
+  fill.style.fillOpacity = '0.45';
+}
+
+function getZoneFill(cat) {
+  // Wir suchen das zone-fill-Element innerhalb der Zone, die onclick activateFilter(cat) enthält
+  const zones = document.querySelectorAll('.house-zone');
+  for (const zone of zones) {
+    if (zone.getAttribute('onclick') && zone.getAttribute('onclick').includes(cat.replace(/'/g, "'"))) {
+      return zone.querySelector('.zone-fill');
+    }
+    // Alternativ über onmouseenter
+    if (zone.getAttribute('onmouseenter') && zone.getAttribute('onmouseenter').includes(cat)) {
+      return zone.querySelector('.zone-fill');
+    }
+  }
+  return null;
+}
+
+// ═══════════════════════════════════════════════
+// EINFÜHRUNGSTOUR
+// ═══════════════════════════════════════════════
+
+const tourSteps = [
+  {
+    id: 'step-tabs',
+    target: '.main-tabs',
+    title: '1 / 5 – Tabs: Produkte & Fachbetriebe',
+    text: 'Über die beiden Tabs wechseln Sie zwischen der Produktübersicht und der Karte der Fachbetriebe & Monteure.',
+    position: 'bottom'
+  },
+  {
+    id: 'step-grafik',
+    target: '.grafik-spalte',
+    title: '2 / 5 – Hausübersicht',
+    text: 'Klicken Sie auf Bereiche des Hauses – Fenster, Tür oder Garagentor – um direkt den passenden Produktfilter zu aktivieren.',
+    position: 'right'
+  },
+  {
+    id: 'step-filter',
+    target: '.sidebar',
+    title: '3 / 5 – Kategorienfilter',
+    text: 'Mit dem Kategorienfilter schränken Sie die Produktliste ein. Wählen Sie eine oder mehrere Kategorien aus.',
+    position: 'right'
+  },
+  {
+    id: 'step-cards',
+    target: '.products-right',
+    title: '4 / 5 – Produktsteckbriefe',
+    text: 'Hier erscheinen die gefilterten Produkte als Steckbriefe – mit Hersteller, Zertifizierung, Kosten und technischen Details.',
+    position: 'left'
+  },
+  {
+    id: 'step-map',
+    target: '.main-tabs',
+    title: '5 / 5 – Fachbetriebe & Karte',
+    text: 'Im Tab „Fachbetriebe & Monteure" finden Sie Betriebe in Ihrer Nähe – mit interaktiver Karte und PLZ-Suche.',
+    position: 'bottom',
+    switchTab: 'installateure'
+  }
+];
+
+let tourCurrentStep = -1;
+let tourActive = false;
+
+function startTour() {
+  // Sicherstellen dass wir im Produkte-Tab sind
+  const produkteTab = document.querySelector('.main-tab.active');
+  const produkte = document.getElementById('panel-produkte');
+  if (!produkte.classList.contains('active')) {
+    const btn = document.querySelector('.main-tab');
+    showMainTab('produkte', btn);
+  }
+  tourActive = true;
+  tourCurrentStep = 0;
+  createTourOverlay();
+  showTourStep(0);
+}
+
+function createTourOverlay() {
+  // Backdrop
+  let backdrop = document.getElementById('tour-backdrop');
+  if (!backdrop) {
+    backdrop = document.createElement('div');
+    backdrop.id = 'tour-backdrop';
+    backdrop.style.cssText = `
+      position: fixed; inset: 0; z-index: 8000;
+      background: rgba(10,37,64,0.55);
+      pointer-events: none;
+      transition: opacity 0.3s;
+    `;
+    document.body.appendChild(backdrop);
+  }
+  backdrop.style.display = 'block';
+  backdrop.style.opacity = '1';
+
+  // Tooltip-Box
+  let box = document.getElementById('tour-box');
+  if (!box) {
+    box = document.createElement('div');
+    box.id = 'tour-box';
+    box.style.cssText = `
+      position: fixed; z-index: 8100;
+      background: white; border-radius: 14px;
+      box-shadow: 0 8px 40px rgba(10,37,64,0.22);
+      padding: 0; max-width: 320px; width: 92%;
+      font-family: 'DM Sans', sans-serif;
+      pointer-events: all;
+      transition: top 0.35s ease, left 0.35s ease, opacity 0.25s;
+    `;
+    document.body.appendChild(box);
+  }
+}
+
+function showTourStep(idx) {
+  const step = tourSteps[idx];
+  if (!step) { endTour(); return; }
+
+  // Ggf. Tab wechseln
+  if (step.switchTab === 'installateure') {
+    const tabBtn = document.querySelector('.main-tab:not(.active)');
+    if (tabBtn) showMainTab('installateure', tabBtn);
+  } else if (idx === 0 || tourSteps[idx-1] && tourSteps[idx-1].switchTab) {
+    // zurück zu Produkte falls nötig
+    const produkte = document.getElementById('panel-produkte');
+    if (!produkte.classList.contains('active')) {
+      const btn = document.querySelector('.main-tab');
+      showMainTab('produkte', btn);
+    }
+  }
+
+  // Ziel-Element finden und highlighten
+  const target = document.querySelector(step.target);
+  
+  // Highlight-Rahmen
+  document.querySelectorAll('.tour-highlight').forEach(el => {
+    el.classList.remove('tour-highlight');
+    el.style.outline = '';
+    el.style.outlineOffset = '';
+    el.style.position = '';
+    el.style.zIndex = '';
+    el.style.borderRadius = '';
+  });
+
+  if (target) {
+    target.classList.add('tour-highlight');
+    target.style.outline = '3px solid #1e7fc2';
+    target.style.outlineOffset = '4px';
+    target.style.position = 'relative';
+    target.style.zIndex = '8050';
+    target.style.borderRadius = '12px';
+    target.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+
+  // Tour-Box befüllen
+  const box = document.getElementById('tour-box');
+  const isLast = idx === tourSteps.length - 1;
+  box.innerHTML = `
+    <div style="background: linear-gradient(135deg, var(--blue-deep) 0%, var(--blue-mid) 100%); border-radius: 14px 14px 0 0; padding: 16px 20px 14px;">
+      <div style="font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 4px;">Plattform-Tour</div>
+      <div style="font-family: 'DM Serif Display', serif; color: white; font-size: 1rem; line-height: 1.3;">${step.title}</div>
+    </div>
+    <div style="padding: 16px 20px 8px; font-size: 0.88rem; color: var(--text-muted); line-height: 1.65;">${step.text}</div>
+    <div style="padding: 0 20px 16px; display: flex; gap: 8px; justify-content: flex-end; align-items: center;">
+      <button onclick="endTour()" style="background: transparent; border: 1.5px solid var(--border); color: var(--text-muted); border-radius: 8px; padding: 8px 14px; font-size: 0.8rem; cursor: pointer; font-family: 'DM Sans', sans-serif;">Tour beenden</button>
+      ${idx > 0 ? `<button onclick="tourGo(${idx-1})" style="background: var(--blue-light); color: var(--blue-accent); border: none; border-radius: 8px; padding: 8px 14px; font-size: 0.8rem; cursor: pointer; font-family: 'DM Sans', sans-serif;">← Zurück</button>` : ''}
+      <button onclick="${isLast ? 'endTour()' : `tourGo(${idx+1})`}" style="background: var(--blue-deep); color: white; border: none; border-radius: 8px; padding: 8px 18px; font-size: 0.85rem; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif;">${isLast ? 'Fertig ✓' : 'Weiter →'}</button>
+    </div>
+    <div style="padding: 0 20px 14px; display: flex; gap: 6px; justify-content: center;">
+      ${tourSteps.map((_, i) => `<div style="width: 8px; height: 8px; border-radius: 50%; background: ${i === idx ? 'var(--blue-accent)' : 'var(--border)'}; transition: background 0.2s;"></div>`).join('')}
+    </div>
+  `;
+
+  // Box positionieren
+  setTimeout(() => positionTourBox(target, step.position), 100);
+}
+
+function positionTourBox(target, position) {
+  const box = document.getElementById('tour-box');
+  if (!box) return;
+  
+  const margin = 16;
+  const boxW = 320;
+  const boxH = box.offsetHeight || 180;
+  const vw = window.innerWidth;
+  const vh = window.innerHeight;
+
+  let top, left;
+
+  if (target) {
+    const rect = target.getBoundingClientRect();
+    switch (position) {
+      case 'bottom':
+        top = rect.bottom + margin;
+        left = rect.left + rect.width / 2 - boxW / 2;
+        break;
+      case 'right':
+        top = rect.top + rect.height / 2 - boxH / 2;
+        left = rect.right + margin;
+        break;
+      case 'left':
+        top = rect.top + rect.height / 2 - boxH / 2;
+        left = rect.left - boxW - margin;
+        break;
+      default:
+        top = rect.bottom + margin;
+        left = rect.left;
+    }
+  } else {
+    top = vh / 2 - boxH / 2;
+    left = vw / 2 - boxW / 2;
+  }
+
+  // Clamp to viewport
+  left = Math.max(margin, Math.min(left, vw - boxW - margin));
+  top = Math.max(margin + 60, Math.min(top, vh - boxH - margin));
+
+  box.style.left = left + 'px';
+  box.style.top = top + 'px';
+}
+
+function tourGo(idx) {
+  tourCurrentStep = idx;
+  showTourStep(idx);
+}
+
+function endTour() {
+  tourActive = false;
+  // Highlight entfernen
+  document.querySelectorAll('.tour-highlight').forEach(el => {
+    el.classList.remove('tour-highlight');
+    el.style.outline = '';
+    el.style.outlineOffset = '';
+    el.style.zIndex = '';
+    el.style.borderRadius = '';
+  });
+  // Zurück zu Produkte
+  const produkte = document.getElementById('panel-produkte');
+  if (!produkte.classList.contains('active')) {
+    const btn = document.querySelector('.main-tab');
+    showMainTab('produkte', btn);
+  }
+  // Overlay ausblenden
+  const backdrop = document.getElementById('tour-backdrop');
+  if (backdrop) { backdrop.style.opacity = '0'; setTimeout(() => backdrop.style.display = 'none', 300); }
+  const box = document.getElementById('tour-box');
+  if (box) { box.style.opacity = '0'; setTimeout(() => box.remove(), 300); }
+  const bdEl = document.getElementById('tour-backdrop');
+  if (bdEl) setTimeout(() => bdEl.remove(), 400);
+}
 
 // Initialisierung
 async function init() {
