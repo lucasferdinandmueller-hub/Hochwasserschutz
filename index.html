@@ -561,7 +561,7 @@
     transition: opacity 0.2s;
   }
   /* hover handled via JS */
-  .house-zone .zone-fill { opacity: 0; transition: opacity 0.25s; }
+  .house-zone .zone-fill { fill-opacity: 0; transition: fill-opacity 0.2s, fill 0.2s; }
   .tooltip-box {
     position: fixed;
     background: var(--blue-deep);
@@ -1145,7 +1145,6 @@
 
 
   /* Zone hover effect – handled via JS hoverZone() */
-  .house-zone .zone-fill { transition: fill-opacity 0.2s, fill 0.2s; }
   /* ─── PROGRESSIVE DISCLOSURE ────────────────────── */
   .card-detail-toggle {
     display: flex; align-items: center; gap: 6px;
@@ -1501,7 +1500,7 @@
      style="cursor:pointer">
     <rect x="45.34" y="174.53" width="18.35" height="20.46"
       fill="#1e7fc2" fill-opacity="0" stroke="none"
-      class="zone-fill" style="transition: fill-opacity 0.2s"/>
+      class="zone-fill"/>
   </g>
 
   <!-- ZONE: Tür -->
@@ -1512,7 +1511,7 @@
      style="cursor:pointer">
     <rect x="74.03" y="174.73" width="15.83" height="29.51"
       fill="#1e7fc2" fill-opacity="0" stroke="none"
-      class="zone-fill" style="transition: fill-opacity 0.2s"/>
+      class="zone-fill"/>
   </g>
 
   <!-- ZONE: Garagentor -->
@@ -1523,7 +1522,7 @@
      style="cursor:pointer">
     <rect x="113.82" y="176.84" width="56.96" height="27.28"
       fill="#1e7fc2" fill-opacity="0" stroke="none"
-      class="zone-fill" style="transition: fill-opacity 0.2s"/>
+      class="zone-fill"/>
   </g>
 
   <!-- Hochwasserstand-Linie -->
