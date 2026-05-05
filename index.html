@@ -1903,9 +1903,7 @@ function activateFilter(cat) {
   btns.forEach(b => {
     if (b.getAttribute('onclick') && b.getAttribute('onclick').includes(cat)) found = b;
   });
-  filterProducts(cat, found);
-  highlightZone(cat);
-  // Kein automatisches Scrollen – verhindert unerwünschtes Springen
+  filterProducts(cat, found); // syncZoneHighlights wird darin aufgerufen
 }
 
 // Suche: Zonen zurücksetzen
@@ -2365,20 +2363,21 @@ function hoverZone(cat, entering) {
   fill.style.fillOpacity = entering ? '0.35' : '0';
 }
 
-// Dauerhaft aktive Zone setzen (grün)
-function highlightZone(cat) {
-  // Alle Zonen zurücksetzen
+// Spiegelt den echten Zustand der activeProductKategorien in die Grafik
+function syncZoneHighlights() {
   document.querySelectorAll('.zone-fill').forEach(el => {
     el.style.fill = '#1e7fc2';
     el.style.fillOpacity = '0';
   });
-  activeZoneCategory = cat;
-  if (!cat) return;
-  const fill = getZoneFill(cat);
-  if (!fill) return;
-  fill.style.fill = '#27ae60';
-  fill.style.fillOpacity = '0.45';
+  for (const cat of activeProductKategorien) {
+    const fill = getZoneFill(cat);
+    if (fill) {
+      fill.style.fill = '#27ae60';
+      fill.style.fillOpacity = '0.45';
+    }
+  }
 }
+function highlightZone(cat) { syncZoneHighlights(); }
 
 function getZoneFill(cat) {
   // Wir suchen das zone-fill-Element innerhalb der Zone, die onclick activateFilter(cat) enthält
