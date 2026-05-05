@@ -2358,8 +2358,9 @@ let activeZoneCategory = null;
 function hoverZone(cat, entering) {
   const fill = getZoneFill(cat);
   if (!fill) return;
-  // Nur anzeigen wenn diese Zone NICHT aktiv ist
-  if (activeZoneCategory === cat) return;
+  const isActive = activeProductKategorien.has(cat);
+  if (isActive) return; // aktive Zone nicht anfassen
+  fill.style.fill = '#1e7fc2';
   fill.style.fillOpacity = entering ? '0.35' : '0';
 }
 
