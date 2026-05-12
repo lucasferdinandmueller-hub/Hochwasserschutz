@@ -946,7 +946,6 @@
     background: var(--surface);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
-    overflow: hidden;
     transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
     display: flex;
     flex-direction: column;
@@ -967,6 +966,8 @@
     justify-content: center;
     color: var(--blue-accent);
     font-size: 3rem;
+    overflow: hidden;
+    border-radius: var(--radius) var(--radius) 0 0;
   }
   .card-body { padding: 20px; flex: 1; display: flex; flex-direction: column; gap: 8px; }
   .card-category {
@@ -1016,8 +1017,8 @@
   }
   .cert-badge-corner {
     position: absolute;
-    top: 12px;
-    right: 12px;
+    top: -10px;
+    right: -6px;
     background: #e8f7ef;
     color: #1a7a4a;
     border: 1.5px solid #b2dfc4;
@@ -1863,7 +1864,6 @@ function renderProducts(filter) {
         <div class="card-desc">${p.desc}</div>
         <div class="card-meta">
           <div class="card-meta-row"><span>Hersteller</span> ${p.hersteller}</div>
-          ${p.zertifizierung ? `<div class="card-meta-row"><span>Zertifizierung</span> <span class="cert-badge">${p.zertifizierung}</span></div>` : ''}
           ${p.kosten ? `<div class="card-meta-row"><span>Kosten</span> ${p.kosten}</div>` : ''}
         </div>
         ${(p.specs || p.installation || p.wartung) ? `
@@ -1970,7 +1970,6 @@ function searchProducts(query) {
         <div class="card-desc">${p.desc}</div>
         <div class="card-meta">
           <div class="card-meta-row"><span>Hersteller</span> ${p.hersteller}</div>
-          ${p.zertifizierung ? `<div class="card-meta-row"><span>Zertifizierung</span> <span class="cert-badge">${p.zertifizierung}</span></div>` : ''}
         </div>
         ${p.link && p.link !== '#' ? `<a class="card-link" href="${p.link}" target="_blank">Zur Website des Anbieters →</a>` : ''}
       </div>
