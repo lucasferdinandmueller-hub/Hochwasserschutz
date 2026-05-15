@@ -1533,64 +1533,69 @@
      id="house-bg" />
 
   <!-- ZONE: Tür -->
-  <path
-     class="zone-overlay"
-     d="m 422.85252,376.72316 -2.56274,-107.63519 45.39715,1.46442 2.19664,113.12678 z"
-     fill="#1e7fc2"
-     fill-opacity="0"
-     stroke="none"
+  <g class="house-zone"
      onmouseenter="hoverZone('Wasserdichte Türen', true); showTooltip('tooltip-aussen-neu', event, 'Wasserdichte Türen', 'Wasserdichte Türen mit umlaufender Dichtung – schützen Hauseingänge vor eindringendem Hochwasser.')"
      onmouseleave="hoverZone('Wasserdichte Türen', false); hideTooltip('tooltip-aussen-neu')"
-     onclick="activateFilter('Wasserdichte Türen')"
-  />
+     onclick="activateFilter('Wasserdichte Türen')">
+    <path
+       class="zone-fill"
+       d="m 422.85252,376.72316 -2.56274,-107.63519 45.39715,1.46442 2.19664,113.12678 z"
+       fill="#1e7fc2"
+       fill-opacity="0"
+       stroke="none"/>
+  </g>
 
   <!-- ZONE: Garagentor -->
-  <path
-     class="zone-overlay"
-     d="m 84.393606,203.99436 3.106513,125.81378 134.615571,20.19234 -2.07101,-151.18364 z"
-     fill="#1e7fc2"
-     fill-opacity="0"
-     stroke="none"
+  <g class="house-zone"
      onmouseenter="hoverZone('Wasserdichte Tore/Garagentore', true); showTooltip('tooltip-aussen-neu', event, 'Wasserdichte Tore &amp; Garagentore', 'Garagentore mit integrierten Dichtungssystemen – beim Schließen automatisch abgedichtet.')"
      onmouseleave="hoverZone('Wasserdichte Tore/Garagentore', false); hideTooltip('tooltip-aussen-neu')"
-     onclick="activateFilter('Wasserdichte Tore/Garagentore')"
-  />
+     onclick="activateFilter('Wasserdichte Tore/Garagentore')">
+    <path
+       class="zone-fill"
+       d="m 84.393606,203.99436 3.106513,125.81378 134.615571,20.19234 -2.07101,-151.18364 z"
+       fill="#1e7fc2"
+       fill-opacity="0"
+       stroke="none"/>
+  </g>
 
   <!-- ZONE: Fenster 2 -->
-  <path
-     class="zone-overlay"
-     d="m 644.08372,402.29345 v 19.15683 l 30.54738,3.10651 0.25887,-18.63908 z"
-     fill="#1e7fc2"
-     fill-opacity="0"
-     stroke="none"
+  <g class="house-zone"
      onmouseenter="hoverZone('Wasserdichte Fenster', true); showTooltip('tooltip-aussen-neu', event, 'Wasserdichte Fenster', 'Hochwasserfeste Fenster – verstärktes Glas, wasserdichte Rahmen und Dichtungen.')"
      onmouseleave="hoverZone('Wasserdichte Fenster', false); hideTooltip('tooltip-aussen-neu')"
-     onclick="activateFilter('Wasserdichte Fenster')"
-  />
+     onclick="activateFilter('Wasserdichte Fenster')">
+    <path
+       class="zone-fill"
+       d="m 644.08372,402.29345 v 19.15683 l 30.54738,3.10651 0.25887,-18.63908 z"
+       fill="#1e7fc2"
+       fill-opacity="0"
+       stroke="none"/>
+  </g>
 
   <!-- ZONE: Fenster 1 -->
-  <path
-     class="zone-overlay"
-     d="m 701.29533,408.2476 0.25888,20.19233 33.65389,3.36539 -0.25887,-18.12132 z"
-     fill="#1e7fc2"
-     fill-opacity="0"
-     stroke="none"
+  <g class="house-zone"
      onmouseenter="hoverZone('Wasserdichte Fenster', true); showTooltip('tooltip-aussen-neu', event, 'Wasserdichte Fenster', 'Hochwasserfeste Fenster – verstärktes Glas, wasserdichte Rahmen und Dichtungen.')"
      onmouseleave="hoverZone('Wasserdichte Fenster', false); hideTooltip('tooltip-aussen-neu')"
-     onclick="activateFilter('Wasserdichte Fenster')"
-  />
+     onclick="activateFilter('Wasserdichte Fenster')">
+    <path
+       class="zone-fill"
+       d="m 701.29533,408.2476 0.25888,20.19233 33.65389,3.36539 -0.25887,-18.12132 z"
+       fill="#1e7fc2"
+       fill-opacity="0"
+       stroke="none"/>
+  </g>
 
   <!-- ZONE: Barrieren -->
-  <path
-     class="zone-overlay"
-     d="m 845.70505,436.5815 7.68822,0.36611 -1.28137,45.76326 48.50906,-42.65136 -0.18305,-35.14618 -3.66107,-0.36611 z"
-     fill="#1e7fc2"
-     fill-opacity="0"
-     stroke="none"
+  <g class="house-zone"
      onmouseenter="hoverZone('Barrieren-Systeme', true); showTooltip('tooltip-aussen-neu', event, 'Barrierensysteme', 'Mobile und stationäre Hochwasser-Barrieren schützen Gebäude und Grundstücke vor eindringendem Wasser.')"
      onmouseleave="hoverZone('Barrieren-Systeme', false); hideTooltip('tooltip-aussen-neu')"
-     onclick="activateFilter('Barrieren-Systeme')"
-  />
+     onclick="activateFilter('Barrieren-Systeme')">
+    <path
+       class="zone-fill"
+       d="m 845.70505,436.5815 7.68822,0.36611 -1.28137,45.76326 48.50906,-42.65136 -0.18305,-35.14618 -3.66107,-0.36611 z"
+       fill="#1e7fc2"
+       fill-opacity="0"
+       stroke="none"/>
+  </g>
 
 </svg>
         </div>
@@ -2409,7 +2414,8 @@ if (sessionStorage.getItem('pw_ok') === '1') {
 const zoneCategories = {
   'Wasserdichte Türen': 'zone-tueren',
   'Wasserdichte Fenster': 'zone-fenster',
-  'Wasserdichte Tore/Garagentore': 'zone-garagen'
+  'Wasserdichte Tore/Garagentore': 'zone-garagen',
+  'Barrieren-Systeme': 'zone-barrieren'
 };
 
 // Aktiv gehighlightete Zone (durch Klick/Filter)
@@ -2417,12 +2423,14 @@ let activeZoneCategory = null;
 
 // Beim Hover temporär aufleuchten lassen
 function hoverZone(cat, entering) {
-  const fill = getZoneFill(cat);
-  if (!fill) return;
+  const fills = getZoneFills(cat);
+  if (!fills.length) return;
   const isActive = activeProductKategorien.has(cat);
   if (isActive) return; // aktive Zone nicht anfassen
-  fill.style.fill = '#1e7fc2';
-  fill.style.fillOpacity = entering ? '0.35' : '0';
+  fills.forEach(fill => {
+    fill.style.fill = '#1e7fc2';
+    fill.style.fillOpacity = entering ? '0.35' : '0';
+  });
 }
 
 // Spiegelt den echten Zustand der activeProductKategorien in die Grafik
@@ -2432,28 +2440,34 @@ function syncZoneHighlights() {
     el.style.fillOpacity = '0';
   });
   for (const cat of activeProductKategorien) {
-    const fill = getZoneFill(cat);
-    if (fill) {
+    const fills = getZoneFills(cat);
+    fills.forEach(fill => {
       fill.style.fill = '#27ae60';
       fill.style.fillOpacity = '0.45';
-    }
+    });
   }
 }
 function highlightZone(cat) { syncZoneHighlights(); }
 
 function getZoneFill(cat) {
-  // Wir suchen das zone-fill-Element innerhalb der Zone, die onclick activateFilter(cat) enthält
+  const fills = getZoneFills(cat);
+  return fills.length ? fills[0] : null;
+}
+
+function getZoneFills(cat) {
+  // Alle zone-fill-Elemente, deren Eltern-Zone diese Kategorie enthält
+  const result = [];
   const zones = document.querySelectorAll('.house-zone');
   for (const zone of zones) {
-    if (zone.getAttribute('onclick') && zone.getAttribute('onclick').includes(cat.replace(/'/g, "'"))) {
-      return zone.querySelector('.zone-fill');
-    }
-    // Alternativ über onmouseenter
-    if (zone.getAttribute('onmouseenter') && zone.getAttribute('onmouseenter').includes(cat)) {
-      return zone.querySelector('.zone-fill');
+    if (zone.getAttribute('onclick') && zone.getAttribute('onclick').includes(cat)) {
+      const fill = zone.querySelector('.zone-fill');
+      if (fill) result.push(fill);
+    } else if (zone.getAttribute('onmouseenter') && zone.getAttribute('onmouseenter').includes(cat)) {
+      const fill = zone.querySelector('.zone-fill');
+      if (fill) result.push(fill);
     }
   }
-  return null;
+  return result;
 }
 
 // ═══════════════════════════════════════════════
