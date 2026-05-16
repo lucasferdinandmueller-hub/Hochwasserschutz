@@ -1049,6 +1049,79 @@
   .cert-badge-corner::before {
     content: none;
   }
+  .cert-badge-corner {
+    cursor: pointer;
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .cert-badge-corner:hover {
+    transform: scale(1.08);
+    box-shadow: 0 4px 14px rgba(26,122,74,0.35), inset 0 1px 2px rgba(255,255,255,0.6);
+  }
+  /* Zertifikat-Modal */
+  .cert-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.45);
+    z-index: 9999;
+    align-items: center;
+    justify-content: center;
+  }
+  .cert-modal-overlay.open {
+    display: flex;
+  }
+  .cert-modal {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+    max-width: 420px;
+    width: 90%;
+    padding: 32px 28px 24px;
+    position: relative;
+    animation: certModalIn 0.18s ease;
+  }
+  @keyframes certModalIn {
+    from { opacity: 0; transform: scale(0.93) translateY(10px); }
+    to   { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  .cert-modal-close {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    background: none;
+    border: none;
+    font-size: 1.4rem;
+    color: #999;
+    cursor: pointer;
+    line-height: 1;
+    padding: 2px 6px;
+    border-radius: 6px;
+    transition: background 0.12s, color 0.12s;
+  }
+  .cert-modal-close:hover {
+    background: #f0f0f0;
+    color: #333;
+  }
+  .cert-modal-norm {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #1a7a4a;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 6px;
+  }
+  .cert-modal-title {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #1a2e4a;
+    margin-bottom: 12px;
+    line-height: 1.3;
+  }
+  .cert-modal-body {
+    font-size: 0.88rem;
+    color: #444;
+    line-height: 1.6;
+  }
   .card-link {
     display: inline-flex;
     align-items: center;
@@ -2076,12 +2149,84 @@ function hideTooltip(tooltipId) {
 // ═══════════════════════════════════════════════
 
 // Hilfsfunktion: Zertifizierungen aufteilen und Siegel-HTML erzeugen
+// Normen-Lexikon: Kürzel → { title, beschreibung }
+const CERT_INFO = {
+  'DIN EN 13123': {
+    title: 'Prüfnorm für wasserdichte Fenster & Türen',
+    beschreibung: 'Diese europäische Norm definiert die Anforderungen und Prüfverfahren für den Widerstand von Fenstern, Türen und Abschlüssen gegen Wasserdruckbelastung. Ein Produkt mit diesem Zertifikat wurde unter kontrollierten Bedingungen auf Wasserdichtheit geprüft und erfüllt die festgelegten Schutzklassen.'
+  },
+  'DIN EN 13124': {
+    title: 'Prüfverfahren für wasserdichte Fenster & Türen',
+    beschreibung: 'Ergänzende Prüfnorm zur DIN EN 13123, die die genauen Testmethoden zur Bestimmung der Wasserdruckbeständigkeit von Fenstern, Türen und Abschlüssen festlegt. Sie beschreibt, wie Probekörper aufgebaut und unter Druckwasser geprüft werden müssen.'
+  },
+  'DIN EN 1027': {
+    title: 'Schlagregendichtheit von Fenstern & Türen',
+    beschreibung: 'Diese Norm prüft, ob Fenster und Türen bei gleichzeitiger Wind- und Regenbelastung wasserdicht bleiben. Der Test simuliert Extremwetterbedingungen und stellt sicher, dass kein Wasser in das Gebäude eindringt.'
+  },
+  'DIN EN 13564': {
+    title: 'Rückstausicherungen für Abwasseranlagen',
+    beschreibung: 'Diese Norm legt die Anforderungen und Prüfbedingungen für Rückstauverschlüsse in Abwassersystemen fest. Produkte nach dieser Norm verhindern zuverlässig, dass bei Kanalüberlastung (z.B. Starkregen) Abwasser in das Gebäude zurückgedrückt wird.'
+  },
+  'DIN EN 13564-1': {
+    title: 'Rückstauverschlüsse – Anforderungen',
+    beschreibung: 'Teil 1 der Normenreihe für Rückstauverschlüsse definiert die grundlegenden Anforderungen an Material, Konstruktion und Funktion. Geprüfte Produkte halten dem Rückstaudruck aus dem Kanalnetz stand und schützen tiefliegende Räume zuverlässig.'
+  },
+  'DIN 18195': {
+    title: 'Bauwerksabdichtungen',
+    beschreibung: 'Diese Norm regelt die Planung und Ausführung von Abdichtungen an und in Bauwerken – etwa Kellerwänden, Bodenplatten und erdberührten Flächen. Sie definiert Schutzklassen je nach Wassereinwirkung (Bodenfeuchtigkeit, Druckwasser) und stellt die Langlebigkeit der Abdichtung sicher.'
+  },
+  'DIN EN ISO 9001': {
+    title: 'Qualitätsmanagementsystem',
+    beschreibung: 'ISO 9001 ist die international anerkannte Norm für Qualitätsmanagementsysteme. Sie bescheinigt dem Hersteller, dass Prozesse, Produktion und Kontrolle systematisch auf gleichbleibend hohe Qualität ausgerichtet sind – unabhängig vom spezifischen Produkt.'
+  },
+  'ISO 9001': {
+    title: 'Qualitätsmanagementsystem',
+    beschreibung: 'ISO 9001 ist die international anerkannte Norm für Qualitätsmanagementsysteme. Sie bescheinigt dem Hersteller, dass Prozesse, Produktion und Kontrolle systematisch auf gleichbleibend hohe Qualität ausgerichtet sind – unabhängig vom spezifischen Produkt.'
+  },
+  'CE': {
+    title: 'CE-Kennzeichnung',
+    beschreibung: 'Das CE-Zeichen bestätigt, dass das Produkt die grundlegenden Anforderungen der zutreffenden EU-Richtlinien erfüllt und im europäischen Wirtschaftsraum in Verkehr gebracht werden darf. Es ist kein Gütezeichen, sondern ein Konformitätsnachweis gegenüber europäischen Sicherheits- und Gesundheitsanforderungen.'
+  },
+  'DIBT': {
+    title: 'Zulassung des Deutschen Instituts für Bautechnik',
+    beschreibung: 'Eine allgemeine bauaufsichtliche Zulassung (abZ) des DIBt bestätigt, dass das Produkt die baurechtlichen Anforderungen in Deutschland erfüllt und für den beschriebenen Verwendungszweck geeignet ist. Die Zulassung ist besonders relevant für Bauprodukte ohne harmonisierte europäische Norm.'
+  },
+  'DIN EN 12050': {
+    title: 'Abwasserhebeanlagen für Gebäude',
+    beschreibung: 'Diese Norm definiert Anforderungen und Prüfbedingungen für Abwasserhebeanlagen, die Schmutzwasser aus tiefliegenden Räumen (z.B. Kellertoiletten) gegen den Rückstaudruck in die Kanalisation pumpen. Geprüfte Anlagen arbeiten zuverlässig auch bei vollem Kanalnetz.'
+  },
+  'DIN EN 752': {
+    title: 'Entwässerungssysteme außerhalb von Gebäuden',
+    beschreibung: 'Diese Norm gibt Anforderungen und Planungsgrundsätze für Kanalnetze außerhalb von Gebäuden vor – inklusive Bemessung gegen Überlastung bei Starkregenereignissen. Sie ist Grundlage für hochwassersichere Entwässerungsplanung auf Grundstücksebene.'
+  }
+};
+
+function openCertModal(normKey) {
+  const info = CERT_INFO[normKey];
+  const modal = document.getElementById('cert-modal-overlay');
+  document.getElementById('cert-modal-norm').textContent = normKey;
+  if (info) {
+    document.getElementById('cert-modal-title').textContent = info.title;
+    document.getElementById('cert-modal-body').textContent = info.beschreibung;
+  } else {
+    document.getElementById('cert-modal-title').textContent = normKey;
+    document.getElementById('cert-modal-body').textContent =
+      'Zu dieser Zertifizierung liegen aktuell keine weiteren Informationen vor.';
+  }
+  modal.classList.add('open');
+}
+
+function closeCertModal() {
+  document.getElementById('cert-modal-overlay').classList.remove('open');
+}
+
 function renderCertBadges(zertStr) {
   if (!zertStr || !zertStr.trim()) return '';
   const certs = zertStr.split(/[,;]+/).map(s => s.trim()).filter(Boolean);
-  const badges = certs.map(c =>
-    `<div class="cert-badge-corner">${c}</div>`
-  ).join('');
+  const badges = certs.map(c => {
+    const safe = c.replace(/'/g, "\'");
+    return `<div class="cert-badge-corner" onclick="openCertModal('${safe}')" title="${c}">${c}</div>`;
+  }).join('');
   return `<div class="cert-badges-container">${badges}</div>`;
 }
 
@@ -2883,5 +3028,16 @@ if (!localStorage.getItem('infoSeen')) {
 
 init();
 </script>
+
+<!-- Zertifikat-Modal -->
+<div class="cert-modal-overlay" id="cert-modal-overlay" onclick="if(event.target===this)closeCertModal()">
+  <div class="cert-modal">
+    <button class="cert-modal-close" onclick="closeCertModal()" aria-label="Schließen">&times;</button>
+    <div class="cert-modal-norm" id="cert-modal-norm"></div>
+    <div class="cert-modal-title" id="cert-modal-title"></div>
+    <div class="cert-modal-body" id="cert-modal-body"></div>
+  </div>
+</div>
+
 </body>
 </html>
