@@ -117,7 +117,7 @@
     align-items: flex-start;
   }
   .products-left-col {
-    width: 500px;
+    width: 600px;
     flex-shrink: 0;
     display: flex;
     flex-direction: column;
@@ -2080,7 +2080,7 @@ function renderCertBadges(zertStr) {
   if (!zertStr || !zertStr.trim()) return '';
   const certs = zertStr.split(/[,;]+/).map(s => s.trim()).filter(Boolean);
   const badges = certs.map(c =>
-    `<div class="cert-badge-corner"><span>geprüft nach</span><span>${c}</span></div>`
+    `<div class="cert-badge-corner">${c}</div>`
   ).join('');
   return `<div class="cert-badges-container">${badges}</div>`;
 }
