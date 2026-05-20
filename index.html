@@ -561,7 +561,7 @@
     transition: opacity 0.2s;
   }
   /* hover handled via JS */
-  .house-zone .zone-fill { fill-opacity: 0; transition: fill-opacity 0.2s, fill 0.2s; }
+  .house-zone .zone-fill { fill: #f5c800; fill-opacity: 0.18; transition: fill-opacity 0.2s, fill 0.2s; }
   .tooltip-box {
     position: fixed;
     background: var(--blue-deep);
@@ -1619,8 +1619,8 @@
 
   <!-- ZONE: Tür -->
   <g class="house-zone"
-     onmouseenter="hoverZone('Wasserdichte Türen', true); showTooltip('tooltip-aussen-neu', event, 'Wasserdichte Türen', 'Wasserdichte Türen mit umlaufender Dichtung – schützen Hauseingänge vor eindringendem Hochwasser.')"
-     onmouseleave="hoverZone('Wasserdichte Türen', false); hideTooltip('tooltip-aussen-neu')"
+     onmouseenter="hoverZone('Wasserdichte Türen', true)"
+     onmouseleave="hoverZone('Wasserdichte Türen', false)"
      onclick="activateFilter('Wasserdichte Türen')">
     <path
        class="zone-fill"
@@ -1632,8 +1632,8 @@
 
   <!-- ZONE: Garagentor -->
   <g class="house-zone"
-     onmouseenter="hoverZone('Wasserdichte Tore/Garagentore', true); showTooltip('tooltip-aussen-neu', event, 'Wasserdichte Tore &amp; Garagentore', 'Garagentore mit integrierten Dichtungssystemen – beim Schließen automatisch abgedichtet.')"
-     onmouseleave="hoverZone('Wasserdichte Tore/Garagentore', false); hideTooltip('tooltip-aussen-neu')"
+     onmouseenter="hoverZone('Wasserdichte Tore/Garagentore', true)"
+     onmouseleave="hoverZone('Wasserdichte Tore/Garagentore', false)"
      onclick="activateFilter('Wasserdichte Tore/Garagentore')">
     <path
        class="zone-fill"
@@ -1645,8 +1645,8 @@
 
   <!-- ZONE: Fenster 2 -->
   <g class="house-zone"
-     onmouseenter="hoverZone('Wasserdichte Fenster', true); showTooltip('tooltip-aussen-neu', event, 'Wasserdichte Fenster', 'Hochwasserfeste Fenster – verstärktes Glas, wasserdichte Rahmen und Dichtungen.')"
-     onmouseleave="hoverZone('Wasserdichte Fenster', false); hideTooltip('tooltip-aussen-neu')"
+     onmouseenter="hoverZone('Wasserdichte Fenster', true)"
+     onmouseleave="hoverZone('Wasserdichte Fenster', false)"
      onclick="activateFilter('Wasserdichte Fenster')">
     <path
        class="zone-fill"
@@ -1658,8 +1658,8 @@
 
   <!-- ZONE: Fenster 1 -->
   <g class="house-zone"
-     onmouseenter="hoverZone('Wasserdichte Fenster', true); showTooltip('tooltip-aussen-neu', event, 'Wasserdichte Fenster', 'Hochwasserfeste Fenster – verstärktes Glas, wasserdichte Rahmen und Dichtungen.')"
-     onmouseleave="hoverZone('Wasserdichte Fenster', false); hideTooltip('tooltip-aussen-neu')"
+     onmouseenter="hoverZone('Wasserdichte Fenster', true)"
+     onmouseleave="hoverZone('Wasserdichte Fenster', false)"
      onclick="activateFilter('Wasserdichte Fenster')">
     <path
        class="zone-fill"
@@ -1671,8 +1671,8 @@
 
   <!-- ZONE: Barrieren -->
   <g class="house-zone"
-     onmouseenter="hoverZone('Barrieren-Systeme', true); showTooltip('tooltip-aussen-neu', event, 'Barrierensysteme', 'Mobile und stationäre Hochwasser-Barrieren schützen Gebäude und Grundstücke vor eindringendem Wasser.')"
-     onmouseleave="hoverZone('Barrieren-Systeme', false); hideTooltip('tooltip-aussen-neu')"
+     onmouseenter="hoverZone('Barrieren-Systeme', true)"
+     onmouseleave="hoverZone('Barrieren-Systeme', false)"
      onclick="activateFilter('Barrieren-Systeme')">
     <path
        class="zone-fill"
@@ -1768,9 +1768,9 @@
 
           <!-- PLZ SUCHE -->
           <div class="plz-box">
-            <div class="plz-box-title">Betriebe in meiner Nähe</div>
+            <div class="plz-box-title">Eigene Postleitzahl hier eingeben</div>
             <div class="plz-row" style="flex-direction:column;gap:8px;">
-              <input type="text" id="plz-input" class="plz-input" placeholder="Postleitzahl eingeben …" maxlength="5" oninput="filterByPlz(this.value)" style="width:100%;"/>
+              <input type="text" id="plz-input" class="plz-input" placeholder="PLZ eingeben" maxlength="5" oninput="filterByPlz(this.value)" style="width:100%;"/>
               <button class="plz-btn" onclick="filterByPlz(document.getElementById('plz-input').value)" style="width:100%;padding:10px 12px;">Suchen</button>
             </div>
             <div id="plz-info" class="plz-info"></div>
@@ -2576,16 +2576,16 @@ function hoverZone(cat, entering) {
   const isActive = activeProductKategorien.has(cat);
   if (isActive) return; // aktive Zone nicht anfassen
   fills.forEach(fill => {
-    fill.style.fill = '#1e7fc2';
-    fill.style.fillOpacity = entering ? '0.35' : '0';
+    fill.style.fill = entering ? '#1e7fc2' : '#f5c800';
+    fill.style.fillOpacity = entering ? '0.35' : '0.18';
   });
 }
 
 // Spiegelt den echten Zustand der activeProductKategorien in die Grafik
 function syncZoneHighlights() {
   document.querySelectorAll('.zone-fill').forEach(el => {
-    el.style.fill = '#1e7fc2';
-    el.style.fillOpacity = '0';
+    el.style.fill = '#f5c800';
+    el.style.fillOpacity = '0.18';
   });
   for (const cat of activeProductKategorien) {
     const fills = getZoneFills(cat);
