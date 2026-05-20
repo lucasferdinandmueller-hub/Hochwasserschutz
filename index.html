@@ -2151,53 +2151,33 @@ function hideTooltip(tooltipId) {
 // Hilfsfunktion: Zertifizierungen aufteilen und Siegel-HTML erzeugen
 // Normen-Lexikon: Kürzel → { title, beschreibung }
 const CERT_INFO = {
-  'DIN EN 13123': {
-    title: 'Prüfnorm für wasserdichte Fenster & Türen',
-    beschreibung: 'Diese europäische Norm definiert die Anforderungen und Prüfverfahren für den Widerstand von Fenstern, Türen und Abschlüssen gegen Wasserdruckbelastung. Ein Produkt mit diesem Zertifikat wurde unter kontrollierten Bedingungen auf Wasserdichtheit geprüft und erfüllt die festgelegten Schutzklassen.'
+  'EVH': {
+    title: 'Gütezeichen des Europaverbandes Hochwasserschutz e.V.',
+    beschreibung: 'Das EVH-Gütezeichen wird vom Güteausschuss des Europaverbandes Hochwasserschutz e.V. vergeben und bewertet mobile sowie fest installierte Hochwasserschutzsysteme. Im Bereich Objektschutz (Prüfzeichen „O") werden Produkte nach drei messtechnisch erfassten Kriterien klassifiziert: Lagerungsvolumen, Aufbauzeit und Dichtheit bei einem Meter Einstauhöhe. Das Gütezeichen muss alle drei Jahre durch einen erneuten Konformitätsnachweis erneuert werden.'
   },
-  'DIN EN 13124': {
-    title: 'Prüfverfahren für wasserdichte Fenster & Türen',
-    beschreibung: 'Ergänzende Prüfnorm zur DIN EN 13123, die die genauen Testmethoden zur Bestimmung der Wasserdruckbeständigkeit von Fenstern, Türen und Abschlüssen festlegt. Sie beschreibt, wie Probekörper aufgebaut und unter Druckwasser geprüft werden müssen.'
+  'VdS 3855': {
+    title: 'VdS-Richtlinie 3855 – Hochwasserschutzsysteme im Objektschutz',
+    beschreibung: 'Die VdS 3855 der VdS Schadenverhütung GmbH (seit März 2022) legt Anforderungen und Prüfkriterien für Hochwasserschutzsysteme im Objektschutz fest. Bewertet werden bis zu fünf Leistungseigenschaften – darunter hydrostatische Belastung (Pflicht), Anströmbeständigkeit, Überströmung und Anprallbeständigkeit – jeweils in den Klassen A (niedrig) bis C (hoch). Die Wasserdurchlässigkeit wird über 24 Stunden bei maximaler Anstauhöhe gemessen.'
   },
-  'DIN EN 1027': {
-    title: 'Schlagregendichtheit von Fenstern & Türen',
-    beschreibung: 'Diese Norm prüft, ob Fenster und Türen bei gleichzeitiger Wind- und Regenbelastung wasserdicht bleiben. Der Test simuliert Extremwetterbedingungen und stellt sicher, dass kein Wasser in das Gebäude eindringt.'
+  'ift FE-07/1': {
+    title: 'ift-Richtlinie FE-07/1 – Hochwasserbeständige Fenster und Türen',
+    beschreibung: 'Die vom ift Rosenheim entwickelte Richtlinie FE-07/1 ist eine anerkannte Prüfgrundlage für Fenster und Türen des direkten Objektschutzes. Das Bauteil wird in seiner vorgesehenen Einbausituation stufenweise unter Wasser gesetzt (Standardprüfstufen: 100 mm und 500 mm, je 24 Stunden) und die eindringende Wassermenge gemessen. Bei fließendem Wasser wird zusätzlich ein Pendelschlagtest zur Simulation von Treibgutaufprall durchgeführt.'
   },
-  'DIN EN 13564': {
-    title: 'Rückstausicherungen für Abwasseranlagen',
-    beschreibung: 'Diese Norm legt die Anforderungen und Prüfbedingungen für Rückstauverschlüsse in Abwassersystemen fest. Produkte nach dieser Norm verhindern zuverlässig, dass bei Kanalüberlastung (z.B. Starkregen) Abwasser in das Gebäude zurückgedrückt wird.'
+  'PfB HW200801': {
+    title: 'PfB-Richtlinie HW200801 – Hochwasserbeständige Abschlüsse und Bauteile',
+    beschreibung: 'Die vom PfB Rosenheim entwickelte Richtlinie HW200801 dient als Prüfgrundlage für Fenster, Türen, Tore und vorgesetzte Schutzelemente im direkten Objektschutz. Das Bauteil wird bei Wassersäulenhöhen von 100 mm und 500 mm (je 24 Stunden) auf Dichtheit geprüft; optional auch unter fließendem Wasser mit Pendelschlagtest. Die Klassifizierung erfolgt nach Wasserdichtheit und Hochwasserbeständigkeit unter statischer und dynamischer Beanspruchung.'
   },
-  'DIN EN 13564-1': {
-    title: 'Rückstauverschlüsse – Anforderungen',
-    beschreibung: 'Teil 1 der Normenreihe für Rückstauverschlüsse definiert die grundlegenden Anforderungen an Material, Konstruktion und Funktion. Geprüfte Produkte halten dem Rückstaudruck aus dem Kanalnetz stand und schützen tiefliegende Räume zuverlässig.'
+  'EN 13241': {
+    title: 'EN 13241 – Harmonisierte Produktnorm für Tore',
+    beschreibung: 'Die EN 13241 ist die europäische Produktnorm für Tore und Schranken, die in allen EU-Mitgliedstaaten verbindlich gilt. Der Widerstand gegen eindringendes Wasser ist eine optionale Leistungseigenschaft, klassifiziert in fünf Stufen (Klasse 0 bis 4). Wichtiger Hinweis: Die Norm ist keine Hochwasserschutznorm im engeren Sinne – die Klassen beziehen sich auf allgemeine Witterungseinflüsse, nicht auf Staudrücke bei Hochwasserereignissen. Für Tore im Hochwasserschutz sind ergänzende Nachweise (z.B. VdS 3855 oder PfB HW200801) erforderlich.'
   },
-  'DIN 18195': {
-    title: 'Bauwerksabdichtungen',
-    beschreibung: 'Diese Norm regelt die Planung und Ausführung von Abdichtungen an und in Bauwerken – etwa Kellerwänden, Bodenplatten und erdberührten Flächen. Sie definiert Schutzklassen je nach Wassereinwirkung (Bodenfeuchtigkeit, Druckwasser) und stellt die Langlebigkeit der Abdichtung sicher.'
+  'ANSI/FM 2510': {
+    title: 'ANSI/FM 2510 – US-amerikanischer Standard für Hochwasserschutzprodukte',
+    beschreibung: 'Der von FM Approvals, ASFPM und dem U.S. Army Corps of Engineers entwickelte Standard umfasst vier Produktkategorien: temporäre Perimeterbarrieren, Öffnungsbarrieren, Rückstauventile und Hochwasserpumpen. Die Zertifizierung erfolgt in drei Stufen nach geprüfter hydrostatischer Mindesttiefe: Silver (0,30 m), Gold (0,60 m) und Platinum (0,90 m). Neben der Produktprüfung sind eine Werksinspektion sowie regelmäßige Folgeaudits vorgeschrieben. Der Standard wird international anerkannt und dient FEMA sowie dem NFIP als Referenz.'
   },
-  'DIN EN ISO 9001': {
-    title: 'Qualitätsmanagementsystem',
-    beschreibung: 'ISO 9001 ist die international anerkannte Norm für Qualitätsmanagementsysteme. Sie bescheinigt dem Hersteller, dass Prozesse, Produktion und Kontrolle systematisch auf gleichbleibend hohe Qualität ausgerichtet sind – unabhängig vom spezifischen Produkt.'
-  },
-  'ISO 9001': {
-    title: 'Qualitätsmanagementsystem',
-    beschreibung: 'ISO 9001 ist die international anerkannte Norm für Qualitätsmanagementsysteme. Sie bescheinigt dem Hersteller, dass Prozesse, Produktion und Kontrolle systematisch auf gleichbleibend hohe Qualität ausgerichtet sind – unabhängig vom spezifischen Produkt.'
-  },
-  'CE': {
-    title: 'CE-Kennzeichnung',
-    beschreibung: 'Das CE-Zeichen bestätigt, dass das Produkt die grundlegenden Anforderungen der zutreffenden EU-Richtlinien erfüllt und im europäischen Wirtschaftsraum in Verkehr gebracht werden darf. Es ist kein Gütezeichen, sondern ein Konformitätsnachweis gegenüber europäischen Sicherheits- und Gesundheitsanforderungen.'
-  },
-  'DIBT': {
-    title: 'Zulassung des Deutschen Instituts für Bautechnik',
-    beschreibung: 'Eine allgemeine bauaufsichtliche Zulassung (abZ) des DIBt bestätigt, dass das Produkt die baurechtlichen Anforderungen in Deutschland erfüllt und für den beschriebenen Verwendungszweck geeignet ist. Die Zulassung ist besonders relevant für Bauprodukte ohne harmonisierte europäische Norm.'
-  },
-  'DIN EN 12050': {
-    title: 'Abwasserhebeanlagen für Gebäude',
-    beschreibung: 'Diese Norm definiert Anforderungen und Prüfbedingungen für Abwasserhebeanlagen, die Schmutzwasser aus tiefliegenden Räumen (z.B. Kellertoiletten) gegen den Rückstaudruck in die Kanalisation pumpen. Geprüfte Anlagen arbeiten zuverlässig auch bei vollem Kanalnetz.'
-  },
-  'DIN EN 752': {
-    title: 'Entwässerungssysteme außerhalb von Gebäuden',
-    beschreibung: 'Diese Norm gibt Anforderungen und Planungsgrundsätze für Kanalnetze außerhalb von Gebäuden vor – inklusive Bemessung gegen Überlastung bei Starkregenereignissen. Sie ist Grundlage für hochwassersichere Entwässerungsplanung auf Grundstücksebene.'
+  'BS 851188': {
+    title: 'BS 851188 – Britische Norm für Hochwasserschutzprodukte',
+    beschreibung: 'Die seit September 2019 gültige britische Norm BS 851188 des BSI gliedert sich in zwei Teile: Teil 1 für Produkte des direkten Objektschutzes (z.B. Türschutzschilde, Dammbalken, Kellerfensterabdichtungen) und Teil 2 für Perimeterbarrierensysteme. Geprüft werden Dichtheit unter hydrostatischem Druck, Strukturfestigkeit und Gebrauchstauglichkeit bei wiederholtem Einsatz. Die Zertifizierung berechtigt zur Vergabe des BSI-Kitemark-Siegels und wird zunehmend auch außerhalb Großbritanniens als freiwilliger Qualitätsnachweis genutzt.'
   }
 };
 
