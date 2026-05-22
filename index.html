@@ -486,6 +486,148 @@
     max-width: 560px;
     line-height: 1.6;
   }
+  .hero-buttons {
+    display: flex; gap: 10px; flex-wrap: wrap; margin-top: 18px;
+  }
+  .hero-btn {
+    background: rgba(255,255,255,0.12); color: white;
+    border: 1.5px solid rgba(255,255,255,0.3); border-radius: 100px;
+    padding: 8px 18px; font-size: 0.82rem; font-weight: 600;
+    cursor: pointer; font-family: 'DM Sans', sans-serif;
+    transition: all 0.2s; white-space: nowrap; letter-spacing: 0.01em;
+  }
+  .hero-btn:hover { background: rgba(255,255,255,0.22); border-color: rgba(255,255,255,0.6); }
+  .hero-btn-feedback {
+    background: rgba(30,127,194,0.35); border-color: rgba(30,127,194,0.7);
+  }
+  .hero-btn-feedback:hover { background: var(--blue-accent); border-color: var(--blue-accent); }
+
+  /* ─── HOVER-CURSOR LABEL ──── */
+  #zone-cursor-label {
+    position: fixed; z-index: 9999; pointer-events: none;
+    background: var(--blue-deep); color: white;
+    font-family: 'DM Sans', sans-serif; font-size: 0.78rem; font-weight: 600;
+    padding: 5px 12px; border-radius: 100px;
+    box-shadow: 0 4px 16px rgba(10,37,64,0.25);
+    white-space: nowrap; opacity: 0; transition: opacity 0.15s;
+    display: flex; align-items: center; gap: 6px;
+  }
+  #zone-cursor-label.visible { opacity: 1; }
+
+  /* ─── CERT OVERVIEW MODAL ──── */
+  #cert-overview-overlay {
+    position: fixed; inset: 0; z-index: 9998;
+    background: rgba(10,37,64,0.6); backdrop-filter: blur(3px);
+    display: flex; align-items: center; justify-content: center;
+  }
+  #cert-overview-overlay.hidden { display: none; }
+  #cert-overview-box {
+    background: white; border-radius: 20px;
+    max-width: 680px; width: 94%; max-height: 88vh;
+    display: flex; flex-direction: column;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.3);
+    overflow: hidden; animation: modalIn 0.3s ease;
+  }
+  .cert-ov-header {
+    background: linear-gradient(135deg, var(--blue-deep), var(--blue-mid));
+    padding: 28px 32px 24px; color: white; flex-shrink: 0;
+  }
+  .cert-ov-header h2 { font-family: 'DM Serif Display', serif; font-size: 1.5rem; margin-bottom: 6px; }
+  .cert-ov-header p { font-size: 0.84rem; color: rgba(255,255,255,0.7); line-height: 1.6; }
+  .cert-ov-warning {
+    margin-top: 12px; background: rgba(255,200,0,0.18);
+    border: 1px solid rgba(255,200,0,0.45); border-radius: 8px;
+    padding: 10px 14px; font-size: 0.8rem; color: #ffe58a; line-height: 1.5;
+  }
+  .cert-ov-body { overflow-y: auto; padding: 24px 32px 28px; display: flex; flex-direction: column; gap: 18px; }
+  .cert-ov-item {
+    border: 1.5px solid var(--border); border-radius: 12px;
+    padding: 16px 20px; transition: border-color 0.2s;
+  }
+  .cert-ov-item:hover { border-color: var(--blue-accent); }
+  .cert-ov-norm { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue-accent); margin-bottom: 4px; }
+  .cert-ov-title { font-family: 'DM Serif Display', serif; font-size: 0.95rem; color: var(--blue-deep); margin-bottom: 6px; }
+  .cert-ov-desc { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
+  .cert-ov-footer { padding: 0 32px 24px; display: flex; justify-content: flex-end; flex-shrink: 0; }
+
+  /* ─── FEEDBACK MODAL ──── */
+  #feedback-overlay {
+    position: fixed; inset: 0; z-index: 9998;
+    background: rgba(10,37,64,0.6); backdrop-filter: blur(3px);
+    display: flex; align-items: center; justify-content: center;
+  }
+  #feedback-overlay.hidden { display: none; }
+  #feedback-box {
+    background: white; border-radius: 20px;
+    max-width: 500px; width: 94%;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.3);
+    overflow: hidden; animation: modalIn 0.3s ease;
+  }
+  .feedback-header {
+    background: linear-gradient(135deg, var(--blue-deep), var(--blue-mid));
+    padding: 26px 32px 22px; color: white;
+  }
+  .feedback-header h2 { font-family: 'DM Serif Display', serif; font-size: 1.4rem; margin-bottom: 4px; }
+  .feedback-header p { font-size: 0.82rem; color: rgba(255,255,255,0.7); }
+  .feedback-body { padding: 24px 32px 28px; }
+  .feedback-intro { font-size: 0.84rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 16px; background: var(--blue-light); border-radius: 10px; padding: 14px 16px; border-left: 4px solid var(--blue-accent); }
+  .feedback-label { font-size: 0.78rem; font-weight: 700; color: var(--blue-deep); margin-bottom: 6px; letter-spacing: 0.03em; }
+  .feedback-textarea {
+    width: 100%; min-height: 120px; border-radius: 10px;
+    border: 1.5px solid var(--border); padding: 12px 14px;
+    font-family: 'DM Sans', sans-serif; font-size: 0.88rem;
+    color: var(--text); resize: vertical; outline: none; transition: border-color 0.2s;
+  }
+  .feedback-textarea:focus { border-color: var(--blue-accent); }
+  .feedback-footer { display: flex; gap: 10px; justify-content: flex-end; margin-top: 16px; }
+  .feedback-send-btn {
+    background: var(--blue-deep); color: white; border: none;
+    border-radius: 10px; padding: 10px 24px; font-size: 0.9rem; font-weight: 600;
+    cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background 0.2s;
+  }
+  .feedback-send-btn:hover { background: var(--blue-accent); }
+  .feedback-cancel-btn {
+    background: transparent; color: var(--text-muted);
+    border: 1.5px solid var(--border); border-radius: 10px;
+    padding: 10px 18px; font-size: 0.85rem;
+    cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.2s;
+  }
+  .feedback-cancel-btn:hover { border-color: var(--blue-accent); color: var(--blue-accent); }
+  .feedback-success { color: #27ae60; font-size: 0.85rem; text-align: center; padding: 10px 0 0; display: none; }
+  .feedback-success.visible { display: block; }
+  .feedback-formspree-note { font-size: 0.73rem; color: var(--text-muted); margin-top: 12px; text-align: center; opacity: 0.7; }
+
+  /* ─── FÖRDER MODAL ──── */
+  #foerder-overlay {
+    position: fixed; inset: 0; z-index: 9998;
+    background: rgba(10,37,64,0.6); backdrop-filter: blur(3px);
+    display: flex; align-items: center; justify-content: center;
+  }
+  #foerder-overlay.hidden { display: none; }
+  #foerder-box {
+    background: white; border-radius: 20px;
+    max-width: 620px; width: 94%; max-height: 88vh;
+    display: flex; flex-direction: column;
+    box-shadow: 0 24px 80px rgba(0,0,0,0.3);
+    overflow: hidden; animation: modalIn 0.3s ease;
+  }
+  .foerder-header {
+    background: linear-gradient(135deg, var(--blue-deep), var(--blue-mid));
+    padding: 28px 32px 24px; color: white; flex-shrink: 0;
+  }
+  .foerder-header h2 { font-family: 'DM Serif Display', serif; font-size: 1.5rem; margin-bottom: 6px; }
+  .foerder-header p { font-size: 0.84rem; color: rgba(255,255,255,0.7); line-height: 1.6; }
+  .foerder-body { overflow-y: auto; padding: 24px 32px 28px; display: flex; flex-direction: column; gap: 16px; }
+  .foerder-block {
+    border: 1.5px solid var(--border); border-radius: 12px; padding: 16px 20px;
+    transition: border-color 0.2s;
+  }
+  .foerder-block:hover { border-color: var(--blue-accent); }
+  .foerder-block-title { font-family: 'DM Serif Display', serif; font-size: 1rem; color: var(--blue-deep); margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
+  .foerder-tag { font-size: 0.68rem; font-weight: 700; background: var(--blue-light); color: var(--blue-accent); padding: 2px 8px; border-radius: 100px; letter-spacing: 0.06em; text-transform: uppercase; }
+  .foerder-block-desc { font-size: 0.83rem; color: var(--text-muted); line-height: 1.65; }
+  .foerder-disclaimer { font-size: 0.78rem; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 14px; line-height: 1.6; font-style: italic; }
+  .foerder-footer { padding: 0 32px 24px; display: flex; justify-content: flex-end; flex-shrink: 0; }
 
   /* Bereich des Hauptinhalts */
   main { max-width: 1200px; margin: 0 auto; padding: 48px 24px 80px; }
@@ -1407,6 +1549,10 @@
     from { transform: translateY(20px); opacity: 0; }
     to   { transform: translateY(0);    opacity: 1; }
   }
+  @keyframes spin {
+    from { transform: rotate(0deg); }
+    to   { transform: rotate(360deg); }
+  }
   .info-header {
     background: linear-gradient(135deg, var(--blue-deep) 0%, var(--blue-mid) 100%);
     padding: 32px 36px 28px;
@@ -1541,10 +1687,7 @@
     <span id="bc-current">Übersicht</span>
   </div>
   <div class="nav-right">
-    <div class="nav-search-wrap">
-      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input type="text" id="nav-search" placeholder="Produkte suchen …" oninput="searchProducts(this.value)"/>
-    </div>
+
     <button class="nav-info-btn" onclick="startTour()" style="margin-right:4px;">Tour 🗺</button>
     <button class="nav-info-btn" onclick="showInfoModal()">Info</button>
     <button class="nav-hamburger" id="nav-hamburger" onclick="toggleMobileMenu()" aria-label="Menü">
@@ -1562,6 +1705,11 @@
   <div class="hero-inner">
     <h1>Hochwasserschutzelemente –<br>Produkte und Fachbetriebe im Überblick</h1>
     <p>Eine Übersicht von Produkten und Fachbetrieben zum privaten Hochwasserschutz.</p>
+    <div class="hero-buttons">
+      <button class="hero-btn" onclick="openCertOverview()">Zertifikate &amp; Normen</button>
+      <button class="hero-btn" onclick="openFoerderModal()">Fördermöglichkeiten</button>
+      <button class="hero-btn hero-btn-feedback" onclick="openFeedbackModal()">Feedback geben</button>
+    </div>
   </div>
 </div>
 
@@ -1737,6 +1885,18 @@
       </aside>
 
       </div><!-- end products-top-row -->
+
+      <!-- KATEGORIE-ERKLÄRUNGS-PANEL -->
+      <div class="category-info-panel" id="category-info-panel" style="display:none;">
+        <div class="cat-info-text">
+          <div class="cat-info-title" id="cat-info-title"></div>
+          <div class="cat-info-desc" id="cat-info-desc"></div>
+          <div id="cat-info-img-wrap" style="margin-top:12px;display:none;">
+            <img id="cat-info-img" src="" alt="Erklärungsgrafik" style="max-width:100%;border-radius:8px;border:1px solid var(--border);">
+          </div>
+        </div>
+      </div>
+
       </div><!-- end products-left-col -->
 
       <!-- RIGHT COLUMN: Produkte -->
@@ -1766,14 +1926,15 @@
         <!-- UNTERE REIHE: PLZ links, Filter rechts -->
         <div class="inst-top-row">
 
-          <!-- PLZ SUCHE -->
+          <!-- ADRESSSUCHE -->
           <div class="plz-box">
-            <div class="plz-box-title">Eigene Postleitzahl hier eingeben</div>
+            <div class="plz-box-title">Eigene Adresse eingeben</div>
             <div class="plz-row" style="flex-direction:column;gap:8px;">
-              <input type="text" id="plz-input" class="plz-input" placeholder="PLZ eingeben" maxlength="5" oninput="filterByPlz(this.value)" style="width:100%;"/>
-              <button class="plz-btn" onclick="filterByPlz(document.getElementById('plz-input').value)" style="width:100%;padding:10px 12px;">Suchen</button>
+              <input type="text" id="addr-input" class="plz-input" placeholder="z. B. Hauptstr. 1, 50667 Köln" style="width:100%;"
+                     onkeydown="if(event.key==='Enter') searchByAddress()"/>
+              <button class="plz-btn" onclick="searchByAddress()" id="addr-btn" style="width:100%;padding:10px 12px;">Betriebe in meiner Nähe suchen</button>
             </div>
-            <div id="plz-info" class="plz-info"></div>
+            <div id="addr-info" class="plz-info"></div>
           </div>
 
           <!-- KATEGORIE FILTER -->
@@ -1841,6 +2002,81 @@
   </div>
 </footer>
 
+<!-- CURSOR HOVER LABEL -->
+<div id="zone-cursor-label"></div>
+
+<!-- ZERTIFIKATE ÜBERSICHT MODAL -->
+<div id="cert-overview-overlay" class="hidden" onclick="if(event.target===this)closeCertOverview()">
+  <div id="cert-overview-box">
+    <div class="cert-ov-header">
+      <h2>Zertifikate &amp; Normen im Hochwasserschutz</h2>
+      <p>Übersicht aller auf dieser Plattform relevanten Prüfnormen und Gütezeichen.</p>
+      <div class="cert-ov-warning">
+        <strong>Wichtiger Hinweis:</strong> Hochwasserschutzzertifikate sind keine allgemeinen Bau- oder Qualitätsnormen. Sie prüfen gezielt die Dichtheit, Belastbarkeit und Einsatzeignung unter Hochwasserbedingungen. Allgemeine Normen (z.&thinsp;B. für Schlagregendichtheit oder Wärmeschutz) sind kein Ersatz für spezifische Hochwasserzulassungen.
+      </div>
+    </div>
+    <div class="cert-ov-body" id="cert-overview-list"></div>
+    <div class="cert-ov-footer">
+      <button onclick="closeCertOverview()" style="background:var(--blue-deep);color:white;border:none;border-radius:10px;padding:11px 28px;font-size:0.9rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">Schließen</button>
+    </div>
+  </div>
+</div>
+
+<!-- FÖRDERMÖGLICHKEITEN MODAL -->
+<div id="foerder-overlay" class="hidden" onclick="if(event.target===this)closeFoerderModal()">
+  <div id="foerder-box">
+    <div class="foerder-header">
+      <h2>Fördermöglichkeiten</h2>
+      <p>Hinweise auf finanzielle Unterstützung für private Hochwasserschutzmaßnahmen.</p>
+    </div>
+    <div class="foerder-body">
+      <div class="foerder-block">
+        <div class="foerder-block-title">Bundesförderung – KfW-Programm <span class="foerder-tag">Bund</span></div>
+        <div class="foerder-block-desc">Im Rahmen des KfW-Programms „Bundesförderung für effiziente Gebäude" (BEG) können Maßnahmen zum Schutz vor Naturgefahren wie Hochwasser förderfähig sein, sofern sie Teil einer umfassenden energetischen Sanierung sind. Die KfW bietet zudem zinsgünstige Kredite über das Programm 134 (Wohngebäude) an. Aktuelle Konditionen und Fördersätze sind direkt bei der KfW oder einem Finanzierungspartner zu erfragen.</div>
+      </div>
+      <div class="foerder-block">
+        <div class="foerder-block-title">Landesförderprogramme <span class="foerder-tag">Länder</span></div>
+        <div class="foerder-block-desc">Viele Bundesländer haben eigene Förderprogramme für den privaten Hochwasserschutz aufgelegt – insbesondere nach größeren Hochwasserereignissen. Diese Programme variieren stark in Umfang, Förderquote und Antragstellung. Zuständig sind in der Regel die Landesumweltministerien oder Bezirksregierungen. Es empfiehlt sich, die Website des jeweiligen Landesministeriums zu prüfen oder eine Beratung bei einem lokalen Wasserwirtschaftsamt zu suchen.</div>
+      </div>
+      <div class="foerder-block">
+        <div class="foerder-block-title">Kommunale Förderprogramme <span class="foerder-tag">Kommunen</span></div>
+        <div class="foerder-block-desc">Einzelne Städte und Gemeinden bieten ergänzende Zuschüsse für Hochwasserschutzmaßnahmen an Privatgebäuden. Sprechen Sie dazu Ihr lokales Stadtplanungsamt oder die Gemeindeverwaltung an. Auch Energieberatungen der Verbraucherzentrale können Hinweise auf regionale Programme geben.</div>
+      </div>
+      <div class="foerder-block">
+        <div class="foerder-block-title">Gebäudeversicherung &amp; Elementarschadenschutz <span class="foerder-tag">Versicherung</span></div>
+        <div class="foerder-block-desc">Elementarschadenversicherungen können einen Teil der Kosten nach Hochwasserschäden übernehmen. Einige Versicherer bieten Rabatte oder günstigere Konditionen, wenn nachweislich Hochwasserschutzmaßnahmen umgesetzt wurden. Sprechen Sie Ihren Versicherungsanbieter gezielt auf Anpassungsmöglichkeiten Ihres Tarifs an.</div>
+      </div>
+      <div class="foerder-disclaimer">Die Angaben auf dieser Seite sind allgemeiner Natur und ohne Gewähr. Förderprogramme ändern sich regelmäßig. Für verbindliche Informationen wenden Sie sich bitte direkt an die genannten Institutionen oder eine unabhängige Beratungsstelle.</div>
+    </div>
+    <div class="foerder-footer">
+      <button onclick="closeFoerderModal()" style="background:var(--blue-deep);color:white;border:none;border-radius:10px;padding:11px 28px;font-size:0.9rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">Schließen</button>
+    </div>
+  </div>
+</div>
+
+<!-- FEEDBACK MODAL -->
+<div id="feedback-overlay" class="hidden" onclick="if(event.target===this)closeFeedbackModal()">
+  <div id="feedback-box">
+    <div class="feedback-header">
+      <h2>Feedback geben</h2>
+      <p>Helfen Sie mit, diese Plattform zu verbessern.</p>
+    </div>
+    <div class="feedback-body">
+      <div class="feedback-intro">
+        Bei dieser Seite handelt es sich um einen Prototypen im Testlauf, der im Rahmen einer Masterarbeit entwickelt wurde. Um Fehler zu beheben und die Plattform stets weiterzuentwickeln, ist Ihr Feedback besonders wertvoll. Was funktioniert gut? Was fehlt? Was ist unklar? Jede Rückmeldung – egal wie kurz – hilft dabei, die Plattform nutzerfreundlicher zu gestalten.
+      </div>
+      <div class="feedback-label">Ihr Feedback</div>
+      <textarea class="feedback-textarea" id="feedback-text" placeholder="Bitte schreiben Sie hier Ihr Feedback …"></textarea>
+      <div class="feedback-footer">
+        <button class="feedback-cancel-btn" onclick="closeFeedbackModal()">Abbrechen</button>
+        <button class="feedback-send-btn" onclick="sendFeedback()">Absenden</button>
+      </div>
+      <div id="feedback-success" class="feedback-success">Vielen Dank für Ihr Feedback!</div>
+      <div class="feedback-formspree-note">Formspree-ID: Bitte <code>FORMSPREE_ID</code> im Quellcode ersetzen · Ihre Rückmeldung wird per E-Mail weitergeleitet.</div>
+    </div>
+  </div>
+</div>
+
 <!-- LEGAL MODAL -->
 <div id="legal-overlay" class="hidden" style="position:fixed;inset:0;z-index:9998;background:rgba(10,37,64,0.6);align-items:center;justify-content:center;backdrop-filter:blur(3px);" onclick="if(event.target===this)closeLegalModal()">
   <div style="background:white;border-radius:16px;max-width:560px;width:92%;max-height:80vh;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 24px 80px rgba(0,0,0,0.3);">
@@ -1883,7 +2119,7 @@ const products = [
     wartung: 'Jährliche Reinigung des Siebs, Funktionstest vor der Hochwassersaison',
     aktualisiert: 'Januar 2026',
     link: '#',
-    icon: '🔧'
+    icon: ''
   },
   {
     name: 'AquaDoor Steel 90',
@@ -1897,7 +2133,7 @@ const products = [
     wartung: 'Dichtungen alle 3 Jahre prüfen, bewegliche Teile ölen',
     aktualisiert: 'Februar 2026',
     link: '#',
-    icon: '🚪'
+    icon: ''
   }
 ];
 
@@ -1906,44 +2142,33 @@ const products = [
 // ═══════════════════════════════════════════════
 const categoryInfo = {
   'Barrieren-Systeme': {
-    icon: '🛡',
     desc: 'Barrieren-Systeme werden vor gefährdeten Öffnungen aufgestellt und verhindern das Eindringen von Wasser. Mobile Varianten lassen sich schnell aufbauen, stationäre sind dauerhaft installiert.'
   },
   'Pumpen': {
-    icon: '💧',
     desc: 'Pumpen fördern eingedrungenes Wasser aktiv ab. Tauchpumpen eignen sich für überflutete Keller, Schmutzwasserpumpen auch für feste Partikel. Der automatische Schwimmerschalter aktiviert die Pumpe selbstständig.'
   },
   'Wasserdichte Türen': {
-    icon: '🚪',
     desc: 'Wasserdichte Türen verfügen über umlaufende Dichtungen und druckfeste Rahmen. Sie schützen Gebäudeeingänge vor eindringendem Hochwasser und sind in verschiedenen Schutzniveaus erhältlich.'
   },
   'Wasserdichte Fenster': {
-    icon: '🪟',
     desc: 'Hochwasserfeste Fenster – inklusive Kellerfenster – kombinieren verstärktes Glas mit wasserdichten Rahmen und Dichtungen. Kellerfenster sind besonders gefährdet da sie unter Geländeniveau liegen; spezielle Abdichtungen und Lichtschachtabdeckungen schützen diese Schwachstellen.'
   },
-
   'Wasserdichte Tore/Garagentore': {
-    icon: '🏠',
     desc: 'Garagentore mit Hochwasserschutz verfügen über integrierte Dichtungssysteme an der Unterseite und den Seiten. Beim Schließen wird automatisch abgedichtet – ohne zusätzlichen Aufwand.'
   },
   'Rückstausicherungen': {
-    icon: '🔒',
-    desc: 'Rückstausicherungen verhindern, dass Abwasser bei Starkregen aus Kanalisation und Abflüssen ins Haus drückt. Rückstauverschlüsse oder Hebeanalgen sind die gängigsten Lösungen.'
+    desc: 'Rückstausicherungen verhindern, dass Abwasser bei Starkregen aus Kanalisation und Abflüssen ins Haus drückt. Rückstauverschlüsse oder Hebeanlagen sind die gängigsten Lösungen.'
   },
   'Hebeanlagen': {
-    icon: '⬆️',
     desc: 'Hebeanlagen pumpen Abwasser aus tiefer gelegenen Bereichen (Keller, Tiefgaragen) aktiv in die Kanalisation. Sie kommen zum Einsatz, wenn kein natürliches Gefälle vorhanden ist.'
   },
   'Sandsäcke & mobiler Schutz': {
-    icon: '🛍',
     desc: 'Sandsäcke, Schlauchdämme und ähnliche temporäre Schutzelemente sind schnell einsetzbar und flexibel. Sie eignen sich als kurzfristige Schutzmaßnahme vor allem bei unvorhergesehenen Hochwasserereignissen.'
   },
   'Frühwarnung & Überwachung': {
-    icon: '📡',
     desc: 'Frühwarnsysteme erfassen Wasserstände und Niederschlagsmengen in Echtzeit und alarmieren Nutzer rechtzeitig. Sensoren und Apps ermöglichen eine frühzeitige Reaktion und helfen, Schäden zu minimieren.'
   },
   'Sonstiges': {
-    icon: '📦',
     desc: 'Weitere Produkte und Maßnahmen, die keiner der Hauptkategorien zuzuordnen sind – z. B. Dichtmassen, Beschichtungen oder Schutzfolien.'
   }
 };
@@ -1995,7 +2220,7 @@ function renderProducts(filter) {
         </div>
         ${(p.specs || p.installation || p.wartung) ? `
         <button class="card-detail-toggle" onclick="toggleCardDetail(this)" aria-expanded="false">
-          Details & Spezifikationen <i class="toggle-arrow">▾</i>
+          Details &amp; Spezifikationen <i class="toggle-arrow">&#9662;</i>
         </button>
         <div class="card-detail-panel">
           ${p.specs ? `<div class="detail-row"><span>Technische Specs</span>${p.specs}</div>` : ''}
@@ -2003,10 +2228,11 @@ function renderProducts(filter) {
           ${p.wartung ? `<div class="detail-row"><span>Wartung</span>${p.wartung}</div>` : ''}
           ${p.aktualisiert ? `<div class="detail-row"><span>Letzte Aktualisierung</span>${p.aktualisiert}</div>` : ''}
         </div>` : ''}
-        ${p.link && p.link !== '#' ? `<a class="card-link" href="${p.link}" target="_blank">Zur Website des Anbieters →</a>` : ''}
+        ${p.link && p.link !== '#' ? `<a class="card-link" href="${p.link}" target="_blank">Zur Website des Anbieters &rarr;</a>` : ''}
       </div>
     </div>
   `).join('');
+  updateCategoryPanel();
 }
 
 function filterProducts(cat, btn) {
@@ -2242,7 +2468,7 @@ function showDataWarning(message) {
   if (!grid) return;
   grid.innerHTML = `
     <div class="no-results">
-      <div style="font-size:2rem;margin-bottom:12px">⚠️</div>
+      <div style="font-size:2rem;margin-bottom:12px"><svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#e67e22" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
       ${message}
     </div>`;
 }
@@ -2266,7 +2492,7 @@ function hasInstallateurContent(entry) {
 function showLoading() {
   document.getElementById('product-grid').innerHTML = `
     <div class="no-results">
-      <div style="font-size:2rem;margin-bottom:12px">⏳</div>
+      <div style="font-size:2rem;margin-bottom:12px"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--blue-accent)" stroke-width="2" style="animation:spin 1s linear infinite;"><circle cx="12" cy="12" r="10" stroke-dasharray="31.4" stroke-dashoffset="10"/></svg></div>
       Produkte werden geladen...
     </div>`;
 }
@@ -2320,7 +2546,7 @@ function renderCardImage(icon) {
     return `<img src="${icon}" alt="Produktbild" style="width:100%;height:100%;object-fit:contain;">`;
   }
   // Es ist ein Emoji oder leer
-  return icon || '📦';
+  return icon || '';
 }
 
 // Aktualisiert die Zahlen in der Sidebar basierend auf geladenen Produkten
@@ -2384,54 +2610,117 @@ async function loadInstallateure() {
   }
 }
 
-// PLZ-Filter
-function filterByPlz(plz) {
-  const info = document.getElementById('plz-info');
-  if (!plz || plz.length < 4) {
-    if (info) info.textContent = '';
-    renderInstallateure('Alle');
-    return;
-  }
-  const filtered = installateure
-    .filter(hasInstallateurContent)
-    .filter(i => i.plz && i.plz.startsWith(plz.substring(0,2)));
-  if (info) info.textContent = filtered.length
-    ? `${filtered.length} Betrieb(e) im Bereich ${plz} gefunden`
-    : 'Keine Betriebe in diesem Bereich gefunden.';
-  const grid = document.getElementById('installateure-grid');
-  const countLabel = document.getElementById('inst-count-label');
-  if (countLabel) countLabel.textContent = filtered.length + ' Einträge';
-  if (!filtered.length) {
-    grid.innerHTML = '<div class="no-results">Keine Fachbetriebe für diese Postleitzahl gefunden.</div>';
-    return;
-  }
-  grid.innerHTML = filtered.map(renderInstCard).join('');
+// ═══════════════════════════════════════════════
+// ADRESSSUCHE MIT NOMINATIM (OpenStreetMap)
+// ═══════════════════════════════════════════════
+
+// Haversine: Entfernung in km zwischen zwei Koordinaten
+function haversineKm(lat1, lon1, lat2, lon2) {
+  const R = 6371;
+  const dLat = (lat2 - lat1) * Math.PI / 180;
+  const dLon = (lon2 - lon1) * Math.PI / 180;
+  const a = Math.sin(dLat/2)**2 + Math.cos(lat1*Math.PI/180) * Math.cos(lat2*Math.PI/180) * Math.sin(dLon/2)**2;
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 }
 
-function renderInstCard(i) {
+async function searchByAddress() {
+  const input = document.getElementById('addr-input').value.trim();
+  const info = document.getElementById('addr-info');
+  const btn = document.getElementById('addr-btn');
+  if (!input) { info.textContent = 'Bitte eine Adresse eingeben.'; return; }
+
+  info.innerHTML = '<em>Adresse wird gesucht …</em>';
+  btn.disabled = true;
+
+  try {
+    const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(input)}&format=json&limit=1&countrycodes=de`;
+    const res = await fetch(url, { headers: { 'Accept-Language': 'de', 'User-Agent': 'HochwasserSchutzPlattform/1.0' } });
+    const data = await res.json();
+
+    if (!data.length) {
+      info.textContent = 'Adresse nicht gefunden. Bitte genauer eingeben (Ort + PLZ).';
+      btn.disabled = false;
+      return;
+    }
+
+    const { lat, lon, display_name } = data[0];
+    const userLat = parseFloat(lat);
+    const userLon = parseFloat(lon);
+
+    // Karte auf Nutzerstandort setzen
+    if (leafletMap) {
+      leafletMap.setView([userLat, userLon], 10);
+      L.marker([userLat, userLon], {
+        icon: L.divIcon({ className: '', html: '<div style="width:14px;height:14px;background:#e74c3c;border-radius:50%;border:3px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.4);"></div>', iconAnchor:[7,7] })
+      }).addTo(leafletMap).bindPopup('<strong>Ihr Standort</strong>').openPopup();
+    }
+
+    // Filter: Betriebe, bei denen lat+lng+radius_km vorhanden sind und Nutzer im Radius liegt
+    const allInst = installateure.filter(hasInstallateurContent);
+    const inRadius = allInst.filter(i => {
+      if (!i.lat || !i.lng || !i.radius_km) return false;
+      const dist = haversineKm(userLat, userLon, parseFloat(i.lat), parseFloat(i.lng));
+      return dist <= parseFloat(i.radius_km);
+    });
+
+    const grid = document.getElementById('installateure-grid');
+    const countLabel = document.getElementById('inst-count-label');
+
+    if (!inRadius.length) {
+      info.textContent = `Standort gefunden: ${display_name.split(',').slice(0,3).join(',')}. Kein Betrieb bietet Einsatz an diesem Standort an.`;
+      if (countLabel) countLabel.textContent = '0 Einträge';
+      grid.innerHTML = '<div class="no-results">Für Ihre Adresse wurden keine Betriebe gefunden, die ihren Einsatzradius hinterlegt haben.<br><br>Tipp: Alle Betriebe anzeigen und direkt Kontakt aufnehmen.</div>';
+    } else {
+      info.innerHTML = `<strong>Standort:</strong> ${display_name.split(',').slice(0,3).join(',')}.<br>${inRadius.length} Betrieb(e) bieten Einsatz bei Ihnen an.`;
+      if (countLabel) countLabel.textContent = inRadius.length + ' Einträge';
+      grid.innerHTML = inRadius.map(renderInstCard).join('');
+    }
+
+  } catch (e) {
+    info.textContent = 'Fehler bei der Adresssuche. Bitte erneut versuchen.';
+    console.error(e);
+  }
+  btn.disabled = false;
+}
+
+
+function renderInstCard(i, distKm) {
+  const uniqueId = 'inst-' + Math.random().toString(36).substr(2,6);
   const logo = (i.logo_url && i.logo_url !== '#')
     ? '<img class="installateur-logo" src="' + i.logo_url + '" alt="Logo ' + i.name + '">'
-    : '<div class="installateur-logo-placeholder">🏢</div>';
-  const region = i.region ? '<div class="installateur-region">&#128205; ' + i.region + '</div>' : '';
+    : '<div class="installateur-logo-placeholder" style="width:36px;height:36px;background:var(--blue-light);border-radius:8px;"></div>';
+  const link = (i.website && i.website !== '#')
+    ? '<a class="card-link" href="' + i.website + '" target="_blank">Website besuchen &rarr;</a>'
+    : '';
+
+  const region = i.region ? '<div class="installateur-region" style="font-size:0.8rem;color:var(--text-muted);margin-top:4px;">&#128205; ' + i.region + '</div>' : '';
+  const distLabel = (distKm !== undefined) ? '<span style="font-size:0.75rem;background:var(--blue-light);color:var(--blue-accent);border-radius:100px;padding:2px 8px;font-weight:600;">' + distKm.toFixed(1) + ' km</span>' : '';
+
   const badges = i.kategorien
     ? '<div class="installateur-kategorien">' + i.kategorien.split(',').map(k => '<span class="kat-badge">' + k.trim() + '</span>').join('') + '</div>'
     : '';
-  const zert  = i.zertifizierung ? '<div class="installateur-meta-row"><span>Zertifizierung</span>' + i.zertifizierung + '</div>' : '';
-  const erf   = i.erfahrung      ? '<div class="installateur-meta-row"><span>Erfahrung</span>' + i.erfahrung + '</div>' : '';
-  const ums   = i.umsatz         ? '<div class="installateur-meta-row"><span>Umsatz</span>' + i.umsatz + '</div>' : '';
-  const tel   = i.telefon        ? '<div class="installateur-meta-row"><span>Telefon</span>' + i.telefon + '</div>' : '';
-  const mail  = i.email          ? '<div class="installateur-meta-row"><span>E-Mail</span>' + i.email + '</div>' : '';
-  const link  = (i.website && i.website !== '#')
-    ? '<a class="card-link" href="' + i.website + '" target="_blank">Website besuchen &#8594;</a>'
-    : '';
+  const zert = i.zertifizierung ? '<div class="installateur-meta-row"><span>Zertifizierung</span>' + i.zertifizierung + '</div>' : '';
+  const erf  = i.erfahrung      ? '<div class="installateur-meta-row"><span>Erfahrung</span>' + i.erfahrung + '</div>' : '';
+  const ums  = i.umsatz         ? '<div class="installateur-meta-row"><span>Umsatz</span>' + i.umsatz + '</div>' : '';
+  const tel  = i.telefon        ? '<div class="installateur-meta-row"><span>Telefon</span>' + i.telefon + '</div>' : '';
+  const mail = i.email          ? '<div class="installateur-meta-row"><span>E-Mail</span>' + i.email + '</div>' : '';
+  const hasDetails = zert || erf || ums || tel || mail || badges;
+
   return '<div class="installateur-card">'
-    + '<div class="installateur-logo-wrap">'
+    + '<div class="installateur-logo-wrap" style="display:flex;align-items:center;gap:10px;">'
     + logo
+    + '<div>'
     + '<div class="installateur-name">' + i.name + '</div>'
+    + region
     + '</div>'
-    + region + badges
-    + '<div class="installateur-meta">' + zert + erf + ums + tel + mail + '</div>'
+    + (distLabel ? '<div style="margin-left:auto;">' + distLabel + '</div>' : '')
+    + '</div>'
     + link
+    + (hasDetails ? '<button class="card-detail-toggle" onclick="toggleCardDetail(this)" aria-expanded="false" style="margin-top:10px;">Details anzeigen <i class="toggle-arrow">&#9662;</i></button>'
+      + '<div class="card-detail-panel">'
+      + (badges ? '<div style="margin-bottom:8px;">' + i.kategorien.split(',').map(k => '<span class="kat-badge">' + k.trim() + '</span>').join('') + '</div>' : '')
+      + '<div class="installateur-meta">' + zert + erf + ums + tel + mail + '</div>'
+      + '</div>' : '')
     + '</div>';
 }
 // Aktive Kategorien für Installateure (Mehrfachauswahl)
@@ -2569,17 +2858,8 @@ const zoneCategories = {
 // Aktiv gehighlightete Zone (durch Klick/Filter)
 let activeZoneCategory = null;
 
-// Beim Hover temporär aufleuchten lassen
-function hoverZone(cat, entering) {
-  const fills = getZoneFills(cat);
-  if (!fills.length) return;
-  const isActive = activeProductKategorien.has(cat);
-  if (isActive) return; // aktive Zone nicht anfassen
-  fills.forEach(fill => {
-    fill.style.fill = entering ? '#1e7fc2' : '#f5c800';
-    fill.style.fillOpacity = entering ? '0.35' : '0.18';
-  });
-}
+// hoverZone wird weiter unten mit Cursor-Label-Logik definiert
+
 
 // Spiegelt den echten Zustand der activeProductKategorien in die Grafik
 function syncZoneHighlights() {
@@ -2858,7 +3138,7 @@ async function init() {
     sheetProducts.forEach(p => products.push(p));
     console.log(`✅ ${products.length} Produkte aus Google Sheets geladen`);
   } else {
-    console.warn('⚠️ Google Sheets nicht erreichbar – Beispieldaten werden verwendet');
+    console.warn('Google Sheets nicht erreichbar – Beispieldaten werden verwendet');
   }
   updateSidebarCounts();
   renderProducts('Alle');
@@ -3002,9 +3282,178 @@ function closeInfoModal(dontShowAgain) {
 
 // Beim ersten Besuch automatisch anzeigen
 if (!localStorage.getItem('infoSeen')) {
-  // Kurz warten bis Seite geladen ist
   setTimeout(showInfoModal, 600);
 }
+
+// ═══════════════════════════════════════════════
+// (a) KATEGORIE-ERKLÄRUNGSPANEL
+// ═══════════════════════════════════════════════
+// Optionaler Pfad zu Erklärgrafiken – Schlüssel = Kategoriename, Wert = Bild-URL
+// Füge hier später deine Grafik-URLs ein:
+const categoryImages = {
+  // Beispiel: 'Wasserdichte Türen': 'bilder/tuer-erklaerung.png',
+};
+
+function updateCategoryPanel() {
+  const panel = document.getElementById('category-info-panel');
+  const titleEl = document.getElementById('cat-info-title');
+  const descEl = document.getElementById('cat-info-desc');
+  const imgWrap = document.getElementById('cat-info-img-wrap');
+  const imgEl = document.getElementById('cat-info-img');
+  if (!panel) return;
+
+  const isAll = activeProductKategorien.has('Alle') || activeProductKategorien.size === 0;
+  const cats = [...activeProductKategorien];
+  // Panel nur anzeigen, wenn genau eine Kategorie aktiv (nicht "Alle")
+  if (isAll || cats.length !== 1) {
+    panel.style.display = 'none';
+    return;
+  }
+  const cat = cats[0];
+  const info = categoryInfo[cat];
+  if (!info) { panel.style.display = 'none'; return; }
+
+  titleEl.textContent = cat;
+  descEl.textContent = info.desc;
+  // Erklärgrafik
+  const imgSrc = categoryImages[cat];
+  if (imgSrc) {
+    imgEl.src = imgSrc;
+    imgWrap.style.display = 'block';
+  } else {
+    imgWrap.style.display = 'none';
+  }
+  panel.style.display = 'flex';
+}
+
+// ═══════════════════════════════════════════════
+// (b) ZERTIFIKATE ÜBERSICHT
+// ═══════════════════════════════════════════════
+function openCertOverview() {
+  const list = document.getElementById('cert-overview-list');
+  list.innerHTML = Object.entries(CERT_INFO).map(([key, info]) => `
+    <div class="cert-ov-item">
+      <div class="cert-ov-norm">${key}</div>
+      <div class="cert-ov-title">${info.title}</div>
+      <div class="cert-ov-desc">${info.beschreibung}</div>
+    </div>
+  `).join('');
+  document.getElementById('cert-overview-overlay').classList.remove('hidden');
+}
+function closeCertOverview() {
+  document.getElementById('cert-overview-overlay').classList.add('hidden');
+}
+
+// ═══════════════════════════════════════════════
+// (e) FEEDBACK MODAL (Formspree)
+// ► Anleitung: Konto auf formspree.io anlegen → neues Formular erstellen
+//   → die Form-ID (z. B. "xabcdefg") unten bei FORMSPREE_ID eintragen
+// ═══════════════════════════════════════════════
+const FORMSPREE_ID = 'FORMSPREE_ID'; // ← hier deine ID eintragen
+
+function openFeedbackModal() {
+  document.getElementById('feedback-overlay').classList.remove('hidden');
+  document.getElementById('feedback-text').value = '';
+  document.getElementById('feedback-success').classList.remove('visible');
+}
+function closeFeedbackModal() {
+  document.getElementById('feedback-overlay').classList.add('hidden');
+}
+async function sendFeedback() {
+  const text = document.getElementById('feedback-text').value.trim();
+  if (!text) { document.getElementById('feedback-text').focus(); return; }
+  if (FORMSPREE_ID === 'FORMSPREE_ID') {
+    // Kein echtes Backend – Simulation für Demo
+    document.getElementById('feedback-success').classList.add('visible');
+    document.getElementById('feedback-text').value = '';
+    setTimeout(closeFeedbackModal, 2000);
+    return;
+  }
+  try {
+    const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ message: text })
+    });
+    if (res.ok) {
+      document.getElementById('feedback-success').classList.add('visible');
+      document.getElementById('feedback-text').value = '';
+      setTimeout(closeFeedbackModal, 2200);
+    } else {
+      alert('Senden fehlgeschlagen. Bitte erneut versuchen.');
+    }
+  } catch(e) {
+    alert('Netzwerkfehler. Bitte erneut versuchen.');
+  }
+}
+
+// ═══════════════════════════════════════════════
+// (j) FÖRDERMÖGLICHKEITEN MODAL
+// ═══════════════════════════════════════════════
+function openFoerderModal() {
+  document.getElementById('foerder-overlay').classList.remove('hidden');
+}
+function closeFoerderModal() {
+  document.getElementById('foerder-overlay').classList.add('hidden');
+}
+
+// ═══════════════════════════════════════════════
+// (k) HOVER-CURSOR LABEL an Hausgrafik-Zonen
+// ═══════════════════════════════════════════════
+(function() {
+  const label = document.createElement('div');
+  label.id = 'zone-cursor-label';
+  document.body.appendChild(label);
+  let moveHandler = null;
+
+  window.hoverZone = function(cat, entering) {
+    const fills = getZoneFills(cat);
+    if (!fills.length) return;
+    const isActive = activeProductKategorien.has(cat);
+    if (!isActive) {
+      fills.forEach(fill => {
+        fill.style.fill = entering ? '#1e7fc2' : '#f5c800';
+        fill.style.fillOpacity = entering ? '0.35' : '0.18';
+      });
+    }
+    if (entering) {
+      label.textContent = cat;
+      label.classList.add('visible');
+      moveHandler = (e) => {
+        label.style.left = (e.clientX + 16) + 'px';
+        label.style.top = (e.clientY + 16) + 'px';
+      };
+      document.addEventListener('mousemove', moveHandler);
+    } else {
+      label.classList.remove('visible');
+      if (moveHandler) { document.removeEventListener('mousemove', moveHandler); moveHandler = null; }
+    }
+  };
+})();
+
+// ═══════════════════════════════════════════════
+// (g) TOUR – Map/PLZ-Schritt ergänzt
+// ═══════════════════════════════════════════════
+// Tour-Schritte um Adresssuche und Karte erweitern
+// (wird nach Definition der tourSteps-Variable gepacht)
+document.addEventListener('DOMContentLoaded', () => {
+  // Letzten Tour-Schritt durch zwei neue ersetzen
+  if (typeof tourSteps !== 'undefined') {
+    const mapStep = tourSteps.find(s => s.id === 'step-map');
+    if (mapStep) {
+      mapStep.title = '5 / 6 – Karte der Fachbetriebe';
+      mapStep.text = 'Im Tab „Fachbetriebe & Monteure" sehen Sie alle Betriebe auf einer interaktiven Karte. Klicken Sie auf einen Marker, um Details zu sehen.';
+      tourSteps.push({
+        id: 'step-adresssuche',
+        target: '.plz-box',
+        title: '6 / 6 – Adresssuche',
+        text: 'Geben Sie Ihre eigene Adresse ein. Die Plattform prüft automatisch, welche Betriebe ihren Einsatzradius bei Ihnen angeben – und markiert Ihren Standort auf der Karte.',
+        position: 'right',
+        switchTab: 'installateure'
+      });
+    }
+  }
+});
 
 init();
 </script>
