@@ -1915,58 +1915,42 @@
   <div class="main-panel" id="panel-installateure">
     <div class="inst-layout">
 
-      <!-- LINKE SPALTE: Karte oben (voll+quadratisch), PLZ+Filter darunter -->
+      <!-- LINKE SPALTE -->
       <div class="inst-left-col">
 
-        <!-- KARTE: volle Breite, quadratisch -->
+        <!-- ADRESSSUCHE: volle Breite über der Karte -->
+        <div class="plz-box" style="display:flex;gap:8px;align-items:center;padding:12px 16px;">
+          <input type="text" id="addr-input" class="plz-input" placeholder="Eigene Adresse eingeben, z. B. Hauptstr. 1, 50667 Köln"
+                 style="flex:1;min-width:0;" onkeydown="if(event.key==='Enter') searchByAddress()"/>
+          <button class="plz-btn" onclick="searchByAddress()" id="addr-btn" style="white-space:nowrap;padding:9px 16px;">Suchen</button>
+          <button class="plz-btn" onclick="resetAddressSearch()" id="addr-reset-btn" style="white-space:nowrap;padding:9px 12px;background:var(--text-muted);" title="Suche zurücksetzen">&#10005;</button>
+        </div>
+        <div id="addr-info" class="plz-info" style="padding:0 4px 4px;font-size:0.8rem;color:var(--text-muted);"></div>
+
+        <!-- KARTE: volle Breite -->
         <div class="inst-map-wrap">
           <div id="inst-map"></div>
         </div>
 
-        <!-- UNTERE REIHE: PLZ links, Filter rechts -->
-        <div class="inst-top-row">
-
-          <!-- ADRESSSUCHE -->
-          <div class="plz-box">
-            <div class="plz-box-title">Eigene Adresse eingeben</div>
-            <div class="plz-row" style="flex-direction:column;gap:8px;">
-              <input type="text" id="addr-input" class="plz-input" placeholder="z. B. Hauptstr. 1, 50667 Köln" style="width:100%;"
-                     onkeydown="if(event.key==='Enter') searchByAddress()"/>
-              <button class="plz-btn" onclick="searchByAddress()" id="addr-btn" style="width:100%;padding:10px 12px;">Betriebe in meiner Nähe suchen</button>
-            </div>
-            <div id="addr-info" class="plz-info"></div>
+        <!-- KATEGORIE FILTER: volle Breite unterhalb Karte -->
+        <div class="inst-filter-wrap" style="width:100%;">
+          <div class="inst-filter-label">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+            Kategorien
           </div>
-
-          <!-- KATEGORIE FILTER -->
-          <div class="inst-filter-wrap inst-sidebar">
-            <div class="inst-filter-label">
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-              Kategorien
-            </div>
-            <button class="inst-filter-btn active" onclick="filterInstallateure('Alle', this)">Alle Betriebe<div class="sidebar-check"></div></button>
-            <div class="inst-filter-divider"></div>
-
-            <div class="inst-group-label">Stationäre Elemente</div>
-            <button class="inst-filter-btn sub" onclick="filterInstallateure('Wasserdichte Türen', this)">Türen<div class="sidebar-check"></div></button>
-            <button class="inst-filter-btn sub" onclick="filterInstallateure('Wasserdichte Fenster', this)">Fenster<div class="sidebar-check"></div></button>
-            <button class="inst-filter-btn sub" onclick="filterInstallateure('Wasserdichte Tore/Garagentore', this)">(Garagen-)Tore<div class="sidebar-check"></div></button>
-            <div class="inst-filter-divider"></div>
-
-            <div class="inst-group-label">Mobile Elemente</div>
-            <button class="inst-filter-btn sub" onclick="filterInstallateure('Pumpen', this)">Pumpen<div class="sidebar-check"></div></button>
-            <button class="inst-filter-btn sub" onclick="filterInstallateure('Barrieren-Systeme', this)">Barrierensysteme<div class="sidebar-check"></div></button>
-            <button class="inst-filter-btn sub" onclick="filterInstallateure('Sandsäcke & mobiler Schutz', this)">Sandsäcke u.&thinsp;Ä.<div class="sidebar-check"></div></button>
-            <div class="inst-filter-divider"></div>
-
-            <div class="inst-group-label">Rückstausicherungen</div>
-            <button class="inst-filter-btn sub" onclick="filterInstallateure('Rückstausicherungen', this)">Rückstauklappen<div class="sidebar-check"></div></button>
-            <button class="inst-filter-btn sub" onclick="filterInstallateure('Hebeanlagen', this)">Hebeanlagen<div class="sidebar-check"></div></button>
-            <div class="inst-filter-divider"></div>
-
-            <button class="inst-filter-btn" onclick="filterInstallateure('Sonstiges', this)">Sonstiges<div class="sidebar-check"></div></button>
+          <div style="display:flex;flex-wrap:wrap;gap:0;">
+            <button class="inst-filter-btn active" onclick="filterInstallateure('Alle', this)" style="white-space:nowrap;">Alle Betriebe<div class="sidebar-check"></div></button>
+            <button class="inst-filter-btn sub" onclick="filterInstallateure('Wasserdichte Türen', this)" style="white-space:nowrap;">Türen<div class="sidebar-check"></div></button>
+            <button class="inst-filter-btn sub" onclick="filterInstallateure('Wasserdichte Fenster', this)" style="white-space:nowrap;">Fenster<div class="sidebar-check"></div></button>
+            <button class="inst-filter-btn sub" onclick="filterInstallateure('Wasserdichte Tore/Garagentore', this)" style="white-space:nowrap;">(Garagen-)Tore<div class="sidebar-check"></div></button>
+            <button class="inst-filter-btn sub" onclick="filterInstallateure('Pumpen', this)" style="white-space:nowrap;">Pumpen<div class="sidebar-check"></div></button>
+            <button class="inst-filter-btn sub" onclick="filterInstallateure('Barrieren-Systeme', this)" style="white-space:nowrap;">Barrierensysteme<div class="sidebar-check"></div></button>
+            <button class="inst-filter-btn sub" onclick="filterInstallateure('Sandsäcke & mobiler Schutz', this)" style="white-space:nowrap;">Sandsäcke u.&thinsp;Ä.<div class="sidebar-check"></div></button>
+            <button class="inst-filter-btn sub" onclick="filterInstallateure('Rückstausicherungen', this)" style="white-space:nowrap;">Rückstauklappen<div class="sidebar-check"></div></button>
+            <button class="inst-filter-btn sub" onclick="filterInstallateure('Hebeanlagen', this)" style="white-space:nowrap;">Hebeanlagen<div class="sidebar-check"></div></button>
+            <button class="inst-filter-btn" onclick="filterInstallateure('Sonstiges', this)" style="white-space:nowrap;">Sonstiges<div class="sidebar-check"></div></button>
           </div>
-
-        </div><!-- end inst-top-row -->
+        </div>
 
       </div><!-- end inst-left-col -->
 
@@ -2429,11 +2413,14 @@ function closeCertModal() {
 function renderCertBadges(zertStr) {
   if (!zertStr || !zertStr.trim()) return '';
   const certs = zertStr.split(/[,;]+/).map(s => s.trim()).filter(Boolean);
-  const badges = certs.map(c => {
-    const safe = c.replace(/'/g, "\'");
-    return `<div class="cert-badge-corner" onclick="openCertModal('${safe}')" title="${c}">${c}</div>`;
-  }).join('');
-  return `<div class="cert-badges-container">${badges}</div>`;
+  // Nur Badges anzeigen, für die ein Eintrag in CERT_INFO hinterlegt ist
+  const badges = certs
+    .filter(c => CERT_INFO[c])
+    .map(c => {
+      const safe = c.replace(/'/g, "\\'");
+      return `<div class="cert-badge-corner" onclick="openCertModal('${safe}')" title="${c}">${c}</div>`;
+    }).join('');
+  return badges ? `<div class="cert-badges-container">${badges}</div>` : '';
 }
 
 // GOOGLE SHEETS ANBINDUNG
@@ -2666,12 +2653,15 @@ async function searchByAddress() {
     const grid = document.getElementById('installateure-grid');
     const countLabel = document.getElementById('inst-count-label');
 
+    // Karte: nur die gefundenen Betriebe anzeigen
+    updateMapMarkers(inRadius);
+
     if (!inRadius.length) {
       info.textContent = `Standort gefunden: ${display_name.split(',').slice(0,3).join(',')}. Kein Betrieb bietet Einsatz an diesem Standort an.`;
       if (countLabel) countLabel.textContent = '0 Einträge';
       grid.innerHTML = '<div class="no-results">Für Ihre Adresse wurden keine Betriebe gefunden, die ihren Einsatzradius hinterlegt haben.<br><br>Tipp: Alle Betriebe anzeigen und direkt Kontakt aufnehmen.</div>';
     } else {
-      info.innerHTML = `<strong>Standort:</strong> ${display_name.split(',').slice(0,3).join(',')}.<br>${inRadius.length} Betrieb(e) bieten Einsatz bei Ihnen an.`;
+      info.innerHTML = `<strong>Standort:</strong> ${display_name.split(',').slice(0,3).join(',')}. &nbsp;${inRadius.length} Betrieb(e) bieten Einsatz bei Ihnen an.`;
       if (countLabel) countLabel.textContent = inRadius.length + ' Einträge';
       grid.innerHTML = inRadius.map(renderInstCard).join('');
     }
@@ -2683,46 +2673,68 @@ async function searchByAddress() {
   btn.disabled = false;
 }
 
+function resetAddressSearch() {
+  document.getElementById('addr-input').value = '';
+  document.getElementById('addr-info').textContent = '';
+  // Nutzer-Standort-Marker entfernen (alle non-inst marker)
+  renderInstallateure();
+} for category names
+const KAT_LABELS = {
+  'Wasserdichte Türen': 'Türen',
+  'Wasserdichte Fenster': 'Fenster',
+  'Wasserdichte Tore/Garagentore': '(Garagen-)Tore',
+  'Barrieren-Systeme': 'Barrierensysteme',
+  'Pumpen': 'Pumpen',
+  'Sandsäcke & mobiler Schutz': 'Sandsäcke u. Ä.',
+  'Rückstausicherungen': 'Rückstauklappen',
+  'Hebeanlagen': 'Hebeanlagen',
+  'Sonstiges': 'Sonstiges'
+};
 
 function renderInstCard(i, distKm) {
-  const uniqueId = 'inst-' + Math.random().toString(36).substr(2,6);
   const logo = (i.logo_url && i.logo_url !== '#')
     ? '<img class="installateur-logo" src="' + i.logo_url + '" alt="Logo ' + i.name + '">'
-    : '<div class="installateur-logo-placeholder" style="width:36px;height:36px;background:var(--blue-light);border-radius:8px;"></div>';
+    : '<div style="width:36px;height:36px;background:var(--blue-light);border-radius:8px;flex-shrink:0;"></div>';
   const link = (i.website && i.website !== '#')
     ? '<a class="card-link" href="' + i.website + '" target="_blank">Website besuchen &rarr;</a>'
     : '';
-
-  const region = i.region ? '<div class="installateur-region" style="font-size:0.8rem;color:var(--text-muted);margin-top:4px;">&#128205; ' + i.region + '</div>' : '';
-  const distLabel = (distKm !== undefined) ? '<span style="font-size:0.75rem;background:var(--blue-light);color:var(--blue-accent);border-radius:100px;padding:2px 8px;font-weight:600;">' + distKm.toFixed(1) + ' km</span>' : '';
-
-  const badges = i.kategorien
-    ? '<div class="installateur-kategorien">' + i.kategorien.split(',').map(k => '<span class="kat-badge">' + k.trim() + '</span>').join('') + '</div>'
+  const region = i.region ? '<div style="font-size:0.8rem;color:var(--text-muted);margin-top:3px;">&#128205; ' + i.region + '</div>' : '';
+  const distLabel = (distKm !== undefined)
+    ? '<span style="font-size:0.75rem;background:var(--blue-light);color:var(--blue-accent);border-radius:100px;padding:2px 8px;font-weight:600;margin-left:auto;flex-shrink:0;">' + distKm.toFixed(1) + ' km</span>'
     : '';
+
+  // Categories as readable labels in dropdown
+  const katLabels = i.kategorien
+    ? i.kategorien.split(',').map(k => KAT_LABELS[k.trim()] || k.trim()).filter(Boolean)
+    : [];
+  const katLine = katLabels.length
+    ? '<div style="margin-bottom:10px;font-size:0.83rem;color:var(--blue-deep);line-height:1.6;"><strong>Fachbetrieb für:</strong> ' + katLabels.join(', ') + '</div>'
+    : '';
+
   const zert = i.zertifizierung ? '<div class="installateur-meta-row"><span>Zertifizierung</span>' + i.zertifizierung + '</div>' : '';
   const erf  = i.erfahrung      ? '<div class="installateur-meta-row"><span>Erfahrung</span>' + i.erfahrung + '</div>' : '';
   const ums  = i.umsatz         ? '<div class="installateur-meta-row"><span>Umsatz</span>' + i.umsatz + '</div>' : '';
   const tel  = i.telefon        ? '<div class="installateur-meta-row"><span>Telefon</span>' + i.telefon + '</div>' : '';
   const mail = i.email          ? '<div class="installateur-meta-row"><span>E-Mail</span>' + i.email + '</div>' : '';
-  const hasDetails = zert || erf || ums || tel || mail || badges;
+  const hasDetails = katLine || zert || erf || ums || tel || mail;
 
   return '<div class="installateur-card">'
-    + '<div class="installateur-logo-wrap" style="display:flex;align-items:center;gap:10px;">'
+    + '<div style="display:flex;align-items:center;gap:10px;">'
     + logo
-    + '<div>'
-    + '<div class="installateur-name">' + i.name + '</div>'
-    + region
-    + '</div>'
-    + (distLabel ? '<div style="margin-left:auto;">' + distLabel + '</div>' : '')
+    + '<div style="flex:1;min-width:0;"><div class="installateur-name">' + i.name + '</div>' + region + '</div>'
+    + distLabel
     + '</div>'
     + link
-    + (hasDetails ? '<button class="card-detail-toggle" onclick="toggleCardDetail(this)" aria-expanded="false" style="margin-top:10px;">Details anzeigen <i class="toggle-arrow">&#9662;</i></button>'
-      + '<div class="card-detail-panel">'
-      + (badges ? '<div style="margin-bottom:8px;">' + i.kategorien.split(',').map(k => '<span class="kat-badge">' + k.trim() + '</span>').join('') + '</div>' : '')
-      + '<div class="installateur-meta">' + zert + erf + ums + tel + mail + '</div>'
-      + '</div>' : '')
+    + (hasDetails
+        ? '<button class="card-detail-toggle" onclick="toggleCardDetail(this)" aria-expanded="false" style="margin-top:10px;">Details anzeigen <i class="toggle-arrow">&#9662;</i></button>'
+          + '<div class="card-detail-panel">'
+          + katLine
+          + '<div class="installateur-meta">' + zert + erf + ums + tel + mail + '</div>'
+          + '</div>'
+        : '')
     + '</div>';
 }
+
 // Aktive Kategorien für Installateure (Mehrfachauswahl)
 let activeInstKategorien = new Set(['Alle']);
 
@@ -2737,7 +2749,7 @@ function renderInstallateure(filter) {
     filtered = visibleInstallateure;
   } else {
     filtered = visibleInstallateure.filter(i =>
-      [...activeInstKategorien].some(k => i.kategorien.includes(k))
+      [...activeInstKategorien].some(k => i.kategorien && i.kategorien.includes(k))
     );
   }
 
@@ -2748,9 +2760,11 @@ function renderInstallateure(filter) {
   if (countLabel) countLabel.textContent = filtered.length + ' Einträge';
   if (!filtered.length) {
     grid.innerHTML = '<div class="no-results">Keine Fachbetriebe in dieser Kategorie gefunden.</div>';
+    updateMapMarkers([]);
     return;
   }
   grid.innerHTML = filtered.map(renderInstCard).join('');
+  // Karte zeigt genau die gefilterten Betriebe
   updateMapMarkers(filtered);
 }
 
