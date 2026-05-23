@@ -1687,9 +1687,11 @@
     <span id="bc-current">Übersicht</span>
   </div>
   <div class="nav-right">
-
-    <button class="nav-info-btn" onclick="startTour()" style="margin-right:4px;">Tour 🗺</button>
-    <button class="nav-info-btn" onclick="showInfoModal()">Info</button>
+    <button class="nav-info-btn" onclick="openCertOverview()">Zertifikate &amp; Normen</button>
+    <button class="nav-info-btn" onclick="openFoerderModal()">Fördermöglichkeiten</button>
+    <button class="nav-info-btn" onclick="openFeedbackModal()">Feedback</button>
+    <button class="nav-info-btn" onclick="startTour()" style="margin-left:4px;">Tour</button>
+    <button class="nav-info-btn" onclick="showInfoModal()">Informationen zur Seite</button>
     <button class="nav-hamburger" id="nav-hamburger" onclick="toggleMobileMenu()" aria-label="Menü">
       <span></span><span></span><span></span>
     </button>
@@ -1698,18 +1700,16 @@
 <div class="mobile-menu hidden" id="mobile-menu">
   <button class="mobile-tab" onclick="showMainTab('produkte',this);toggleMobileMenu()">Produkte</button>
   <button class="mobile-tab" onclick="showMainTab('installateure',this);toggleMobileMenu()">Fachbetriebe</button>
-  <button class="mobile-tab" onclick="showInfoModal();toggleMobileMenu()">Info</button>
+  <button class="mobile-tab" onclick="openCertOverview();toggleMobileMenu()">Zertifikate</button>
+  <button class="mobile-tab" onclick="openFoerderModal();toggleMobileMenu()">Förderung</button>
+  <button class="mobile-tab" onclick="openFeedbackModal();toggleMobileMenu()">Feedback</button>
+  <button class="mobile-tab" onclick="showInfoModal();toggleMobileMenu()">Informationen</button>
 </div>
 
 <div class="hero">
   <div class="hero-inner">
     <h1>Hochwasserschutzelemente –<br>Produkte und Fachbetriebe im Überblick</h1>
     <p>Eine Übersicht von Produkten und Fachbetrieben zum privaten Hochwasserschutz.</p>
-    <div class="hero-buttons">
-      <button class="hero-btn" onclick="openCertOverview()">Zertifikate &amp; Normen</button>
-      <button class="hero-btn" onclick="openFoerderModal()">Fördermöglichkeiten</button>
-      <button class="hero-btn hero-btn-feedback" onclick="openFeedbackModal()">Feedback geben</button>
-    </div>
   </div>
 </div>
 
@@ -1767,7 +1767,7 @@
 
   <!-- ZONE: Tür -->
   <g class="house-zone"
-     onmouseenter="hoverZone('Wasserdichte Türen', true)"
+     onmouseenter="hoverZone('Wasserdichte Türen', true, 'Türen')"
      onmouseleave="hoverZone('Wasserdichte Türen', false)"
      onclick="activateFilter('Wasserdichte Türen')">
     <path
@@ -1780,7 +1780,7 @@
 
   <!-- ZONE: Garagentor -->
   <g class="house-zone"
-     onmouseenter="hoverZone('Wasserdichte Tore/Garagentore', true)"
+     onmouseenter="hoverZone('Wasserdichte Tore/Garagentore', true, '(Garagen-)Tore')"
      onmouseleave="hoverZone('Wasserdichte Tore/Garagentore', false)"
      onclick="activateFilter('Wasserdichte Tore/Garagentore')">
     <path
@@ -1793,7 +1793,7 @@
 
   <!-- ZONE: Fenster 2 -->
   <g class="house-zone"
-     onmouseenter="hoverZone('Wasserdichte Fenster', true)"
+     onmouseenter="hoverZone('Wasserdichte Fenster', true, 'Fenster')"
      onmouseleave="hoverZone('Wasserdichte Fenster', false)"
      onclick="activateFilter('Wasserdichte Fenster')">
     <path
@@ -1806,7 +1806,7 @@
 
   <!-- ZONE: Fenster 1 -->
   <g class="house-zone"
-     onmouseenter="hoverZone('Wasserdichte Fenster', true)"
+     onmouseenter="hoverZone('Wasserdichte Fenster', true, 'Fenster')"
      onmouseleave="hoverZone('Wasserdichte Fenster', false)"
      onclick="activateFilter('Wasserdichte Fenster')">
     <path
@@ -1819,7 +1819,7 @@
 
   <!-- ZONE: Barrieren -->
   <g class="house-zone"
-     onmouseenter="hoverZone('Barrieren-Systeme', true)"
+     onmouseenter="hoverZone('Barrieren-Systeme', true, 'Barrierensysteme')"
      onmouseleave="hoverZone('Barrieren-Systeme', false)"
      onclick="activateFilter('Barrieren-Systeme')">
     <path
@@ -2145,22 +2145,22 @@ const categoryInfo = {
     desc: 'Barrieren-Systeme werden vor gefährdeten Öffnungen aufgestellt und verhindern das Eindringen von Wasser. Mobile Varianten lassen sich schnell aufbauen, stationäre sind dauerhaft installiert.'
   },
   'Pumpen': {
-    desc: 'Pumpen fördern eingedrungenes Wasser aktiv ab. Tauchpumpen eignen sich für überflutete Keller, Schmutzwasserpumpen auch für feste Partikel. Der automatische Schwimmerschalter aktiviert die Pumpe selbstständig.'
+    desc: 'Pumpen fördern eingedrungenes oder einströmendes Wasser aktiv ab. Tauchpumpen sind für vollgelaufene Keller geeignet, Schmutzwasserpumpen auch für feste Partikel im Wasser. Ein automatischer Schwimmerschalter aktiviert die Pumpe selbstständig, sobald ein bestimmter Wasserstand erreicht wird – auch im Schlaf oder bei Abwesenheit.'
   },
   'Wasserdichte Türen': {
-    desc: 'Wasserdichte Türen verfügen über umlaufende Dichtungen und druckfeste Rahmen. Sie schützen Gebäudeeingänge vor eindringendem Hochwasser und sind in verschiedenen Schutzniveaus erhältlich.'
+    desc: 'Wasserdichte Türen verfügen über umlaufende Flachdichtungen oder Runddichtungen im Rahmen, die sich beim Schließen fest an die Dichtfläche pressen. Zusätzliche Verriegelungspunkte (Mehrfachverriegelung) sichern die Tür gegen den Wasserdruck. Sie ersetzen im Hochwasserfall eine reguläre Haustür und sind in verschiedenen Schutzhöhen und Druckstufen erhältlich.'
   },
   'Wasserdichte Fenster': {
-    desc: 'Hochwasserfeste Fenster – inklusive Kellerfenster – kombinieren verstärktes Glas mit wasserdichten Rahmen und Dichtungen. Kellerfenster sind besonders gefährdet da sie unter Geländeniveau liegen; spezielle Abdichtungen und Lichtschachtabdeckungen schützen diese Schwachstellen.'
+    desc: 'Hochwasserfeste Fenster kombinieren verstärktes Glas mit druckdichten Rahmen und umlaufenden Dichtungen. Kellerfenster sind besonders gefährdet, da sie unterhalb des Geländeniveaus liegen. Spezielle Lichtschachtabdeckungen und abdichtbare Lüftungsöffnungen schützen diese Schwachstellen zusätzlich.'
   },
   'Wasserdichte Tore/Garagentore': {
-    desc: 'Garagentore mit Hochwasserschutz verfügen über integrierte Dichtungssysteme an der Unterseite und den Seiten. Beim Schließen wird automatisch abgedichtet – ohne zusätzlichen Aufwand.'
+    desc: 'Garagentore mit Hochwasserschutz verfügen über integrierte Bodendichtungen und seitliche Dichtprofile, die beim Schließen einen wasserdichten Abschluss bilden. Einige Systeme aktivieren die Dichtung automatisch beim Schließen des Tors – ganz ohne zusätzlichen Handgriff.'
   },
   'Rückstausicherungen': {
-    desc: 'Rückstausicherungen verhindern, dass Abwasser bei Starkregen aus Kanalisation und Abflüssen ins Haus drückt. Rückstauverschlüsse oder Hebeanlagen sind die gängigsten Lösungen.'
+    desc: 'Bei starken Regenfällen kann die Kanalisation überlastet werden und Abwasser rückwärts in Gebäude drücken – besonders in Kellern mit Bodenabläufen oder Waschmaschinenanschlüssen. Rückstausicherungen (Rückstauverschlüsse) blockieren automatisch den Rückfluss. Sie werden in die Abwasserleitung eingebaut und öffnen nur in Ablaufrichtung.'
   },
   'Hebeanlagen': {
-    desc: 'Hebeanlagen pumpen Abwasser aus tiefer gelegenen Bereichen (Keller, Tiefgaragen) aktiv in die Kanalisation. Sie kommen zum Einsatz, wenn kein natürliches Gefälle vorhanden ist.'
+    desc: 'Hebeanlagen sind motorbetriebene Pumpsysteme, die Abwasser aus tiefer gelegenen Bereichen – z. B. Kellerbäder oder Tiefgaragen – aktiv in die Kanalisation befördern. Sie kommen zum Einsatz, wenn kein ausreichendes natürliches Gefälle vorhanden ist, und bieten gleichzeitig Schutz vor Rückstau aus dem Kanalnetz.'
   },
   'Sandsäcke & mobiler Schutz': {
     desc: 'Sandsäcke, Schlauchdämme und ähnliche temporäre Schutzelemente sind schnell einsetzbar und flexibel. Sie eignen sich als kurzfristige Schutzmaßnahme vor allem bei unvorhergesehenen Hochwasserereignissen.'
@@ -3183,7 +3183,7 @@ function updateMapMarkers(list) {
   const withCoords = list.filter(i => i.lat && i.lng && !isNaN(parseFloat(i.lat)));
   withCoords.forEach(i => {
     const marker = L.marker([parseFloat(i.lat), parseFloat(i.lng)])
-      .bindPopup(`<strong>${i.name}</strong><br>${i.region || ''}${i.radius_km ? '<br><em>Einsatzgebiet: ' + i.radius_km + ' km</em>' : ''}`);
+      .bindPopup(`<strong>${i.name}</strong>`);
     
     // Radius-Kreis beim Klick auf Marker anzeigen
     marker.on('click', function() {
@@ -3406,7 +3406,7 @@ function closeFoerderModal() {
   document.body.appendChild(label);
   let moveHandler = null;
 
-  window.hoverZone = function(cat, entering) {
+  window.hoverZone = function(cat, entering, displayLabel) {
     const fills = getZoneFills(cat);
     if (!fills.length) return;
     const isActive = activeProductKategorien.has(cat);
@@ -3417,7 +3417,7 @@ function closeFoerderModal() {
       });
     }
     if (entering) {
-      label.textContent = cat;
+      label.textContent = displayLabel || cat;
       label.classList.add('visible');
       moveHandler = (e) => {
         label.style.left = (e.clientX + 16) + 'px';
