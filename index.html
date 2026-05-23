@@ -1630,9 +1630,8 @@
     <h2>Zugang zur Plattform</h2>
     <p>Diese Plattform ist passwortgeschützt.<br>Bitte geben Sie das Zugangspasswort ein.</p>
     <div class="pw-field-wrap">
-      <input type="password" id="pw-input" placeholder="Passwort …"
-             onkeydown="if(event.key==='Enter') checkPassword()" autofocus/>
-      <button onclick="checkPassword()">Einloggen →</button>
+      <input type="password" id="pw-input" placeholder="Passwort …" autofocus/>
+      <button id="pw-submit-btn">Einloggen →</button>
     </div>
     <div id="pw-error" class="pw-error">❌ Falsches Passwort. Bitte erneut versuchen.</div>
     <div class="pw-hint">Erstellt im Rahmen einer Masterarbeit · Prototyp</div>
@@ -2836,21 +2835,27 @@ function checkPassword() {
     overlay.style.opacity = '0';
     setTimeout(() => overlay.classList.add('hidden'), 500);
     error.classList.remove('visible');
-    // Tour beim ersten Login automatisch starten
     if (!localStorage.getItem('tourSeen')) {
       localStorage.setItem('tourSeen', '1');
       setTimeout(startTour, 700);
     }
   } else {
     error.classList.add('visible');
-    document.getElementById('pw-input').value = '';
-    document.getElementById('pw-input').focus();
-    document.getElementById('pw-input').style.borderColor = '#c0392b';
-    setTimeout(() => document.getElementById('pw-input').style.borderColor = '', 1200);
+    const inp = document.getElementById('pw-input');
+    inp.value = '';
+    inp.focus();
+    inp.style.borderColor = '#c0392b';
+    setTimeout(() => inp.style.borderColor = '', 1200);
   }
 }
 
-// Beim Laden prüfen ob bereits eingeloggt (bleibt für die Browser-Session gespeichert)
+// Button und Enter-Taste verdrahten
+document.getElementById('pw-submit-btn').addEventListener('click', checkPassword);
+document.getElementById('pw-input').addEventListener('keydown', e => {
+  if (e.key === 'Enter') checkPassword();
+});
+
+// Session-Check beim Laden
 if (sessionStorage.getItem('pw_ok') === '1') {
   document.getElementById('pw-overlay').classList.add('hidden');
 }
