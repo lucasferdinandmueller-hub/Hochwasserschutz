@@ -2189,32 +2189,51 @@ function renderProducts(filter) {
     grid.innerHTML = '<div class="no-results">Keine Produkte in dieser Kategorie gefunden.</div>';
     return;
   }
-  grid.innerHTML = filtered.map((p, idx) => `
+
+  // Hilfsfunktion: gibt den Wert zurück, oder '' wenn leer / 'k.A.' / '#'
+  function val(v) {
+    if (!v) return '';
+    const s = String(v).trim();
+    if (s === '' || s.toLowerCase() === 'k.a.' || s === '#') return '';
+    return s;
+  }
+
+  grid.innerHTML = filtered.map((p, idx) => {
+    const hersteller  = val(p.hersteller);
+    const kosten      = val(p.kosten);
+    const specs       = val(p.specs);
+    const installation= val(p.installation);
+    const wartung     = val(p.wartung);
+    const aktualisiert= val(p.aktualisiert);
+    const link        = val(p.link);
+    const desc        = val(p.desc);
+    const hasDetails  = specs || installation || wartung || aktualisiert;
+    return `
     <div class="product-card">
       ${renderCertBadges(p.zertifizierung)}
       ${p.icon && (p.icon.startsWith('http://') || p.icon.startsWith('https://')) ? `<div class="card-img"><img src="${p.icon}" alt="Produktbild" style="width:100%;height:100%;object-fit:contain;"></div>` : ''}
       <div class="card-body">
         <div class="card-category">${p.category}</div>
         <div class="card-name">${p.name}</div>
-        <div class="card-desc">${p.desc}</div>
+        ${desc ? `<div class="card-desc">${desc}</div>` : ''}
         <div class="card-meta">
-          <div class="card-meta-row"><span>Hersteller</span> ${p.hersteller}</div>
-          ${p.kosten ? `<div class="card-meta-row"><span>Kosten</span> ${p.kosten}</div>` : ''}
+          ${hersteller    ? `<div class="card-meta-row"><span>Hersteller</span>${hersteller}</div>` : ''}
+          ${kosten        ? `<div class="card-meta-row"><span>Kosten</span>${kosten}</div>` : ''}
         </div>
-        ${(p.specs || p.installation || p.wartung) ? `
+        ${hasDetails ? `
         <button class="card-detail-toggle" onclick="toggleCardDetail(this)" aria-expanded="false">
           Details &amp; Spezifikationen <i class="toggle-arrow">&#9662;</i>
         </button>
         <div class="card-detail-panel">
-          ${p.specs ? `<div class="detail-row"><span>Technische Specs</span>${p.specs}</div>` : ''}
-          ${p.installation ? `<div class="detail-row"><span>Installation</span>${p.installation}</div>` : ''}
-          ${p.wartung ? `<div class="detail-row"><span>Wartung</span>${p.wartung}</div>` : ''}
-          ${p.aktualisiert ? `<div class="detail-row"><span>Letzte Aktualisierung</span>${p.aktualisiert}</div>` : ''}
+          ${specs         ? `<div class="detail-row"><span>Technische Specs</span>${specs}</div>` : ''}
+          ${installation  ? `<div class="detail-row"><span>Installation</span>${installation}</div>` : ''}
+          ${wartung       ? `<div class="detail-row"><span>Wartung</span>${wartung}</div>` : ''}
+          ${aktualisiert  ? `<div class="detail-row"><span>Letzte Aktualisierung</span>${aktualisiert}</div>` : ''}
         </div>` : ''}
-        ${p.link && p.link !== '#' ? `<a class="card-link" href="${p.link}" target="_blank">Zur Website des Anbieters &rarr;</a>` : ''}
+        ${link ? `<a class="card-link" href="${link}" target="_blank">Zur Website des Anbieters &rarr;</a>` : ''}
       </div>
-    </div>
-  `).join('');
+    </div>`;
+  }).join('');
   updateCategoryPanel();
 }
 
@@ -2461,7 +2480,10 @@ function showDataWarning(message) {
 
 function sanitizeCell(value) {
   if (value === null || value === undefined) return '';
-  return String(value).trim();
+  const s = String(value).trim();
+  // 'k.A.' wird wie leer behandelt – Felder mit diesem Wert werden nicht angezeigt
+  if (s.toLowerCase() === 'k.a.') return '';
+  return s;
 }
 
 function hasProductContent(product) {
@@ -2692,46 +2714,49 @@ const KAT_LABELS = {
   'Sonstiges': 'Sonstiges'
 };
 
-function renderInstCard(i, distKm) {
-  const logo = (i.logo_url && i.logo_url !== '#')
-    ? '<img class="installateur-logo" src="' + i.logo_url + '" alt="Logo ' + i.name + '">'
+function renderInstCard(i) {
+  // k.A. / leer → nicht anzeigen
+  function v(s) {
+    if (!s) return '';
+    const t = String(s).trim();
+    return (t === '' || t.toLowerCase() === 'k.a.' || t === '#') ? '' : t;
+  }
+
+  const logo = (v(i.logo_url))
+    ? '<img class="installateur-logo" src="' + v(i.logo_url) + '" alt="Logo ' + i.name + '">'
     : '<div style="width:36px;height:36px;background:var(--blue-light);border-radius:8px;flex-shrink:0;"></div>';
-  const link = (i.website && i.website !== '#')
-    ? '<a class="card-link" href="' + i.website + '" target="_blank">Website besuchen &rarr;</a>'
+  const link = v(i.website)
+    ? '<a class="card-link" href="' + v(i.website) + '" target="_blank">Website besuchen &rarr;</a>'
     : '';
-  const region = i.region ? '<div style="font-size:0.8rem;color:var(--text-muted);margin-top:3px;">&#128205; ' + i.region + '</div>' : '';
-  const distLabel = (distKm !== undefined)
-    ? '<span style="font-size:0.75rem;background:var(--blue-light);color:var(--blue-accent);border-radius:100px;padding:2px 8px;font-weight:600;margin-left:auto;flex-shrink:0;">' + distKm.toFixed(1) + ' km</span>'
+  const region = v(i.region)
+    ? '<div style="font-size:0.8rem;color:var(--text-muted);margin-top:3px;">&#128205; ' + v(i.region) + '</div>'
     : '';
 
-  // Categories as readable labels in dropdown
+  // Kategorien als lesbare Labels im Dropdown
   const katLabels = i.kategorien
     ? i.kategorien.split(',').map(k => KAT_LABELS[k.trim()] || k.trim()).filter(Boolean)
     : [];
   const katLine = katLabels.length
-    ? '<div style="margin-bottom:10px;font-size:0.83rem;color:var(--blue-deep);line-height:1.6;"><strong>Fachbetrieb für:</strong> ' + katLabels.join(', ') + '</div>'
+    ? '<div class="detail-row"><span>Fachbetrieb für</span>' + katLabels.join(', ') + '</div>'
     : '';
 
-  const zert = i.zertifizierung ? '<div class="installateur-meta-row"><span>Zertifizierung</span>' + i.zertifizierung + '</div>' : '';
-  const erf  = i.erfahrung      ? '<div class="installateur-meta-row"><span>Erfahrung</span>' + i.erfahrung + '</div>' : '';
-  const ums  = i.umsatz         ? '<div class="installateur-meta-row"><span>Umsatz</span>' + i.umsatz + '</div>' : '';
-  const tel  = i.telefon        ? '<div class="installateur-meta-row"><span>Telefon</span>' + i.telefon + '</div>' : '';
-  const mail = i.email          ? '<div class="installateur-meta-row"><span>E-Mail</span>' + i.email + '</div>' : '';
-  const hasDetails = katLine || zert || erf || ums || tel || mail;
+  const regionRow = v(i.region)      ? '<div class="detail-row"><span>Region</span>'         + v(i.region)       + '</div>' : '';
+  const zert      = v(i.zertifizierung) ? '<div class="detail-row"><span>Zertifizierung</span>'+ v(i.zertifizierung)+'</div>' : '';
+  const erf       = v(i.erfahrung)   ? '<div class="detail-row"><span>Erfahrung</span>'       + v(i.erfahrung)    + '</div>' : '';
+  const ums       = v(i.umsatz)      ? '<div class="detail-row"><span>Umsatz</span>'          + v(i.umsatz)       + '</div>' : '';
+  const tel       = v(i.telefon)     ? '<div class="detail-row"><span>Telefon</span>'         + v(i.telefon)      + '</div>' : '';
+  const mail      = v(i.email)       ? '<div class="detail-row"><span>E-Mail</span>'          + v(i.email)        + '</div>' : '';
+  const detailRows = katLine + regionRow + zert + erf + ums + tel + mail;
 
   return '<div class="installateur-card">'
     + '<div style="display:flex;align-items:center;gap:10px;">'
     + logo
     + '<div style="flex:1;min-width:0;"><div class="installateur-name">' + i.name + '</div>' + region + '</div>'
-    + distLabel
     + '</div>'
     + link
-    + (hasDetails
+    + (detailRows
         ? '<button class="card-detail-toggle" onclick="toggleCardDetail(this)" aria-expanded="false" style="margin-top:10px;">Details anzeigen <i class="toggle-arrow">&#9662;</i></button>'
-          + '<div class="card-detail-panel">'
-          + katLine
-          + '<div class="installateur-meta">' + zert + erf + ums + tel + mail + '</div>'
-          + '</div>'
+          + '<div class="card-detail-panel">' + detailRows + '</div>'
         : '')
     + '</div>';
 }
