@@ -514,7 +514,14 @@
   }
   #zone-cursor-label.visible { opacity: 1; }
 
-  /* ─── CERT OVERVIEW MODAL ──── */
+  /* ─── FIKTIV-HINWEIS BANNER ──── */
+  .fiktiv-banner {
+    background: #fffbe6; border: 1.5px solid #f0c040;
+    border-radius: 8px; padding: 8px 12px;
+    font-size: 0.78rem; color: #7a5f00; line-height: 1.5;
+    margin-bottom: 10px; display: flex; align-items: flex-start; gap: 8px;
+  }
+  .fiktiv-banner svg { flex-shrink: 0; margin-top: 1px; }
   #cert-overview-overlay {
     position: fixed; inset: 0; z-index: 9998;
     background: rgba(10,37,64,0.6); backdrop-filter: blur(3px);
@@ -1766,9 +1773,9 @@
 
   <!-- ZONE: Tür -->
   <g class="house-zone"
-     onmouseenter="hoverZone('Wasserdichte Türen', true, 'Türen')"
-     onmouseleave="hoverZone('Wasserdichte Türen', false)"
-     onclick="activateFilter('Wasserdichte Türen')">
+     onmouseenter="hoverZone('Türen', true, 'Türen')"
+     onmouseleave="hoverZone('Türen', false)"
+     onclick="activateFilter('Türen')">
     <path
        class="zone-fill"
        d="m 422.85252,376.72316 -2.56274,-107.63519 45.39715,1.46442 2.19664,113.12678 z"
@@ -1779,9 +1786,9 @@
 
   <!-- ZONE: Garagentor -->
   <g class="house-zone"
-     onmouseenter="hoverZone('Wasserdichte Tore/Garagentore', true, '(Garagen-)Tore')"
-     onmouseleave="hoverZone('Wasserdichte Tore/Garagentore', false)"
-     onclick="activateFilter('Wasserdichte Tore/Garagentore')">
+     onmouseenter="hoverZone('(Garagen-)Tore', true, '(Garagen-)Tore')"
+     onmouseleave="hoverZone('(Garagen-)Tore', false)"
+     onclick="activateFilter('(Garagen-)Tore')">
     <path
        class="zone-fill"
        d="m 84.393606,203.99436 3.106513,125.81378 134.615571,20.19234 -2.07101,-151.18364 z"
@@ -1792,9 +1799,9 @@
 
   <!-- ZONE: Fenster 2 -->
   <g class="house-zone"
-     onmouseenter="hoverZone('Wasserdichte Fenster', true, 'Fenster')"
-     onmouseleave="hoverZone('Wasserdichte Fenster', false)"
-     onclick="activateFilter('Wasserdichte Fenster')">
+     onmouseenter="hoverZone('Fenster', true, 'Fenster')"
+     onmouseleave="hoverZone('Fenster', false)"
+     onclick="activateFilter('Fenster')">
     <path
        class="zone-fill"
        d="m 644.08372,402.29345 v 19.15683 l 30.54738,3.10651 0.25887,-18.63908 z"
@@ -1805,9 +1812,9 @@
 
   <!-- ZONE: Fenster 1 -->
   <g class="house-zone"
-     onmouseenter="hoverZone('Wasserdichte Fenster', true, 'Fenster')"
-     onmouseleave="hoverZone('Wasserdichte Fenster', false)"
-     onclick="activateFilter('Wasserdichte Fenster')">
+     onmouseenter="hoverZone('Fenster', true, 'Fenster')"
+     onmouseleave="hoverZone('Fenster', false)"
+     onclick="activateFilter('Fenster')">
     <path
        class="zone-fill"
        d="m 701.29533,408.2476 0.25888,20.19233 33.65389,3.36539 -0.25887,-18.12132 z"
@@ -1818,9 +1825,9 @@
 
   <!-- ZONE: Barrieren -->
   <g class="house-zone"
-     onmouseenter="hoverZone('Barrieren-Systeme', true, 'Barrierensysteme')"
-     onmouseleave="hoverZone('Barrieren-Systeme', false)"
-     onclick="activateFilter('Barrieren-Systeme')">
+     onmouseenter="hoverZone('Barrierensysteme', true, 'Barrierensysteme')"
+     onmouseleave="hoverZone('Barrierensysteme', false)"
+     onclick="activateFilter('Barrierensysteme')">
     <path
        class="zone-fill"
        d="m 845.70505,436.5815 7.68822,0.36611 -1.28137,45.76326 48.50906,-42.65136 -0.18305,-35.14618 -3.66107,-0.36611 z"
@@ -1846,13 +1853,13 @@
         <div class="sidebar-divider"></div>
 
         <div class="sidebar-group-label">Stationäre Elemente</div>
-        <button class="sidebar-item sub" onclick="activateFilter('Wasserdichte Türen')">
+        <button class="sidebar-item sub" onclick="activateFilter('Türen')">
           Türen<div class="sidebar-check"></div>
         </button>
-        <button class="sidebar-item sub" onclick="activateFilter('Wasserdichte Fenster')">
+        <button class="sidebar-item sub" onclick="activateFilter('Fenster')">
           Fenster<div class="sidebar-check"></div>
         </button>
-        <button class="sidebar-item sub" onclick="activateFilter('Wasserdichte Tore/Garagentore')">
+        <button class="sidebar-item sub" onclick="activateFilter('(Garagen-)Tore')">
           (Garagen-)Tore<div class="sidebar-check"></div>
         </button>
         <div class="sidebar-divider"></div>
@@ -1861,16 +1868,16 @@
         <button class="sidebar-item sub" onclick="filterProducts('Pumpen', this)">
           Pumpen<div class="sidebar-check"></div>
         </button>
-        <button class="sidebar-item sub" onclick="filterProducts('Barrieren-Systeme', this)">
+        <button class="sidebar-item sub" onclick="filterProducts('Barrierensysteme', this)">
           Barrierensysteme<div class="sidebar-check"></div>
         </button>
-        <button class="sidebar-item sub" onclick="filterProducts('Sandsäcke & mobiler Schutz', this)">
+        <button class="sidebar-item sub" onclick="filterProducts('Sandsäcke u. Ä.', this)">
           Sandsäcke u.&thinsp;Ä.<div class="sidebar-check"></div>
         </button>
         <div class="sidebar-divider"></div>
 
-        <div class="sidebar-group-label">Rückstausicherungen</div>
-        <button class="sidebar-item sub" onclick="filterProducts('Rückstausicherungen', this)">
+        <div class="sidebar-group-label">Rückstauklappen</div>
+        <button class="sidebar-item sub" onclick="filterProducts('Rückstauklappen', this)">
           Rückstauklappen<div class="sidebar-check"></div>
         </button>
         <button class="sidebar-item sub" onclick="filterProducts('Hebeanlagen', this)">
@@ -1939,13 +1946,13 @@
           </div>
           <div style="display:flex;flex-wrap:wrap;gap:0;">
             <button class="inst-filter-btn active" onclick="filterInstallateure('Alle', this)" style="white-space:nowrap;">Alle Betriebe<div class="sidebar-check"></div></button>
-            <button class="inst-filter-btn sub" onclick="filterInstallateure('Wasserdichte Türen', this)" style="white-space:nowrap;">Türen<div class="sidebar-check"></div></button>
-            <button class="inst-filter-btn sub" onclick="filterInstallateure('Wasserdichte Fenster', this)" style="white-space:nowrap;">Fenster<div class="sidebar-check"></div></button>
-            <button class="inst-filter-btn sub" onclick="filterInstallateure('Wasserdichte Tore/Garagentore', this)" style="white-space:nowrap;">(Garagen-)Tore<div class="sidebar-check"></div></button>
+            <button class="inst-filter-btn sub" onclick="filterInstallateure('Türen', this)" style="white-space:nowrap;">Türen<div class="sidebar-check"></div></button>
+            <button class="inst-filter-btn sub" onclick="filterInstallateure('Fenster', this)" style="white-space:nowrap;">Fenster<div class="sidebar-check"></div></button>
+            <button class="inst-filter-btn sub" onclick="filterInstallateure('(Garagen-)Tore', this)" style="white-space:nowrap;">(Garagen-)Tore<div class="sidebar-check"></div></button>
             <button class="inst-filter-btn sub" onclick="filterInstallateure('Pumpen', this)" style="white-space:nowrap;">Pumpen<div class="sidebar-check"></div></button>
-            <button class="inst-filter-btn sub" onclick="filterInstallateure('Barrieren-Systeme', this)" style="white-space:nowrap;">Barrierensysteme<div class="sidebar-check"></div></button>
-            <button class="inst-filter-btn sub" onclick="filterInstallateure('Sandsäcke & mobiler Schutz', this)" style="white-space:nowrap;">Sandsäcke u.&thinsp;Ä.<div class="sidebar-check"></div></button>
-            <button class="inst-filter-btn sub" onclick="filterInstallateure('Rückstausicherungen', this)" style="white-space:nowrap;">Rückstauklappen<div class="sidebar-check"></div></button>
+            <button class="inst-filter-btn sub" onclick="filterInstallateure('Barrierensysteme', this)" style="white-space:nowrap;">Barrierensysteme<div class="sidebar-check"></div></button>
+            <button class="inst-filter-btn sub" onclick="filterInstallateure('Sandsäcke u. Ä.', this)" style="white-space:nowrap;">Sandsäcke u.&thinsp;Ä.<div class="sidebar-check"></div></button>
+            <button class="inst-filter-btn sub" onclick="filterInstallateure('Rückstauklappen', this)" style="white-space:nowrap;">Rückstauklappen<div class="sidebar-check"></div></button>
             <button class="inst-filter-btn sub" onclick="filterInstallateure('Hebeanlagen', this)" style="white-space:nowrap;">Hebeanlagen<div class="sidebar-check"></div></button>
             <button class="inst-filter-btn" onclick="filterInstallateure('Sonstiges', this)" style="white-space:nowrap;">Sonstiges<div class="sidebar-check"></div></button>
           </div>
@@ -2078,7 +2085,7 @@
 const products = [
   {
     name: 'FloodBreaker Pro 200',
-    category: 'Barrieren-Systeme',
+    category: 'Barrierensysteme',
     desc: 'Mobile Hochwasserbarriere aus Aluminium, bis 200 cm Schutzhöhe. Schnell auf- und abbaubar, geeignet für Einzelgebäude und größere Areale.',
     hersteller: 'AquaShield GmbH',
     zertifizierung: 'DIN EN 13564',
@@ -2106,7 +2113,7 @@ const products = [
   },
   {
     name: 'AquaDoor Steel 90',
-    category: 'Wasserdichte Türen',
+    category: 'Türen',
     desc: 'Wasserdichte Stahltür mit umlaufender Gummidichtung und Druckverriegelung. Schutzniveau bis 1 m Wasserstand.',
     hersteller: 'FloodSafe Europe',
     zertifizierung: 'DIN EN 1027',
@@ -2124,32 +2131,29 @@ const products = [
 // KATEGORIE-INFORMATIONEN (Platzhalter)
 // ═══════════════════════════════════════════════
 const categoryInfo = {
-  'Barrieren-Systeme': {
-    desc: 'Barrieren-Systeme werden vor gefährdeten Öffnungen aufgestellt und verhindern das Eindringen von Wasser. Mobile Varianten lassen sich schnell aufbauen, stationäre sind dauerhaft installiert.'
+  'Barrierensysteme': {
+    desc: 'Barrierensysteme werden vor gefährdeten Öffnungen aufgestellt und verhindern das Eindringen von Wasser. Mobile Varianten lassen sich schnell aufbauen, stationäre sind dauerhaft installiert.'
   },
   'Pumpen': {
     desc: 'Pumpen fördern eingedrungenes oder einströmendes Wasser aktiv ab. Tauchpumpen sind für vollgelaufene Keller geeignet, Schmutzwasserpumpen auch für feste Partikel im Wasser. Ein automatischer Schwimmerschalter aktiviert die Pumpe selbstständig, sobald ein bestimmter Wasserstand erreicht wird – auch im Schlaf oder bei Abwesenheit.'
   },
-  'Wasserdichte Türen': {
-    desc: 'Wasserdichte Türen verfügen über umlaufende Flachdichtungen oder Runddichtungen im Rahmen, die sich beim Schließen fest an die Dichtfläche pressen. Zusätzliche Verriegelungspunkte (Mehrfachverriegelung) sichern die Tür gegen den Wasserdruck. Sie ersetzen im Hochwasserfall eine reguläre Haustür und sind in verschiedenen Schutzhöhen und Druckstufen erhältlich.'
+  'Türen': {
+    desc: 'Hochwasserschutztüren verfügen über umlaufende Flachdichtungen oder Runddichtungen im Rahmen, die sich beim Schließen fest an die Dichtfläche pressen. Zusätzliche Verriegelungspunkte (Mehrfachverriegelung) sichern die Tür gegen den Wasserdruck. Sie ersetzen im Hochwasserfall eine reguläre Haustür und sind in verschiedenen Schutzhöhen und Druckstufen erhältlich.'
   },
-  'Wasserdichte Fenster': {
+  'Fenster': {
     desc: 'Hochwasserfeste Fenster kombinieren verstärktes Glas mit druckdichten Rahmen und umlaufenden Dichtungen. Kellerfenster sind besonders gefährdet, da sie unterhalb des Geländeniveaus liegen. Spezielle Lichtschachtabdeckungen und abdichtbare Lüftungsöffnungen schützen diese Schwachstellen zusätzlich.'
   },
-  'Wasserdichte Tore/Garagentore': {
+  '(Garagen-)Tore': {
     desc: 'Garagentore mit Hochwasserschutz verfügen über integrierte Bodendichtungen und seitliche Dichtprofile, die beim Schließen einen wasserdichten Abschluss bilden. Einige Systeme aktivieren die Dichtung automatisch beim Schließen des Tors – ganz ohne zusätzlichen Handgriff.'
   },
-  'Rückstausicherungen': {
-    desc: 'Bei starken Regenfällen kann die Kanalisation überlastet werden und Abwasser rückwärts in Gebäude drücken – besonders in Kellern mit Bodenabläufen oder Waschmaschinenanschlüssen. Rückstausicherungen (Rückstauverschlüsse) blockieren automatisch den Rückfluss. Sie werden in die Abwasserleitung eingebaut und öffnen nur in Ablaufrichtung.'
+  'Rückstauklappen': {
+    desc: 'Bei starken Regenfällen kann die Kanalisation überlastet werden und Abwasser rückwärts in Gebäude drücken – besonders in Kellern mit Bodenabläufen oder Waschmaschinenanschlüssen. Rückstauklappen (Rückstauverschlüsse) blockieren automatisch den Rückfluss. Sie werden in die Abwasserleitung eingebaut und öffnen nur in Ablaufrichtung.'
   },
   'Hebeanlagen': {
     desc: 'Hebeanlagen sind motorbetriebene Pumpsysteme, die Abwasser aus tiefer gelegenen Bereichen – z. B. Kellerbäder oder Tiefgaragen – aktiv in die Kanalisation befördern. Sie kommen zum Einsatz, wenn kein ausreichendes natürliches Gefälle vorhanden ist, und bieten gleichzeitig Schutz vor Rückstau aus dem Kanalnetz.'
   },
-  'Sandsäcke & mobiler Schutz': {
+  'Sandsäcke u. Ä.': {
     desc: 'Sandsäcke, Schlauchdämme und ähnliche temporäre Schutzelemente sind schnell einsetzbar und flexibel. Sie eignen sich als kurzfristige Schutzmaßnahme vor allem bei unvorhergesehenen Hochwasserereignissen.'
-  },
-  'Frühwarnung & Überwachung': {
-    desc: 'Frühwarnsysteme erfassen Wasserstände und Niederschlagsmengen in Echtzeit und alarmieren Nutzer rechtzeitig. Sensoren und Apps ermöglichen eine frühzeitige Reaktion und helfen, Schäden zu minimieren.'
   },
   'Sonstiges': {
     desc: 'Weitere Produkte und Maßnahmen, die keiner der Hauptkategorien zuzuordnen sind – z. B. Dichtmassen, Beschichtungen oder Schutzfolien.'
@@ -2208,11 +2212,16 @@ function renderProducts(filter) {
     const link        = val(p.link);
     const desc        = val(p.desc);
     const hasDetails  = specs || installation || wartung || aktualisiert;
+    const isFiktiv = sanitizeCell(p.real).toLowerCase() === 'nein';
+    const fiktivBanner = isFiktiv
+      ? `<div class="fiktiv-banner"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#c09000" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Fiktives Produkt – dient ausschließlich zur Illustration der Plattform.</div>`
+      : '';
     return `
     <div class="product-card">
       ${renderCertBadges(p.zertifizierung)}
       ${p.icon && (p.icon.startsWith('http://') || p.icon.startsWith('https://')) ? `<div class="card-img"><img src="${p.icon}" alt="Produktbild" style="width:100%;height:100%;object-fit:contain;"></div>` : ''}
       <div class="card-body">
+        ${fiktivBanner}
         <div class="card-category">${p.category}</div>
         <div class="card-name">${p.name}</div>
         ${desc ? `<div class="card-desc">${desc}</div>` : ''}
@@ -2533,7 +2542,8 @@ async function loadFromSheets() {
           wartung: sanitizeCell(obj['wartung']),
           aktualisiert: sanitizeCell(obj['aktualisiert']),
           link: sanitizeCell(obj['link']) || '#',
-          icon: sanitizeCell(obj['icon'])
+          icon: sanitizeCell(obj['icon']),
+          real: sanitizeCell(obj['real'])
         };
       })
       .filter(hasProductContent);
@@ -2568,7 +2578,7 @@ const installateure = [
     name: 'Hochwasserschutz Rhein GmbH',
     region: 'Köln / Bonn',
     plz: '50667',
-    kategorien: 'Barrieren-Systeme, Wasserdichte Türen',
+    kategorien: 'Barrierensysteme, Türen',
     zertifizierung: 'ISO 9001',
     erfahrung: '15 Jahre',
     umsatz: '2–5 Mio. €',
@@ -2608,7 +2618,8 @@ async function loadInstallateure() {
           logo_url: sanitizeCell(obj['logo_url']),
           lat: sanitizeCell(obj['lat']),
           lng: sanitizeCell(obj['lng']),
-          radius_km: sanitizeCell(obj['radius_km'])
+          radius_km: sanitizeCell(obj['radius_km']),
+          real: sanitizeCell(obj['real'])
         };
       })
       .filter(hasInstallateurContent);
@@ -2701,18 +2712,6 @@ function resetAddressSearch() {
   renderInstallateure();
 }
 
-// Friendly label mapping for category names
-const KAT_LABELS = {
-  'Wasserdichte Türen': 'Türen',
-  'Wasserdichte Fenster': 'Fenster',
-  'Wasserdichte Tore/Garagentore': '(Garagen-)Tore',
-  'Barrieren-Systeme': 'Barrierensysteme',
-  'Pumpen': 'Pumpen',
-  'Sandsäcke & mobiler Schutz': 'Sandsäcke u. Ä.',
-  'Rückstausicherungen': 'Rückstauklappen',
-  'Hebeanlagen': 'Hebeanlagen',
-  'Sonstiges': 'Sonstiges'
-};
 
 function renderInstCard(i) {
   // k.A. / leer → nicht anzeigen
@@ -2732,9 +2731,9 @@ function renderInstCard(i) {
     ? '<div style="font-size:0.8rem;color:var(--text-muted);margin-top:3px;">&#128205; ' + v(i.region) + '</div>'
     : '';
 
-  // Kategorien als lesbare Labels im Dropdown
+  // Kategorien im Dropdown (interne Namen = Anzeigenamen)
   const katLabels = i.kategorien
-    ? i.kategorien.split(',').map(k => KAT_LABELS[k.trim()] || k.trim()).filter(Boolean)
+    ? i.kategorien.split(',').map(k => k.trim()).filter(Boolean)
     : [];
   const katLine = katLabels.length
     ? '<div class="detail-row"><span>Fachbetrieb für</span>' + katLabels.join(', ') + '</div>'
@@ -2748,7 +2747,13 @@ function renderInstCard(i) {
   const mail      = v(i.email)       ? '<div class="detail-row"><span>E-Mail</span>'          + v(i.email)        + '</div>' : '';
   const detailRows = katLine + regionRow + zert + erf + ums + tel + mail;
 
+  const isFiktiv = v(i.real) === '' ? false : v(i.real).toLowerCase() === 'nein';
+  const fiktivBanner = isFiktiv
+    ? '<div class="fiktiv-banner"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#c09000" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Fiktiver Betrieb – dient ausschließlich zur Illustration der Plattform.</div>'
+    : '';
+
   return '<div class="installateur-card">'
+    + fiktivBanner
     + '<div style="display:flex;align-items:center;gap:10px;">'
     + logo
     + '<div style="flex:1;min-width:0;"><div class="installateur-name">' + i.name + '</div>' + region + '</div>'
@@ -2895,10 +2900,10 @@ if (sessionStorage.getItem('pw_ok') === '1') {
 
 // Mapping von Kategorie zu Zone-Klasse im SVG
 const zoneCategories = {
-  'Wasserdichte Türen': 'zone-tueren',
-  'Wasserdichte Fenster': 'zone-fenster',
-  'Wasserdichte Tore/Garagentore': 'zone-garagen',
-  'Barrieren-Systeme': 'zone-barrieren'
+  'Türen': 'zone-tueren',
+  'Fenster': 'zone-fenster',
+  '(Garagen-)Tore': 'zone-garagen',
+  'Barrierensysteme': 'zone-barrieren'
 };
 
 // Aktiv gehighlightete Zone (durch Klick/Filter)
@@ -3337,7 +3342,7 @@ if (!localStorage.getItem('infoSeen')) {
 // Optionaler Pfad zu Erklärgrafiken – Schlüssel = Kategoriename, Wert = Bild-URL
 // Füge hier später deine Grafik-URLs ein:
 const categoryImages = {
-  // Beispiel: 'Wasserdichte Türen': 'bilder/tuer-erklaerung.png',
+  // Beispiel: 'Türen': 'bilder/tuer-erklaerung.png',
 };
 
 function updateCategoryPanel() {
