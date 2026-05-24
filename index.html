@@ -522,41 +522,6 @@
     margin-bottom: 10px; display: flex; align-items: flex-start; gap: 8px;
   }
   .fiktiv-banner svg { flex-shrink: 0; margin-top: 1px; }
-  #cert-overview-overlay {
-    position: fixed; inset: 0; z-index: 9998;
-    background: rgba(10,37,64,0.6); backdrop-filter: blur(3px);
-    display: flex; align-items: center; justify-content: center;
-  }
-  #cert-overview-overlay.hidden { display: none; }
-  #cert-overview-box {
-    background: white; border-radius: 20px;
-    max-width: 680px; width: 94%; max-height: 88vh;
-    display: flex; flex-direction: column;
-    box-shadow: 0 24px 80px rgba(0,0,0,0.3);
-    overflow: hidden; animation: modalIn 0.3s ease;
-  }
-  .cert-ov-header {
-    background: linear-gradient(135deg, var(--blue-deep), var(--blue-mid));
-    padding: 28px 32px 24px; color: white; flex-shrink: 0;
-  }
-  .cert-ov-header h2 { font-family: 'DM Serif Display', serif; font-size: 1.5rem; margin-bottom: 6px; }
-  .cert-ov-header p { font-size: 0.84rem; color: rgba(255,255,255,0.7); line-height: 1.6; }
-  .cert-ov-warning {
-    margin-top: 12px; background: rgba(255,200,0,0.18);
-    border: 1px solid rgba(255,200,0,0.45); border-radius: 8px;
-    padding: 10px 14px; font-size: 0.8rem; color: #ffe58a; line-height: 1.5;
-  }
-  .cert-ov-body { overflow-y: auto; padding: 24px 32px 28px; display: flex; flex-direction: column; gap: 18px; }
-  .cert-ov-item {
-    border: 1.5px solid var(--border); border-radius: 12px;
-    padding: 16px 20px; transition: border-color 0.2s;
-  }
-  .cert-ov-item:hover { border-color: var(--blue-accent); }
-  .cert-ov-norm { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue-accent); margin-bottom: 4px; }
-  .cert-ov-title { font-family: 'DM Serif Display', serif; font-size: 0.95rem; color: var(--blue-deep); margin-bottom: 6px; }
-  .cert-ov-desc { font-size: 0.82rem; color: var(--text-muted); line-height: 1.65; }
-  .cert-ov-footer { padding: 0 32px 24px; display: flex; justify-content: flex-end; flex-shrink: 0; }
-
   /* ─── FEEDBACK MODAL ──── */
   #feedback-overlay {
     position: fixed; inset: 0; z-index: 9998;
@@ -603,38 +568,6 @@
   .feedback-success { color: #27ae60; font-size: 0.85rem; text-align: center; padding: 10px 0 0; display: none; }
   .feedback-success.visible { display: block; }
   .feedback-formspree-note { font-size: 0.73rem; color: var(--text-muted); margin-top: 12px; text-align: center; opacity: 0.7; }
-
-  /* ─── FÖRDER MODAL ──── */
-  #foerder-overlay {
-    position: fixed; inset: 0; z-index: 9998;
-    background: rgba(10,37,64,0.6); backdrop-filter: blur(3px);
-    display: flex; align-items: center; justify-content: center;
-  }
-  #foerder-overlay.hidden { display: none; }
-  #foerder-box {
-    background: white; border-radius: 20px;
-    max-width: 620px; width: 94%; max-height: 88vh;
-    display: flex; flex-direction: column;
-    box-shadow: 0 24px 80px rgba(0,0,0,0.3);
-    overflow: hidden; animation: modalIn 0.3s ease;
-  }
-  .foerder-header {
-    background: linear-gradient(135deg, var(--blue-deep), var(--blue-mid));
-    padding: 28px 32px 24px; color: white; flex-shrink: 0;
-  }
-  .foerder-header h2 { font-family: 'DM Serif Display', serif; font-size: 1.5rem; margin-bottom: 6px; }
-  .foerder-header p { font-size: 0.84rem; color: rgba(255,255,255,0.7); line-height: 1.6; }
-  .foerder-body { overflow-y: auto; padding: 24px 32px 28px; display: flex; flex-direction: column; gap: 16px; }
-  .foerder-block {
-    border: 1.5px solid var(--border); border-radius: 12px; padding: 16px 20px;
-    transition: border-color 0.2s;
-  }
-  .foerder-block:hover { border-color: var(--blue-accent); }
-  .foerder-block-title { font-family: 'DM Serif Display', serif; font-size: 1rem; color: var(--blue-deep); margin-bottom: 6px; display: flex; align-items: center; gap: 8px; }
-  .foerder-tag { font-size: 0.68rem; font-weight: 700; background: var(--blue-light); color: var(--blue-accent); padding: 2px 8px; border-radius: 100px; letter-spacing: 0.06em; text-transform: uppercase; }
-  .foerder-block-desc { font-size: 0.83rem; color: var(--text-muted); line-height: 1.65; }
-  .foerder-disclaimer { font-size: 0.78rem; color: var(--text-muted); border-top: 1px solid var(--border); padding-top: 14px; line-height: 1.6; font-style: italic; }
-  .foerder-footer { padding: 0 32px 24px; display: flex; justify-content: flex-end; flex-shrink: 0; }
 
   /* Bereich des Hauptinhalts */
   main { max-width: 1200px; margin: 0 auto; padding: 48px 24px 80px; }
@@ -1547,10 +1480,65 @@
   #info-overlay.hidden { display: none; }
   #info-box {
     background: white; border-radius: 20px;
-    padding: 0; max-width: 520px; width: 92%;
+    padding: 0; max-width: 760px; width: 95%;
     box-shadow: 0 24px 80px rgba(0,0,0,0.3);
     overflow: hidden;
     animation: modalIn 0.3s ease;
+    display: flex; flex-direction: column;
+    max-height: 90vh;
+  }
+  .info-sections {
+    display: flex; flex: 1; overflow: hidden;
+    border-bottom: 1px solid var(--border);
+  }
+  .info-nav {
+    width: 210px; flex-shrink: 0;
+    background: var(--bg);
+    border-right: 1px solid var(--border);
+    display: flex; flex-direction: column;
+    overflow-y: auto;
+  }
+  .info-nav-item {
+    padding: 13px 18px; font-size: 0.84rem; font-weight: 500;
+    cursor: pointer; border-left: 3px solid transparent;
+    color: var(--text-muted); background: transparent;
+    border-top: none; border-right: none; border-bottom: none;
+    text-align: left; font-family: 'DM Sans', sans-serif; line-height: 1.35;
+    transition: all 0.15s;
+  }
+  .info-nav-item:hover { background: var(--blue-light); color: var(--blue-accent); border-left-color: var(--blue-accent); }
+  .info-nav-item.active { background: var(--blue-light); color: var(--blue-deep); border-left-color: var(--blue-deep); font-weight: 600; }
+  .info-nav-divider { height: 1px; background: var(--border); margin: 4px 0; }
+  .info-content-area {
+    flex: 1; padding: 24px 28px; overflow-y: auto;
+  }
+  .info-content-area h3 {
+    font-family: 'DM Serif Display', serif; font-size: 1.05rem;
+    color: var(--blue-deep); margin-bottom: 12px;
+  }
+  .info-content-area p { font-size: 0.85rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 10px; }
+  .info-content-area strong { color: var(--text); }
+  .info-cert-item { border: 1.5px solid var(--border); border-radius: 10px; padding: 14px 18px; margin-bottom: 12px; }
+  .info-cert-item:hover { border-color: var(--blue-accent); }
+  .info-cert-norm { font-size: 0.7rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--blue-accent); margin-bottom: 3px; }
+  .info-cert-title { font-family: 'DM Serif Display', serif; font-size: 0.92rem; color: var(--blue-deep); margin-bottom: 6px; }
+  .info-cert-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.65; }
+  .info-foerder-block { border-left: 3px solid var(--blue-accent); padding: 10px 14px; background: var(--blue-light); border-radius: 0 8px 8px 0; margin-bottom: 12px; }
+  .info-foerder-title { font-size: 0.84rem; font-weight: 700; color: var(--blue-deep); margin-bottom: 4px; }
+  .info-foerder-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.65; }
+  .info-foerder-tag { background: rgba(30,127,194,0.15); color: var(--blue-accent); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; border-radius: 100px; padding: 2px 8px; margin-left: 6px; }
+  .info-disclaimer { font-size: 0.75rem; color: var(--text-muted); background: var(--bg); border-radius: 8px; padding: 10px 14px; line-height: 1.6; margin-top: 6px; }
+  .info-tech-row { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 8px; }
+  .info-tech-icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+  .info-cert-warning { background: rgba(255,200,0,0.12); border: 1px solid rgba(255,200,0,0.45); border-radius: 8px; padding: 10px 14px; font-size: 0.8rem; color: #7a5f00; line-height: 1.55; margin-bottom: 14px; }
+  @media (max-width: 768px) {
+    #info-box { max-height: 95vh; }
+    .info-sections { flex-direction: column; }
+    .info-nav { width: 100%; flex-direction: row; overflow-x: auto; overflow-y: hidden; border-right: none; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+    .info-nav-item { white-space: nowrap; flex-shrink: 0; border-left: none; border-bottom: 3px solid transparent; padding: 10px 14px; font-size: 0.78rem; }
+    .info-nav-item.active { border-bottom-color: var(--blue-deep); border-left: none; background: var(--blue-light); }
+    .info-nav-divider { display: none; }
+    .info-content-area { padding: 16px 18px; }
   }
   @keyframes modalIn {
     from { transform: translateY(20px); opacity: 0; }
@@ -1651,32 +1639,19 @@
 <div id="info-overlay" class="hidden">
   <div id="info-box">
     <div class="info-header">
-      <h2>Willkommen auf dem Prototypen der Hochwasserschutz-Informationsplattform</h2>
-      <p>Eine webbasierte Informationsplattform zum privaten Hochwasserschutz – entstanden im Rahmen einer Masterarbeit.</p>
+      <h2>Informationen zur Plattform</h2>
+      <p>Wählen Sie ein Thema aus der Liste, um mehr zu erfahren.</p>
     </div>
-    <div class="info-body">
-      <div class="info-block">
-        <div class="info-icon"></div>
-        <div class="info-block-text">
-          <strong>Worum geht es?</strong>
-          <span>Diese Plattform soll einen Überblick über Produkte und Fachbetriebe geben. Nutzer sollen bei Ihrer Suche nach geeigneten Produkten und Monteurbetrieben unterstützt werden. </span>
-        </div>
-      </div>
-      <div class="info-block">
-        <div class="info-icon"></div>
-        <div class="info-block-text">
-          <strong>Hinweis: Prototyp</strong>
-          <span>Diese Website ist ein Prototyp, der im Rahmen einer Masterarbeit entwickelt wurde. Alle aufgeführten Produkte und Einträge dienen als Beispieldaten und erheben keinen Anspruch auf Vollständigkeit.</span>
-        </div>
-      </div>
-      <div class="info-divider"></div>
-      <div class="info-block">
-        <div class="info-icon"></div>
-        <div class="info-block-text">
-          <strong>So funktioniert die Plattform</strong>
-          <span> Wechseln Sie zwischen dem Produkt- und Betriebsfilter über den Tabulator. Nutzen Sie die Kategorien links, um Produktekategorien oder Einsatzgebiete zu filtern. </span>
-        </div>
-      </div>
+    <div class="info-sections">
+      <nav class="info-nav">
+        <button class="info-nav-item active" onclick="showInfoSection('zweck', this)">Zweck &amp; Anwendung</button>
+        <button class="info-nav-item" onclick="showInfoSection('kontext', this)">Entstehungskontext</button>
+        <button class="info-nav-item" onclick="showInfoSection('technik', this)">Technische Details</button>
+        <div class="info-nav-divider"></div>
+        <button class="info-nav-item" onclick="showInfoSection('foerderung', this)">Fördermöglichkeiten</button>
+        <button class="info-nav-item" onclick="showInfoSection('zertifikate', this)">Zertifikate &amp; Normen</button>
+      </nav>
+      <div class="info-content-area" id="info-content-area"></div>
     </div>
     <div class="info-footer">
       <button class="info-btn-noshow" onclick="closeInfoModal(true)">Nicht mehr anzeigen</button>
@@ -1693,11 +1668,9 @@
     <span id="bc-current">Übersicht</span>
   </div>
   <div class="nav-right">
-    <button class="nav-info-btn" onclick="openCertOverview()">Zertifikate &amp; Normen</button>
-    <button class="nav-info-btn" onclick="openFoerderModal()">Fördermöglichkeiten</button>
     <button class="nav-info-btn" onclick="openFeedbackModal()">Feedback</button>
     <button class="nav-info-btn" onclick="startTour()" style="margin-left:4px;">Tour</button>
-    <button class="nav-info-btn" onclick="showInfoModal()">Informationen zur Seite</button>
+    <button class="nav-info-btn" onclick="showInfoModal()">Info</button>
     <button class="nav-hamburger" id="nav-hamburger" onclick="toggleMobileMenu()" aria-label="Menü">
       <span></span><span></span><span></span>
     </button>
@@ -1706,14 +1679,13 @@
 <div class="mobile-menu hidden" id="mobile-menu">
   <button class="mobile-tab" onclick="showMainTab('produkte',this);toggleMobileMenu()">Produkte</button>
   <button class="mobile-tab" onclick="showMainTab('installateure',this);toggleMobileMenu()">Fachbetriebe</button>
-  <button class="mobile-tab" onclick="openCertOverview();toggleMobileMenu()">Zertifikate</button>
-  <button class="mobile-tab" onclick="openFoerderModal();toggleMobileMenu()">Förderung</button>
   <button class="mobile-tab" onclick="openFeedbackModal();toggleMobileMenu()">Feedback</button>
-  <button class="mobile-tab" onclick="showInfoModal();toggleMobileMenu()">Informationen</button>
+  <button class="mobile-tab" onclick="showInfoModal();toggleMobileMenu()">Info</button>
 </div>
 
 <div class="hero">
   <div class="hero-inner">
+    <div class="hero-tag">Prototyp im Rahmen einer Masterarbeit</div>
     <h1>Hochwasserschutzelemente –<br>Produkte und Fachbetriebe im Überblick</h1>
     <p>Eine Übersicht von Produkten und Fachbetrieben zum privaten Hochwasserschutz.</p>
   </div>
@@ -1994,55 +1966,6 @@
 
 <!-- CURSOR HOVER LABEL -->
 <div id="zone-cursor-label"></div>
-
-<!-- ZERTIFIKATE ÜBERSICHT MODAL -->
-<div id="cert-overview-overlay" class="hidden" onclick="if(event.target===this)closeCertOverview()">
-  <div id="cert-overview-box">
-    <div class="cert-ov-header">
-      <h2>Zertifikate &amp; Normen im Hochwasserschutz</h2>
-      <p>Übersicht aller auf dieser Plattform relevanten Prüfnormen und Gütezeichen.</p>
-      <div class="cert-ov-warning">
-        <strong>Wichtiger Hinweis:</strong> Hochwasserschutzzertifikate sind keine allgemeinen Bau- oder Qualitätsnormen. Sie prüfen gezielt die Dichtheit, Belastbarkeit und Einsatzeignung unter Hochwasserbedingungen. Allgemeine Normen (z.&thinsp;B. für Schlagregendichtheit oder Wärmeschutz) sind kein Ersatz für spezifische Hochwasserzulassungen.
-      </div>
-    </div>
-    <div class="cert-ov-body" id="cert-overview-list"></div>
-    <div class="cert-ov-footer">
-      <button onclick="closeCertOverview()" style="background:var(--blue-deep);color:white;border:none;border-radius:10px;padding:11px 28px;font-size:0.9rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">Schließen</button>
-    </div>
-  </div>
-</div>
-
-<!-- FÖRDERMÖGLICHKEITEN MODAL -->
-<div id="foerder-overlay" class="hidden" onclick="if(event.target===this)closeFoerderModal()">
-  <div id="foerder-box">
-    <div class="foerder-header">
-      <h2>Fördermöglichkeiten</h2>
-      <p>Hinweise auf finanzielle Unterstützung für private Hochwasserschutzmaßnahmen.</p>
-    </div>
-    <div class="foerder-body">
-      <div class="foerder-block">
-        <div class="foerder-block-title">Bundesförderung – KfW-Programm <span class="foerder-tag">Bund</span></div>
-        <div class="foerder-block-desc">Im Rahmen des KfW-Programms „Bundesförderung für effiziente Gebäude" (BEG) können Maßnahmen zum Schutz vor Naturgefahren wie Hochwasser förderfähig sein, sofern sie Teil einer umfassenden energetischen Sanierung sind. Die KfW bietet zudem zinsgünstige Kredite über das Programm 134 (Wohngebäude) an. Aktuelle Konditionen und Fördersätze sind direkt bei der KfW oder einem Finanzierungspartner zu erfragen.</div>
-      </div>
-      <div class="foerder-block">
-        <div class="foerder-block-title">Landesförderprogramme <span class="foerder-tag">Länder</span></div>
-        <div class="foerder-block-desc">Viele Bundesländer haben eigene Förderprogramme für den privaten Hochwasserschutz aufgelegt – insbesondere nach größeren Hochwasserereignissen. Diese Programme variieren stark in Umfang, Förderquote und Antragstellung. Zuständig sind in der Regel die Landesumweltministerien oder Bezirksregierungen. Es empfiehlt sich, die Website des jeweiligen Landesministeriums zu prüfen oder eine Beratung bei einem lokalen Wasserwirtschaftsamt zu suchen.</div>
-      </div>
-      <div class="foerder-block">
-        <div class="foerder-block-title">Kommunale Förderprogramme <span class="foerder-tag">Kommunen</span></div>
-        <div class="foerder-block-desc">Einzelne Städte und Gemeinden bieten ergänzende Zuschüsse für Hochwasserschutzmaßnahmen an Privatgebäuden. Sprechen Sie dazu Ihr lokales Stadtplanungsamt oder die Gemeindeverwaltung an. Auch Energieberatungen der Verbraucherzentrale können Hinweise auf regionale Programme geben.</div>
-      </div>
-      <div class="foerder-block">
-        <div class="foerder-block-title">Gebäudeversicherung &amp; Elementarschadenschutz <span class="foerder-tag">Versicherung</span></div>
-        <div class="foerder-block-desc">Elementarschadenversicherungen können einen Teil der Kosten nach Hochwasserschäden übernehmen. Einige Versicherer bieten Rabatte oder günstigere Konditionen, wenn nachweislich Hochwasserschutzmaßnahmen umgesetzt wurden. Sprechen Sie Ihren Versicherungsanbieter gezielt auf Anpassungsmöglichkeiten Ihres Tarifs an.</div>
-      </div>
-      <div class="foerder-disclaimer">Die Angaben auf dieser Seite sind allgemeiner Natur und ohne Gewähr. Förderprogramme ändern sich regelmäßig. Für verbindliche Informationen wenden Sie sich bitte direkt an die genannten Institutionen oder eine unabhängige Beratungsstelle.</div>
-    </div>
-    <div class="foerder-footer">
-      <button onclick="closeFoerderModal()" style="background:var(--blue-deep);color:white;border:none;border-radius:10px;padding:11px 28px;font-size:0.9rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;">Schließen</button>
-    </div>
-  </div>
-</div>
 
 <!-- FEEDBACK MODAL -->
 <div id="feedback-overlay" class="hidden" onclick="if(event.target===this)closeFeedbackModal()">
@@ -3296,7 +3219,7 @@ Diese Plattform befindet sich im Prototyp-Stadium. Für Rückmeldungen, Fehlerhi
 <strong>E-Mail:</strong> [E-Mail eintragen]<br><br>
 <strong>Hinweis für Hersteller und Installationsbetriebe:</strong><br>
 Einreichungen für die Plattform erfolgen über ein standardisiertes Formular. Bitte nehmen Sie zunächst per E-Mail Kontakt auf.<br><br>
-<em>Antwortzeit: in der Regel innerhalb von 5 Werktagen.</em>`
+<strong>Schnelles Feedback:</strong> Für kurze Rückmeldungen oder Hinweise steht auf der Plattform der Button „Feedback" in der Navigationsleiste zur Verfügung.`
   }
 };
 
@@ -3316,8 +3239,88 @@ function closeLegalModal() {
 // ═══════════════════════════════════════════════
 // INFO-MODAL
 // ═══════════════════════════════════════════════
-function showInfoModal() {
+const infoSectionContent = {
+  zweck: {
+    title: 'Zweck & Anwendung',
+    render: () => `
+      <h3>Wozu dient die Seite?</h3>
+      <p>Diese Plattform bietet einen strukturierten Überblick über Produkte und Fachbetriebe im Bereich des privaten Hochwasserschutzes. Sie soll Hauseigentümerinnen und -eigentümern dabei helfen, sich über verfügbare Schutzmaßnahmen zu informieren und geeignete Installationsbetriebe in ihrer Nähe zu finden.</p>
+      <h3 style="margin-top:18px;">So wenden Sie die Seite an</h3>
+      <div class="info-tech-row"><div class="info-tech-icon">🏠</div><div><strong>Hausübersicht:</strong> Klicken Sie auf die farblich markierten Bereiche der Hausgrafik, um direkt den passenden Produktfilter zu aktivieren.</div></div>
+      <div class="info-tech-row"><div class="info-tech-icon">📋</div><div><strong>Kategorienfilter:</strong> Wählen Sie in der Sidebar links eine oder mehrere Produktkategorien aus, um die Liste einzuschränken.</div></div>
+      <div class="info-tech-row"><div class="info-tech-icon">🏢</div><div><strong>Fachbetriebe:</strong> Wechseln Sie über den Tab „Fachbetriebe & Monteure" zur Betriebssuche. Geben Sie Ihre Adresse ein, um Betriebe in Ihrer Nähe zu finden.</div></div>
+      <div class="info-tech-row"><div class="info-tech-icon">🗺️</div><div><strong>Karte:</strong> Die interaktive Karte zeigt alle eingetragenen Fachbetriebe. Ein Klick auf einen Marker zeigt Details zum jeweiligen Betrieb.</div></div>
+      <p style="margin-top:12px;"><strong>Hinweis:</strong> Alle aufgeführten Produkte und Betriebe sind Beispieldaten und erheben keinen Anspruch auf Vollständigkeit oder Richtigkeit.</p>`
+  },
+  kontext: {
+    title: 'Entstehungskontext',
+    render: () => `
+      <h3>Entstehungskontext</h3>
+      <p>Diese Plattform ist ein <strong>Prototyp</strong>, der im Rahmen einer Masterarbeit an der <strong>RWTH Aachen University</strong> am Institut für Wasserbau und Wasserwirtschaft (IWW) entwickelt wurde.</p>
+      <p>Ziel der Arbeit ist die Konzeption und prototypische Umsetzung einer webbasierten Informationsplattform, die private Hauseigentümer beim Thema Hochwasserschutz unterstützt. Der Schwerpunkt liegt auf der Nutzerfreundlichkeit, der strukturierten Aufbereitung von Produktinformationen sowie der regionalen Auffindbarkeit von Fachbetrieben.</p>
+      <p>Die Plattform befindet sich im <strong>Prototyp-Stadium</strong>. Alle eingetragenen Produkte, Firmen und Preisangaben dienen ausschließlich der Illustration der Plattformfunktionalität und sind fiktiv oder vereinfacht. Sie erheben keinen Anspruch auf Vollständigkeit, Aktualität oder kommerzielle Neutralität.</p>
+      <p>Für Rückmeldungen und Anmerkungen steht das Feedback-Formular zur Verfügung (erreichbar über den Button „Feedback" in der Navigationsleiste).</p>`
+  },
+  technik: {
+    title: 'Technische Details',
+    render: () => `
+      <h3>Technische Details</h3>
+      <div class="info-tech-row"><div class="info-tech-icon">💻</div><div><strong>Technologie:</strong> Die Seite ist als statische Einzeldatei (reines HTML, CSS und JavaScript) umgesetzt – ohne Framework oder Backend.</div></div>
+      <div class="info-tech-row"><div class="info-tech-icon">🌐</div><div><strong>Hosting:</strong> Die Plattform wird über <strong>GitHub Pages</strong> gehostet. Es gelten die Datenschutzbestimmungen von GitHub (github.com/privacy).</div></div>
+      <div class="info-tech-row"><div class="info-tech-icon">🗺️</div><div><strong>Karte:</strong> Die interaktive Karte nutzt <strong>Leaflet.js</strong> mit OpenStreetMap-Kartenmaterial. Adresssuchen werden über die Nominatim-API (OpenStreetMap) verarbeitet.</div></div>
+      <div class="info-tech-row"><div class="info-tech-icon">📊</div><div><strong>Daten:</strong> Produkt- und Betriebsdaten werden aus einem <strong>Google Sheets</strong>-Dokument geladen. Steht das Dokument nicht zur Verfügung, werden eingebettete Beispieldaten verwendet.</div></div>
+      <div class="info-tech-row"><div class="info-tech-icon">🔒</div><div><strong>Datenschutz:</strong> Die Seite erhebt keine personenbezogenen Daten. Es werden keine Cookies gesetzt, die einer Einwilligung bedürfen. Der lokale Browser-Speicher (localStorage) wird ausschließlich dazu verwendet, die Info-Modal-Präferenz zu speichern.</div></div>
+      <div class="info-tech-row"><div class="info-tech-icon">📝</div><div><strong>Feedback:</strong> Rückmeldungen können über das Feedback-Formular eingereicht werden, das über den Button in der Navigationsleiste erreichbar ist. Die Übermittlung erfolgt über Formspree.io.</div></div>`
+  },
+  foerderung: {
+    title: 'Fördermöglichkeiten',
+    render: () => `
+      <h3>Fördermöglichkeiten für den privaten Hochwasserschutz</h3>
+      <p>Für Schutzmaßnahmen an Privatgebäuden gibt es auf verschiedenen Ebenen finanzielle Unterstützungsmöglichkeiten:</p>
+      <div class="info-foerder-block"><div class="info-foerder-title">Bundesförderung – KfW-Programm <span class="info-foerder-tag">Bund</span></div><div class="info-foerder-desc">Im Rahmen des KfW-Programms „Bundesförderung für effiziente Gebäude" (BEG) können Maßnahmen zum Schutz vor Naturgefahren wie Hochwasser förderfähig sein, sofern sie Teil einer umfassenden energetischen Sanierung sind. Die KfW bietet zudem zinsgünstige Kredite über das Programm 134 (Wohngebäude) an. Aktuelle Konditionen und Fördersätze sind direkt bei der KfW oder einem Finanzierungspartner zu erfragen.</div></div>
+      <div class="info-foerder-block"><div class="info-foerder-title">Landesförderprogramme <span class="info-foerder-tag">Länder</span></div><div class="info-foerder-desc">Viele Bundesländer haben eigene Förderprogramme für den privaten Hochwasserschutz aufgelegt – insbesondere nach größeren Hochwasserereignissen. Diese Programme variieren stark in Umfang, Förderquote und Antragstellung. Zuständig sind in der Regel die Landesumweltministerien oder Bezirksregierungen.</div></div>
+      <div class="info-foerder-block"><div class="info-foerder-title">Kommunale Förderprogramme <span class="info-foerder-tag">Kommunen</span></div><div class="info-foerder-desc">Einzelne Städte und Gemeinden bieten ergänzende Zuschüsse für Hochwasserschutzmaßnahmen an Privatgebäuden. Sprechen Sie dazu Ihr lokales Stadtplanungsamt oder die Gemeindeverwaltung an.</div></div>
+      <div class="info-foerder-block"><div class="info-foerder-title">Gebäudeversicherung &amp; Elementarschadenschutz <span class="info-foerder-tag">Versicherung</span></div><div class="info-foerder-desc">Elementarschadenversicherungen können einen Teil der Kosten nach Hochwasserschäden übernehmen. Einige Versicherer bieten Rabatte oder günstigere Konditionen, wenn nachweislich Hochwasserschutzmaßnahmen umgesetzt wurden.</div></div>
+      <div class="info-disclaimer">Die Angaben sind allgemeiner Natur und ohne Gewähr. Förderprogramme ändern sich regelmäßig. Für verbindliche Informationen wenden Sie sich bitte direkt an die genannten Institutionen oder eine unabhängige Beratungsstelle.</div>`
+  },
+  zertifikate: {
+    title: 'Zertifikate & Normen',
+    render: () => {
+      const warning = `<div class="info-cert-warning"><strong>Wichtiger Hinweis:</strong> Hochwasserschutzzertifikate sind keine allgemeinen Bau- oder Qualitätsnormen. Sie prüfen gezielt die Dichtheit, Belastbarkeit und Einsatzeignung unter Hochwasserbedingungen. Allgemeine Normen (z.&thinsp;B. für Schlagregendichtheit) sind kein Ersatz für spezifische Hochwasserzulassungen.</div>`;
+      const items = Object.entries(CERT_INFO).map(([key, info]) => `
+        <div class="info-cert-item">
+          <div class="info-cert-norm">${key}</div>
+          <div class="info-cert-title">${info.title}</div>
+          <div class="info-cert-desc">${info.beschreibung}</div>
+        </div>`).join('');
+      return `<h3>Zertifikate &amp; Normen im Hochwasserschutz</h3>${warning}${items}`;
+    }
+  }
+};
+
+function showInfoSection(key, btn) {
+  document.querySelectorAll('.info-nav-item').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  const area = document.getElementById('info-content-area');
+  const section = infoSectionContent[key];
+  if (!section || !area) return;
+  area.innerHTML = section.render();
+  area.scrollTop = 0;
+}
+
+function showInfoModal(section) {
   document.getElementById('info-overlay').classList.remove('hidden');
+  const defaultSection = section || 'zweck';
+  const btns = document.querySelectorAll('.info-nav-item');
+  const keys = ['zweck','kontext','technik','foerderung','zertifikate'];
+  btns.forEach((b, i) => {
+    b.classList.toggle('active', keys[i] === defaultSection);
+  });
+  const area = document.getElementById('info-content-area');
+  if (area && infoSectionContent[defaultSection]) {
+    area.innerHTML = infoSectionContent[defaultSection].render();
+    area.scrollTop = 0;
+  }
 }
 
 function closeInfoModal(dontShowAgain) {
@@ -3331,9 +3334,15 @@ function closeInfoModal(dontShowAgain) {
   }, 300);
 }
 
+// openCertOverview und openFoerderModal öffnen jetzt die Info-Modal mit dem jeweiligen Abschnitt
+function openCertOverview() { showInfoModal('zertifikate'); }
+function openFoerderModal() { showInfoModal('foerderung'); }
+function closeCertOverview() { closeInfoModal(false); }
+function closeFoerderModal() { closeInfoModal(false); }
+
 // Beim ersten Besuch automatisch anzeigen
 if (!localStorage.getItem('infoSeen')) {
-  setTimeout(showInfoModal, 600);
+  setTimeout(() => showInfoModal('zweck'), 600);
 }
 
 // ═══════════════════════════════════════════════
@@ -3378,24 +3387,6 @@ function updateCategoryPanel() {
 }
 
 // ═══════════════════════════════════════════════
-// (b) ZERTIFIKATE ÜBERSICHT
-// ═══════════════════════════════════════════════
-function openCertOverview() {
-  const list = document.getElementById('cert-overview-list');
-  list.innerHTML = Object.entries(CERT_INFO).map(([key, info]) => `
-    <div class="cert-ov-item">
-      <div class="cert-ov-norm">${key}</div>
-      <div class="cert-ov-title">${info.title}</div>
-      <div class="cert-ov-desc">${info.beschreibung}</div>
-    </div>
-  `).join('');
-  document.getElementById('cert-overview-overlay').classList.remove('hidden');
-}
-function closeCertOverview() {
-  document.getElementById('cert-overview-overlay').classList.add('hidden');
-}
-
-// ═══════════════════════════════════════════════
 // (e) FEEDBACK MODAL (Formspree)
 // ► Anleitung: Konto auf formspree.io anlegen → neues Formular erstellen
 //   → die Form-ID (z. B. "xabcdefg") unten bei FORMSPREE_ID eintragen
@@ -3436,16 +3427,6 @@ async function sendFeedback() {
   } catch(e) {
     alert('Netzwerkfehler. Bitte erneut versuchen.');
   }
-}
-
-// ═══════════════════════════════════════════════
-// (j) FÖRDERMÖGLICHKEITEN MODAL
-// ═══════════════════════════════════════════════
-function openFoerderModal() {
-  document.getElementById('foerder-overlay').classList.remove('hidden');
-}
-function closeFoerderModal() {
-  document.getElementById('foerder-overlay').classList.add('hidden');
 }
 
 // ═══════════════════════════════════════════════
