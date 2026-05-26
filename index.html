@@ -185,8 +185,8 @@
     gap: 16px;
     position: sticky;
     top: 80px;
-    max-height: calc(100vh - 100px);
-    overflow-y: auto;
+    max-height: none;
+    overflow-y: visible;
   }
   /* Filter und Karte nebeneinander */
   .inst-mid-row {
@@ -2046,7 +2046,6 @@
     <div class="footer-links">
       <div class="footer-col">
         <div class="footer-col-title">Rechtliches</div>
-        <a href="#" onclick="showLegalModal('impressum'); return false;">Impressum</a>
         <a href="#" onclick="showLegalModal('datenschutz'); return false;">Datenschutz</a>
         <a href="#" onclick="showLegalModal('kontakt'); return false;">Kontakt</a>
       </div>
@@ -2696,20 +2695,28 @@ async function searchByAddress() {
       return dist <= parseFloat(i.radius_km);
     });
 
+    // Kategorie-Filter zusätzlich anwenden falls aktiv
+    const katAktiv = !activeInstKategorien.has('Alle') && activeInstKategorien.size > 0;
+    const combined = katAktiv
+      ? inRadius.filter(i => [...activeInstKategorien].some(k => i.kategorien && i.kategorien.includes(k)))
+      : inRadius;
+
     const grid = document.getElementById('installateure-grid');
     const countLabel = document.getElementById('inst-count-label');
 
     // Karte: nur die gefundenen Betriebe anzeigen
-    updateMapMarkers(inRadius);
+    updateMapMarkers(combined);
 
-    if (!inRadius.length) {
-      info.textContent = `Standort gefunden: ${display_name.split(',').slice(0,3).join(',')}. Kein Betrieb bietet Einsatz an diesem Standort an.`;
+    if (!combined.length) {
+      const reason = katAktiv ? ' (auch unter Berücksichtigung des Kategorienfilters)' : '';
+      info.textContent = `Standort gefunden: ${display_name.split(',').slice(0,3).join(',')}. Kein Betrieb bietet Einsatz an diesem Standort an${reason}.`;
       if (countLabel) countLabel.textContent = '0 Einträge';
-      grid.innerHTML = '<div class="no-results">Für Ihre Adresse wurden keine Betriebe gefunden, die ihren Einsatzradius hinterlegt haben.<br><br>Tipp: Alle Betriebe anzeigen und direkt Kontakt aufnehmen.</div>';
+      grid.innerHTML = '<div class="no-results">Für Ihre Adresse wurden keine passenden Betriebe gefunden.<br><br>Tipp: Kategorie-Filter zurücksetzen oder alle Betriebe anzeigen und direkt Kontakt aufnehmen.</div>';
     } else {
-      info.innerHTML = `<strong>Standort:</strong> ${display_name.split(',').slice(0,3).join(',')}. &nbsp;${inRadius.length} Betrieb(e) bieten Einsatz bei Ihnen an.`;
-      if (countLabel) countLabel.textContent = inRadius.length + ' Einträge';
-      grid.innerHTML = inRadius.map(renderInstCard).join('');
+      const katHinweis = katAktiv ? ` · Kategorie: ${[...activeInstKategorien].join(', ')}` : '';
+      info.innerHTML = `<strong>Standort:</strong> ${display_name.split(',').slice(0,3).join(',')}${katHinweis}. &nbsp;${combined.length} Betrieb(e) gefunden.`;
+      if (countLabel) countLabel.textContent = combined.length + ' Einträge';
+      grid.innerHTML = combined.map(renderInstCard).join('');
     }
 
   } catch (e) {
@@ -2813,6 +2820,16 @@ function renderInstallateure(filter) {
   updateMapMarkers(filtered);
 }
 
+// Dropdown für Produkt- und Betriebskarten öffnen/schließen
+function toggleCardDetail(btn) {
+  const panel = btn.nextElementSibling;
+  if (!panel) return;
+  const isOpen = panel.classList.contains('open');
+  panel.classList.toggle('open', !isOpen);
+  btn.classList.toggle('open', !isOpen);
+  btn.setAttribute('aria-expanded', String(!isOpen));
+}
+
 function filterInstallateure(cat, btn) {
   if (cat === 'Alle') {
     // "Alle" deselektiert alle spezifischen Filter
@@ -2844,7 +2861,13 @@ function filterInstallateure(cat, btn) {
       });
     }
   }
-  renderInstallateure();
+  // Adresssuche neu auswerten falls aktiv
+  const addrInput = document.getElementById('addr-input');
+  if (addrInput && addrInput.value.trim()) {
+    searchByAddress();
+  } else {
+    renderInstallateure();
+  }
 }
 
 // Tab-Umschaltung
@@ -2971,37 +2994,53 @@ const tourSteps = [
   {
     id: 'step-tabs',
     target: '.main-tabs',
-    title: '1 / 5 – Tabs: Produkte & Fachbetriebe',
+    title: '1 / 7 – Tabs: Produkte & Fachbetriebe',
     text: 'Über die beiden Tabs wechseln Sie zwischen der Produktübersicht und der Karte der Fachbetriebe & Monteure.',
     position: 'bottom'
   },
   {
     id: 'step-grafik',
     target: '.grafik-spalte',
-    title: '2 / 5 – Hausübersicht',
+    title: '2 / 7 – Hausübersicht',
     text: 'Klicken Sie auf die farblich markierten Bereiche der Grafik, um direkt den passenden Produktfilter zu aktivieren.',
     position: 'right'
   },
   {
     id: 'step-filter',
     target: '.sidebar',
-    title: '3 / 5 – Kategorienfilter',
+    title: '3 / 7 – Kategorienfilter',
     text: 'Mit dem Kategorienfilter schränken Sie die Produktliste ein. Wählen Sie eine oder mehrere Kategorien aus.',
     position: 'right'
   },
   {
     id: 'step-cards',
     target: '.products-right',
-    title: '4 / 5 – Produktsteckbriefe',
+    title: '4 / 7 – Produktsteckbriefe',
     text: 'Hier erscheinen die gefilterten Produkte als Steckbriefe – mit Hersteller, Zertifizierung und technischen Details.',
     position: 'left'
   },
   {
     id: 'step-map',
     target: '.main-tabs',
-    title: '5 / 5 – Fachbetriebe & Karte',
-    text: 'Im Tab „Fachbetriebe & Monteure" finden Sie Betriebe in Ihrer Nähe – mit interaktiver Karte und PLZ-Suche.',
+    title: '5 / 7 – Fachbetriebe & Karte',
+    text: 'Im Tab „Fachbetriebe & Monteure" finden Sie Betriebe in Ihrer Nähe – mit interaktiver Karte und Adresssuche.',
     position: 'bottom',
+    switchTab: 'installateure'
+  },
+  {
+    id: 'step-karte',
+    target: '.inst-map-wrap',
+    title: '6 / 7 – Interaktive Karte',
+    text: 'Die Karte zeigt alle eingetragenen Fachbetriebe. Ein Klick auf einen Marker zeigt den Einsatzradius des Betriebs und springt direkt zum passenden Steckbrief.',
+    position: 'right',
+    switchTab: 'installateure'
+  },
+  {
+    id: 'step-adresssuche',
+    target: '.plz-box',
+    title: '7 / 7 – Adresssuche',
+    text: 'Geben Sie Ihre eigene Adresse ein. Die Plattform filtert automatisch, welche Betriebe in Ihrem Bereich tätig sind. Kombinieren Sie die Suche mit dem Kategorienfilter, um gezielt nach Fachbetrieben für bestimmte Produkttypen zu suchen.',
+    position: 'right',
     switchTab: 'installateure'
   }
 ];
@@ -3272,7 +3311,10 @@ function updateMapMarkers(list) {
         for (const card of cards) {
           if (card.textContent.includes(i.name)) {
             card.classList.add('map-selected');
-            card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // Navbar-Höhe berücksichtigen beim Scrollen
+            const navH = document.querySelector('nav')?.offsetHeight || 72;
+            const cardTop = card.getBoundingClientRect().top + window.scrollY - navH - 16;
+            window.scrollTo({ top: cardTop, behavior: 'smooth' });
             // Highlight für 3 Sekunden
             setTimeout(() => card.classList.remove('map-selected'), 3000);
             break;
@@ -3296,17 +3338,6 @@ function updateMapMarkers(list) {
 // LEGAL MODAL (Impressum, Datenschutz, Kontakt)
 // ═══════════════════════════════════════════════
 const legalContent = {
-  impressum: {
-    title: 'Impressum',
-    body: `<strong>Angaben gemäß § 5 TMG</strong><br><br>
-Diese Website ist ein Prototyp, der im Rahmen einer Masterarbeit an der RWTH Aachen University entstanden ist.<br><br>
-<strong>Verantwortlich:</strong><br>
-Lucas Müller<br>
-RWTH Aachen University · Institut für Wasserbau und Wasserwirtschaft (IWW)<br><br>
-<strong>Kontakt:</strong><br>
-E-Mail: lucas.mueller@rwth-aachen.de<br><br>
-<em>Haftungshinweis: Alle Inhalte dieser Plattform dienen ausschließlich der Information. Kein Ersatz für individuelle Fachberatung.</em>`
-  },
   datenschutz: {
     title: 'Datenschutzerklärung',
     body: `<strong>Datenschutz auf einen Blick</strong><br><br>
@@ -3561,28 +3592,6 @@ async function sendFeedback() {
 
 // ═══════════════════════════════════════════════
 // (g) TOUR – Map/PLZ-Schritt ergänzt
-// ═══════════════════════════════════════════════
-// Tour-Schritte um Adresssuche und Karte erweitern
-// (wird nach Definition der tourSteps-Variable gepacht)
-document.addEventListener('DOMContentLoaded', () => {
-  // Letzten Tour-Schritt durch zwei neue ersetzen
-  if (typeof tourSteps !== 'undefined') {
-    const mapStep = tourSteps.find(s => s.id === 'step-map');
-    if (mapStep) {
-      mapStep.title = '5 / 6 – Karte der Fachbetriebe';
-      mapStep.text = 'Im Tab „Fachbetriebe & Monteure" sehen Sie alle Betriebe auf einer interaktiven Karte. Klicken Sie auf einen Marker, um Details zu sehen.';
-      tourSteps.push({
-        id: 'step-adresssuche',
-        target: '.plz-box',
-        title: '6 / 6 – Adresssuche',
-        text: 'Geben Sie Ihre eigene Adresse ein. Die Plattform filtert automatisch, welche Betriebe für Sie in Frage kommen.',
-        position: 'right',
-        switchTab: 'installateure'
-      });
-    }
-  }
-});
-
 init();
 </script>
 
