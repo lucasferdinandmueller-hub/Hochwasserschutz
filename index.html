@@ -147,7 +147,7 @@
   .inst-map-wrap {
     width: 100%;
     position: relative;
-    padding-bottom: 100%;
+    padding-bottom: 65%;
     border-radius: var(--radius);
     box-shadow: var(--shadow);
     overflow: hidden;
@@ -732,10 +732,15 @@
     box-shadow: var(--shadow);
     padding: 24px;
     border: 1.5px solid var(--blue-deep);
-    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s, background 0.3s;
     display: flex;
     flex-direction: column;
     gap: 10px;
+  }
+  .installateur-card.map-selected {
+    border-color: var(--blue-accent);
+    background: var(--blue-light);
+    box-shadow: 0 0 0 3px rgba(30,127,194,0.18), 0 8px 32px rgba(10,37,64,0.13);
   }
   .installateur-card:hover {
     transform: translateY(-4px);
@@ -1551,6 +1556,24 @@
     color: white;
     position: relative;
   }
+  .modal-close-x {
+    position: absolute; top: 14px; right: 16px;
+    background: rgba(255,255,255,0.15); border: none;
+    color: rgba(255,255,255,0.85); font-size: 1.1rem; line-height: 1;
+    width: 30px; height: 30px; border-radius: 50%;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s;
+  }
+  .modal-close-x:hover { background: rgba(255,255,255,0.3); color: white; }
+  .modal-close-x-dark {
+    position: absolute; top: 14px; right: 16px;
+    background: rgba(0,0,0,0.06); border: none;
+    color: var(--text-muted); font-size: 1.1rem; line-height: 1;
+    width: 30px; height: 30px; border-radius: 50%;
+    cursor: pointer; display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s;
+  }
+  .modal-close-x-dark:hover { background: rgba(0,0,0,0.12); color: var(--text); }
   .info-header-tag {
     display: inline-block;
     background: rgba(30,127,194,0.4);
@@ -1636,6 +1659,7 @@
 <div id="info-overlay" class="hidden">
   <div id="info-box">
     <div class="info-header">
+      <button class="modal-close-x" onclick="closeInfoModal(false)" title="Schließen">✕</button>
       <h2>Informationen zur Plattform</h2>
       <p>Wählen Sie ein Thema aus.</p>
     </div>
@@ -1660,6 +1684,7 @@
     <!-- DETAILANSICHT -->
     <div id="info-detail">
       <button class="info-back-btn" onclick="showInfoOverview()">← Zurück</button>
+      <button class="modal-close-x-dark" style="position:absolute;top:8px;right:12px;" onclick="closeInfoModal(false)" title="Schließen">✕</button>
       <div class="info-detail-title" id="info-detail-title"></div>
       <div class="info-content-area" id="info-content-area"></div>
     </div>
@@ -1842,7 +1867,7 @@
   <g class="house-zone"
      onmouseenter="hoverZone('Rückstauklappen', true, 'Rückstauklappe')"
      onmouseleave="hoverZone('Rückstauklappen', false)"
-     onclick="filterProducts('Rückstauklappen', this.querySelector('.zone-fill')); syncZoneHighlights();"
+     onclick="activateFilter('Rückstauklappen')"
      style="cursor:pointer;">
     <rect class="zone-fill" width="61.892426" height="29.48992" x="447.80991" y="527.17786"
        style="fill:#f5c800;fill-opacity:0.18;transition:fill-opacity 0.2s,fill 0.2s;" />
@@ -1851,7 +1876,7 @@
   <g class="house-zone"
      onmouseenter="hoverZone('Hebeanlagen', true, 'Hebeanlage')"
      onmouseleave="hoverZone('Hebeanlagen', false)"
-     onclick="filterProducts('Hebeanlagen', this.querySelector('.zone-fill')); syncZoneHighlights();"
+     onclick="activateFilter('Hebeanlagen')"
      style="cursor:pointer;">
     <rect class="zone-fill" width="60.07206" height="64.076866" x="667.71002" y="528.63416"
        style="fill:#f5c800;fill-opacity:0.18;transition:fill-opacity 0.2s,fill 0.2s;" />
@@ -1860,7 +1885,7 @@
   <g class="house-zone"
      onmouseenter="hoverZone('Sandsäcke u. Ä.', true, 'Sandsäcke u. Ä.')"
      onmouseleave="hoverZone('Sandsäcke u. Ä.', false)"
-     onclick="filterProducts('Sandsäcke u. Ä.', this.querySelector('.zone-fill')); syncZoneHighlights();"
+     onclick="activateFilter('Sandsäcke u. Ä.')"
      style="cursor:pointer;">
     <path class="zone-fill"
        d="m 302.23285,306.35189 -2.8022,31.63834 -28.11386,5.77639 -25.99851,-18.24596 9.05444,-27.23551 28.80071,-13.39239 z"
@@ -1871,7 +1896,7 @@
   <g class="house-zone"
      onmouseenter="hoverZone('Pumpen', true, 'Pumpen')"
      onmouseleave="hoverZone('Pumpen', false)"
-     onclick="filterProducts('Pumpen', this.querySelector('.zone-fill')); syncZoneHighlights();"
+     onclick="activateFilter('Pumpen')"
      style="cursor:pointer;">
     <rect class="zone-fill" width="38.615784" height="66.419144" x="1052.9237" y="457.21088"
        style="fill:#f5c800;fill-opacity:0.18;transition:fill-opacity 0.2s,fill 0.2s;" />
@@ -2027,9 +2052,7 @@
       </div>
     </div>
   </div>
-  <div class="footer-bottom">
-    © 2026 HochwasserSchutz-Plattform · Alle Angaben ohne Gewähr · Kein Ersatz für individuelle Fachberatung
-  </div>
+
 </footer>
 
 <!-- CURSOR HOVER LABEL -->
@@ -2039,6 +2062,7 @@
 <div id="feedback-overlay" class="hidden" onclick="if(event.target===this)closeFeedbackModal()">
   <div id="feedback-box">
     <div class="feedback-header">
+      <button class="modal-close-x" onclick="closeFeedbackModal()" title="Schließen">✕</button>
       <h2>Feedback geben</h2>
       <p>Helfen Sie mit, diese Plattform zu verbessern.</p>
     </div>
@@ -2202,7 +2226,7 @@ function renderProducts(filter) {
     const aktualisiert= val(p.aktualisiert);
     const link        = val(p.link);
     const desc        = val(p.desc);
-    const hasDetails  = specs || installation || wartung || aktualisiert;
+    const hasDetails  = hersteller || kosten || specs || installation || wartung || aktualisiert;
     const isFiktiv = sanitizeCell(p.real).toLowerCase() === 'nein';
     const fiktivBanner = isFiktiv
       ? `<div class="fiktiv-banner"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#c09000" stroke-width="2.5"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>Fiktives Produkt – dient ausschließlich zur Illustration der Plattform.</div>`
@@ -2217,20 +2241,19 @@ function renderProducts(filter) {
         <div class="card-name">${p.name}</div>
         ${desc ? `<div class="card-desc">${desc}</div>` : ''}
         <div class="card-meta">
-          ${hersteller    ? `<div class="card-meta-row"><span>Hersteller</span>${hersteller}</div>` : ''}
-          ${kosten        ? `<div class="card-meta-row"><span>Kosten</span>${kosten}</div>` : ''}
         </div>
         ${hasDetails ? `
         <button class="card-detail-toggle" onclick="toggleCardDetail(this)" aria-expanded="false">
           Details &amp; Spezifikationen <i class="toggle-arrow">&#9662;</i>
         </button>
         <div class="card-detail-panel">
+          ${hersteller    ? `<div class="detail-row"><span>Hersteller</span>${hersteller}</div>` : ''}
+          ${kosten        ? `<div class="detail-row"><span>Kosten</span>${kosten}</div>` : ''}
           ${specs         ? `<div class="detail-row"><span>Technische Specs</span>${specs}</div>` : ''}
           ${installation  ? `<div class="detail-row"><span>Installation</span>${installation}</div>` : ''}
           ${wartung       ? `<div class="detail-row"><span>Wartung</span>${wartung}</div>` : ''}
           ${aktualisiert  ? `<div class="detail-row"><span>Letzte Aktualisierung</span>${aktualisiert}</div>` : ''}
         </div>` : ''}
-        ${link ? `<a class="card-link" href="${link}" target="_blank">Zur Website des Anbieters &rarr;</a>` : ''}
       </div>
     </div>`;
   }).join('');
@@ -3241,6 +3264,21 @@ function updateMapMarkers(list) {
           dashArray: '6,4'
         }).addTo(leafletMap);
       }
+      // Passende Karte highlighten und nach oben scrollen
+      const list = document.getElementById('installateure-grid');
+      if (list) {
+        document.querySelectorAll('.installateur-card').forEach(c => c.classList.remove('map-selected'));
+        const cards = list.querySelectorAll('.installateur-card');
+        for (const card of cards) {
+          if (card.textContent.includes(i.name)) {
+            card.classList.add('map-selected');
+            card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            // Highlight für 3 Sekunden
+            setTimeout(() => card.classList.remove('map-selected'), 3000);
+            break;
+          }
+        }
+      }
     });
 
     marker.addTo(leafletMap);
@@ -3282,12 +3320,12 @@ Sie haben das Recht auf Auskunft, Berichtigung und Löschung Ihrer Daten. Bei Fr
   },
   kontakt: {
     title: 'Kontakt',
-    body: `<strong>Fragen, Feedback oder Einreichungen?</strong><br><br>
-Diese Plattform befindet sich im Prototyp-Stadium. Für Rückmeldungen, Fehlerhinweise oder Anfragen zur Aufnahme von Produkten und Betrieben:<br><br>
-<strong>E-Mail:</strong> [E-Mail eintragen]<br><br>
+    body: `<strong>Fragen, Anmerkungen oder Einreichungen?</strong><br><br>
+Diese Plattform befindet sich im Prototyp-Stadium. Für Rückfragen, Fehlerhinweise oder Anregungen:<br><br>
+<strong>E-Mail:</strong> lucas.mueller@rwth-aachen.de<br><br>
 <strong>Hinweis für Hersteller und Installationsbetriebe:</strong><br>
 Einreichungen für die Plattform erfolgen über ein standardisiertes Formular. Bitte nehmen Sie zunächst per E-Mail Kontakt auf.<br><br>
-<strong>Schnelles Feedback:</strong> Für kurze Rückmeldungen oder Hinweise steht auf der Plattform der Button „Feedback" in der Navigationsleiste zur Verfügung.`
+<strong>Schnelles Feedback:</strong> Für kurze Rückmeldungen steht der Button „Feedback" in der Navigationsleiste zur Verfügung.`
   }
 };
 
@@ -3421,29 +3459,25 @@ function updateCategoryPanel() {
   const titleEl = document.getElementById('cat-info-title');
   const descEl = document.getElementById('cat-info-desc');
   const imgWrap = document.getElementById('cat-info-img-wrap');
-  const imgEl = document.getElementById('cat-info-img');
   if (!panel) return;
 
   const isAll = activeProductKategorien.has('Alle') || activeProductKategorien.size === 0;
-  const cats = [...activeProductKategorien];
-  // Panel nur anzeigen, wenn genau eine Kategorie aktiv (nicht "Alle")
-  if (isAll || cats.length !== 1) {
-    panel.style.display = 'none';
-    return;
-  }
-  const cat = cats[0];
-  const info = categoryInfo[cat];
-  if (!info) { panel.style.display = 'none'; return; }
+  if (isAll) { panel.style.display = 'none'; return; }
 
-  titleEl.textContent = cat;
-  descEl.textContent = info.desc;
-  // Erklärgrafik
-  const imgSrc = categoryImages[cat];
-  if (imgSrc) {
-    imgEl.src = imgSrc;
-    imgWrap.style.display = 'block';
+  const cats = [...activeProductKategorien].filter(c => categoryInfo[c]);
+  if (cats.length === 0) { panel.style.display = 'none'; return; }
+
+  if (cats.length === 1) {
+    const info = categoryInfo[cats[0]];
+    titleEl.textContent = cats[0];
+    descEl.textContent = info.desc;
+    const imgSrc = categoryImages[cats[0]];
+    if (imgWrap) imgWrap.style.display = imgSrc ? 'block' : 'none';
   } else {
-    imgWrap.style.display = 'none';
+    // Mehrere Kategorien: stacked anzeigen
+    titleEl.textContent = cats.join(' · ');
+    descEl.innerHTML = cats.map(c => `<div style="margin-bottom:10px;padding-bottom:10px;border-bottom:1px solid var(--border);"><strong style="color:var(--blue-deep);font-size:0.82rem;">${c}</strong><br>${categoryInfo[c].desc}</div>`).join('').replace(/border-bottom[^;]+;"><\/div>$/, 'none"><\/div>');
+    if (imgWrap) imgWrap.style.display = 'none';
   }
   panel.style.display = 'flex';
 }
