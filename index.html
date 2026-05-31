@@ -603,6 +603,9 @@
   .survey-divider { border: none; border-top: 2px solid var(--border); margin: 24px 0; }
   .feedback-section-title { font-family: 'DM Serif Display', serif; font-size: 0.95rem; color: var(--blue-deep); margin-bottom: 12px; }
 
+  #cert-overlay.hidden, #foerder-overlay.hidden { display: none !important; }
+  #cert-overlay:not(.hidden), #foerder-overlay:not(.hidden) { display: flex; }
+
   /* Geprüft-Filter-Button */
   .sidebar-item-special {
     color: var(--blue-accent);
@@ -2149,7 +2152,7 @@
 </div>
 
 <!-- ZERTIFIKATE MODAL -->
-<div id="cert-overlay" class="hidden" style="position:fixed;inset:0;z-index:9999;background:rgba(10,37,64,0.6);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;" onclick="if(event.target===this)closeCertOverview()">
+<div id="cert-overlay" class="hidden" style="position:fixed;inset:0;z-index:9999;background:rgba(10,37,64,0.6);backdrop-filter:blur(3px);align-items:center;justify-content:center;" onclick="if(event.target===this)closeCertOverview()">
   <div style="background:white;border-radius:20px;max-width:640px;width:94%;max-height:88vh;display:flex;flex-direction:column;box-shadow:0 24px 80px rgba(0,0,0,0.3);overflow:hidden;animation:modalIn 0.3s ease;">
     <div style="background:linear-gradient(135deg,var(--blue-deep),var(--blue-mid));padding:28px 32px 22px;color:white;position:relative;flex-shrink:0;">
       <button class="modal-close-x" onclick="closeCertOverview()" title="Schließen">✕</button>
@@ -2161,7 +2164,7 @@
 </div>
 
 <!-- FÖRDERUNG MODAL -->
-<div id="foerder-overlay" class="hidden" style="position:fixed;inset:0;z-index:9999;background:rgba(10,37,64,0.6);backdrop-filter:blur(3px);display:flex;align-items:center;justify-content:center;" onclick="if(event.target===this)closeFoerderModal()">
+<div id="foerder-overlay" class="hidden" style="position:fixed;inset:0;z-index:9999;background:rgba(10,37,64,0.6);backdrop-filter:blur(3px);align-items:center;justify-content:center;" onclick="if(event.target===this)closeFoerderModal()">
   <div style="background:white;border-radius:20px;max-width:600px;width:94%;max-height:88vh;display:flex;flex-direction:column;box-shadow:0 24px 80px rgba(0,0,0,0.3);overflow:hidden;animation:modalIn 0.3s ease;">
     <div style="background:linear-gradient(135deg,var(--blue-deep),var(--blue-mid));padding:28px 32px 22px;color:white;position:relative;flex-shrink:0;">
       <button class="modal-close-x" onclick="closeFoerderModal()" title="Schließen">✕</button>
