@@ -2624,15 +2624,16 @@ function showDataWarning(message) {
       ${message}
     </div>`;
 }
-
 function sanitizeCell(value) {
+  if (typeof value === 'string' && value.startsWith('Date(')) {
+    const p = value.slice(5, -1).split(',').map(Number);
+    return new Date(p[0], p[1], p[2]).toLocaleDateString('de-DE');
+  }
   if (value === null || value === undefined) return '';
   const s = String(value).trim();
-  // 'k.A.' wird wie leer behandelt – Felder mit diesem Wert werden nicht angezeigt
   if (s.toLowerCase() === 'k.a.') return '';
   return s;
 }
-
 function hasProductContent(product) {
   return [product.name, product.category, product.desc, product.hersteller, product.link]
     .some(value => sanitizeCell(value) && sanitizeCell(value) !== '#');
