@@ -1414,7 +1414,7 @@
   .card-detail-toggle:hover { color: var(--blue-deep); }
   .card-detail-toggle .toggle-arrow {
     margin-left: auto; transition: transform 0.25s;
-    font-style: normal;
+    font-style: normal; font-size: 1.3rem; line-height: 1;
   }
   .card-detail-toggle.open .toggle-arrow { transform: rotate(180deg); }
   .card-detail-panel {
@@ -1733,12 +1733,6 @@
       </button>
       <button class="info-topic-row" onclick="showInfoSection('technik')">
         Technische Details <span class="info-topic-arrow">›</span>
-      </button>
-      <button class="info-topic-row" onclick="showInfoSection('foerderung')">
-        Fördermöglichkeiten <span class="info-topic-arrow">›</span>
-      </button>
-      <button class="info-topic-row" onclick="showInfoSection('zertifikate')">
-        Zertifikate &amp; Normen <span class="info-topic-arrow">›</span>
       </button>
     </div>
     <!-- DETAILANSICHT -->
@@ -3102,38 +3096,77 @@ const tourSteps = [
   {
     id: 'step-tabs',
     target: '.main-tabs',
-    title: '1 / 5 – Tabs: Produkte & Fachbetriebe',
-    text: 'Über die beiden Tabs wechseln Sie zwischen der Produktübersicht und der Karte der Fachbetriebe & Monteure.',
+    title: '1 / 10 – Die vier Tabs',
+    text: 'Die Plattform gliedert sich in vier Bereiche: Produkte, Fachbetriebe & Monteure, Zertifikate & Normen sowie Fördermöglichkeiten. Klicken Sie auf einen Tab, um den jeweiligen Bereich zu öffnen.',
     position: 'bottom'
   },
   {
     id: 'step-grafik',
     target: '.grafik-spalte',
-    title: '2 / 5 – Hausübersicht',
-    text: 'Klicken Sie auf die farblich markierten Bereiche der Grafik, um direkt den passenden Produktfilter zu aktivieren.',
+    title: '2 / 10 – Hausübersicht',
+    text: 'Die interaktiven Grafiken zeigen ein Haus von außen und im Kellerquerschnitt. Klicken Sie auf einen farblich markierten Bereich, um den passenden Produktfilter direkt zu aktivieren.',
     position: 'right'
   },
   {
     id: 'step-filter',
     target: '.sidebar',
-    title: '3 / 5 – Kategorienfilter',
-    text: 'Mit dem Kategorienfilter schränken Sie die Produktliste ein. Wählen Sie eine oder mehrere Kategorien aus.',
+    title: '3 / 10 – Kategorienfilter',
+    text: 'Über die Sidebar filtern Sie die Produkte nach Kategorie. Mehrfachauswahl ist möglich. Ganz unten finden Sie den Button „Nur geprüfte Produkte", der ausschließlich zertifizierte Produkte anzeigt.',
     position: 'right'
   },
   {
     id: 'step-cards',
     target: '.products-right',
-    title: '4 / 5 – Produktsteckbriefe',
-    text: 'Hier erscheinen die gefilterten Produkte als Steckbriefe – mit Hersteller, Zertifizierung und technischen Details.',
+    title: '4 / 10 – Produktsteckbriefe',
+    text: 'Die Produkte erscheinen als Steckbriefe mit Beschreibung, Zertifizierungen und weiteren Details. Über „Details & Spezifikationen" lassen sich Hersteller, Kosten und technische Angaben aufklappen.',
     position: 'left'
   },
   {
-    id: 'step-map',
+    id: 'step-inst-tab',
     target: '.main-tabs',
-    title: '5 / 5 – Fachbetriebe & Karte',
-    text: 'Im Tab „Fachbetriebe & Monteure" finden Sie Betriebe in Ihrer Nähe – mit interaktiver Karte und PLZ-Suche.',
+    title: '5 / 10 – Tab: Fachbetriebe & Monteure',
+    text: 'Im Tab „Fachbetriebe & Monteure" finden Sie eingetragene Installationsbetriebe. Sie können nach Kategorie filtern und Ihre Adresse eingeben, um passende Betriebe in Ihrer Nähe zu finden.',
     position: 'bottom',
     switchTab: 'installateure'
+  },
+  {
+    id: 'step-karte',
+    target: '.inst-map-wrap',
+    title: '6 / 10 – Interaktive Karte',
+    text: 'Die Karte zeigt alle eingetragenen Betriebe als Marker. Ein Klick auf einen Marker zeigt den Einsatzradius des Betriebs und springt direkt zum passenden Steckbrief in der Liste.',
+    position: 'right',
+    switchTab: 'installateure'
+  },
+  {
+    id: 'step-adresssuche',
+    target: '.plz-box',
+    title: '7 / 10 – Adresssuche',
+    text: 'Geben Sie Ihre Adresse ein, um automatisch zu filtern, welche Betriebe in Ihrem Bereich tätig sind. Der Kategorienfilter links bleibt dabei aktiv – beide Filter wirken gleichzeitig.',
+    position: 'right',
+    switchTab: 'installateure'
+  },
+  {
+    id: 'step-zertifikate',
+    target: '.main-tabs',
+    title: '8 / 10 – Tab: Zertifikate & Normen',
+    text: 'Hier finden Sie eine Übersicht aller relevanten Prüfnormen und Gütezeichen im Hochwasserschutz – von EVH und VdS bis hin zu internationalen Standards wie ANSI/FM und BS 851188.',
+    position: 'bottom',
+    switchTab: 'zertifikate'
+  },
+  {
+    id: 'step-foerderung',
+    target: '.main-tabs',
+    title: '9 / 10 – Tab: Fördermöglichkeiten',
+    text: 'Im Tab Fördermöglichkeiten finden Sie einen Überblick über finanzielle Unterstützung auf Bundes-, Landes- und kommunaler Ebene sowie Hinweise zur Elementarschadenversicherung.',
+    position: 'bottom',
+    switchTab: 'foerderung'
+  },
+  {
+    id: 'step-feedback',
+    target: '.nav-right',
+    title: '10 / 10 – Feedback geben',
+    text: 'Über den Button „Feedback" in der Navigationsleiste können Sie einen kurzen Fragebogen zur Nutzererfahrung ausfüllen und Anmerkungen hinterlassen. Ihre Rückmeldung hilft, die Plattform weiterzuentwickeln.',
+    position: 'bottom'
   }
 ];
 
@@ -3141,13 +3174,7 @@ let tourCurrentStep = -1;
 let tourActive = false;
 
 function startTour() {
-  // Sicherstellen dass wir im Produkte-Tab sind
-  const produkteTab = document.querySelector('.main-tab.active');
-  const produkte = document.getElementById('panel-produkte');
-  if (!produkte.classList.contains('active')) {
-    const btn = document.querySelector('.main-tab');
-    showMainTab('produkte', btn);
-  }
+  showMainTab('produkte', null);
   tourActive = true;
   tourCurrentStep = 0;
   createTourOverlay();
@@ -3193,16 +3220,16 @@ function showTourStep(idx) {
   const step = tourSteps[idx];
   if (!step) { endTour(); return; }
 
-  // Ggf. Tab wechseln
-  if (step.switchTab === 'installateure') {
-    const tabBtn = document.querySelector('.main-tab:not(.active)');
-    if (tabBtn) showMainTab('installateure', tabBtn);
-  } else if (idx === 0 || tourSteps[idx-1] && tourSteps[idx-1].switchTab) {
-    // zurück zu Produkte falls nötig
+  // Tab wechseln falls nötig
+  if (step.switchTab) {
+    const panel = document.getElementById('panel-' + step.switchTab);
+    if (panel && !panel.classList.contains('active')) {
+      showMainTab(step.switchTab, null);
+    }
+  } else if (idx === 0 || (tourSteps[idx-1] && tourSteps[idx-1].switchTab)) {
     const produkte = document.getElementById('panel-produkte');
     if (!produkte.classList.contains('active')) {
-      const btn = document.querySelector('.main-tab');
-      showMainTab('produkte', btn);
+      showMainTab('produkte', document.querySelector('.main-tab'));
     }
   }
 
@@ -3857,30 +3884,8 @@ async function sendFeedback() {
 })();
 
 // ═══════════════════════════════════════════════
-// (g) TOUR – Map/PLZ-Schritt ergänzt
-// ═══════════════════════════════════════════════
-// Tour-Schritte um Adresssuche und Karte erweitern
-// (wird nach Definition der tourSteps-Variable gepacht)
-document.addEventListener('DOMContentLoaded', () => {
-  // Letzten Tour-Schritt durch zwei neue ersetzen
-  if (typeof tourSteps !== 'undefined') {
-    const mapStep = tourSteps.find(s => s.id === 'step-map');
-    if (mapStep) {
-      mapStep.title = '5 / 6 – Karte der Fachbetriebe';
-      mapStep.text = 'Im Tab „Fachbetriebe & Monteure" sehen Sie alle Betriebe auf einer interaktiven Karte. Klicken Sie auf einen Marker, um Details zu sehen.';
-      tourSteps.push({
-        id: 'step-adresssuche',
-        target: '.plz-box',
-        title: '6 / 6 – Adresssuche',
-        text: 'Geben Sie Ihre eigene Adresse ein. Die Plattform filtert automatisch, welche Betriebe für Sie in Frage kommen.',
-        position: 'right',
-        switchTab: 'installateure'
-      });
-    }
-  }
-});
-
 init();
+
 </script>
 
 <!-- Zertifikat-Modal -->
