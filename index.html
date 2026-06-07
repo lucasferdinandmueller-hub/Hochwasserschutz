@@ -562,18 +562,19 @@
     max-width: 500px; width: 94%;
     box-shadow: 0 24px 80px rgba(0,0,0,0.3);
     overflow: hidden; animation: modalIn 0.3s ease;
+    max-height: 90vh; display: flex; flex-direction: column;
   }
   .feedback-header {
     background: linear-gradient(135deg, var(--blue-deep), var(--blue-mid));
-    padding: 26px 32px 22px; color: white;
+    padding: 26px 32px 22px; color: white; position: relative; flex-shrink: 0;
   }
   .feedback-header h2 { font-family: 'DM Serif Display', serif; font-size: 1.4rem; margin-bottom: 4px; }
   .feedback-header p { font-size: 0.82rem; color: rgba(255,255,255,0.7); }
-  .feedback-body { padding: 24px 32px 28px; }
+  .feedback-body { padding: 24px 32px 28px; overflow-y: auto; flex: 1; }
   .feedback-intro { font-size: 0.84rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 16px; background: var(--blue-light); border-radius: 10px; padding: 14px 16px; border-left: 4px solid var(--blue-accent); }
   .feedback-label { font-size: 0.78rem; font-weight: 700; color: var(--blue-deep); margin-bottom: 6px; letter-spacing: 0.03em; }
   .feedback-textarea {
-    width: 100%; min-height: 120px; border-radius: 10px;
+    width: 100%; min-height: 100px; border-radius: 10px;
     border: 1.5px solid var(--border); padding: 12px 14px;
     font-family: 'DM Sans', sans-serif; font-size: 0.88rem;
     color: var(--text); resize: vertical; outline: none; transition: border-color 0.2s;
@@ -595,7 +596,38 @@
   .feedback-cancel-btn:hover { border-color: var(--blue-accent); color: var(--blue-accent); }
   .feedback-success { color: #27ae60; font-size: 0.85rem; text-align: center; padding: 10px 0 0; display: none; }
   .feedback-success.visible { display: block; }
-  .feedback-formspree-note { font-size: 0.73rem; color: var(--text-muted); margin-top: 12px; text-align: center; opacity: 0.7; }
+  .feedback-section-title { font-family: 'DM Serif Display', serif; font-size: 0.95rem; color: var(--blue-deep); margin-bottom: 12px; }
+
+  /* ── Fragebogen ── */
+  .survey-section { padding: 0 0 20px; }
+  .survey-section-title { font-family: 'DM Serif Display', serif; font-size: 1rem; color: var(--blue-deep); margin-bottom: 4px; }
+  .survey-section-sub { font-size: 0.78rem; color: var(--text-muted); margin-bottom: 18px; line-height: 1.5; }
+  .survey-progress-bar { height: 4px; background: var(--border); border-radius: 2px; margin-bottom: 20px; }
+  .survey-progress-fill { height: 100%; background: var(--blue-accent); border-radius: 2px; transition: width 0.4s ease; }
+  .survey-question { margin-bottom: 20px; animation: fadeSlideIn 0.25s ease; }
+  @keyframes fadeSlideIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+  .survey-q-label { font-size: 0.88rem; font-weight: 600; color: var(--text); margin-bottom: 10px; line-height: 1.5; }
+  .survey-q-num { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--blue-accent); margin-bottom: 4px; }
+  .survey-scale { display: flex; gap: 6px; }
+  .survey-scale-btn {
+    flex: 1; padding: 8px 4px; border: 1.5px solid var(--border);
+    border-radius: 8px; background: transparent; cursor: pointer;
+    font-family: 'DM Sans', sans-serif; font-size: 0.72rem; font-weight: 500;
+    color: var(--text-muted); text-align: center; line-height: 1.3; transition: all 0.15s;
+  }
+  .survey-scale-btn:hover { border-color: var(--blue-accent); color: var(--blue-accent); background: var(--blue-light); }
+  .survey-scale-btn.selected { border-color: var(--blue-deep); background: var(--blue-deep); color: white; }
+  .survey-scale-num { display: block; font-size: 1rem; font-weight: 700; margin-bottom: 2px; }
+  .survey-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 4px; }
+  .survey-nav-label { font-size: 0.75rem; color: var(--text-muted); }
+  .survey-next-btn {
+    background: var(--blue-deep); color: white; border: none; border-radius: 10px;
+    padding: 10px 22px; font-size: 0.86rem; font-weight: 600;
+    font-family: 'DM Sans', sans-serif; cursor: pointer; transition: background 0.15s;
+  }
+  .survey-next-btn:hover { background: var(--blue-accent); }
+  .survey-next-btn:disabled { background: var(--border); color: var(--text-muted); cursor: not-allowed; }
+  .survey-divider { border: none; border-top: 2px solid var(--border); margin: 24px 0; }
 
   /* Bereich des Hauptinhalts */
   main { max-width: 1200px; margin: 0 auto; padding: 48px 24px 80px; }
@@ -2132,17 +2164,34 @@
       <p>Helfen Sie mit, diese Plattform zu verbessern.</p>
     </div>
     <div class="feedback-body">
-      <div class="feedback-intro">
-        Bei dieser Seite handelt es sich um einen Prototypen im Testlauf, der im Rahmen einer Masterarbeit entwickelt wurde. Um Fehler zu beheben und die Plattform stets weiterzuentwickeln, ist Ihr Feedback besonders wertvoll. Was funktioniert gut? Was fehlt? Was ist unklar? Jede Rückmeldung – egal wie kurz – hilft dabei, die Plattform nutzerfreundlicher zu gestalten.
+      <!-- ── FRAGEBOGEN ── -->
+      <div class="survey-section" id="survey-section">
+        <div class="survey-section-title">Kurzfragebogen zur Nutzererfahrung</div>
+        <div class="survey-section-sub">10 kurze Fragen – Ihre Einschätzung hilft, die Plattform gezielt weiterzuentwickeln.</div>
+        <div class="survey-progress-bar"><div class="survey-progress-fill" id="survey-progress" style="width:0%"></div></div>
+        <div id="survey-question-area"></div>
+        <div class="survey-nav">
+          <span class="survey-nav-label" id="survey-nav-label">Frage 1 von 10</span>
+          <button class="survey-next-btn" id="survey-next-btn" onclick="surveyNext()" disabled>Weiter →</button>
+        </div>
       </div>
-      <div class="feedback-label">Ihr Feedback</div>
-      <textarea class="feedback-textarea" id="feedback-text" placeholder="Bitte schreiben Sie hier Ihr Feedback …"></textarea>
-      <div class="feedback-footer">
-        <button class="feedback-cancel-btn" onclick="closeFeedbackModal()">Abbrechen</button>
-        <button class="feedback-send-btn" onclick="sendFeedback()">Absenden</button>
-      </div>
-      <div id="feedback-success" class="feedback-success">Vielen Dank für Ihr Feedback!</div>
 
+      <hr class="survey-divider" id="survey-divider" style="display:none;">
+
+      <!-- ── FREITEXT ── -->
+      <div id="freetext-section">
+        <div class="feedback-section-title">Weitere Anmerkungen</div>
+        <div class="feedback-intro">
+          Haben Sie darüber hinaus Hinweise, Fehler entdeckt oder Verbesserungsvorschläge? Jede Rückmeldung – egal wie kurz – hilft dabei, die Plattform weiterzuentwickeln.
+        </div>
+        <div class="feedback-label">Ihr Kommentar (optional)</div>
+        <textarea class="feedback-textarea" id="feedback-text" placeholder="Bitte schreiben Sie hier Ihr Feedback …"></textarea>
+        <div class="feedback-footer">
+          <button class="feedback-cancel-btn" onclick="closeFeedbackModal()">Abbrechen</button>
+          <button class="feedback-send-btn" onclick="sendFeedback()">Alles absenden</button>
+        </div>
+        <div id="feedback-success" class="feedback-success">Vielen Dank für Ihre Rückmeldung!</div>
+      </div>
     </div>
   </div>
 </div>
@@ -2271,6 +2320,7 @@ function renderProducts(filter) {
 
   if (!filtered.length) {
     grid.innerHTML = '<div class="no-results">Keine Produkte in dieser Kategorie gefunden.</div>';
+    updateCategoryPanel();
     return;
   }
 
@@ -2323,6 +2373,15 @@ function renderProducts(filter) {
     </div>`;
   }).join('');
   updateCategoryPanel();
+}
+
+function toggleCardDetail(btn) {
+  const panel = btn.nextElementSibling;
+  if (!panel) return;
+  const isOpen = panel.classList.contains('open');
+  panel.classList.toggle('open', !isOpen);
+  btn.classList.toggle('open', !isOpen);
+  btn.setAttribute('aria-expanded', String(!isOpen));
 }
 
 function filterProducts(cat, btn) {
@@ -3391,11 +3450,10 @@ Sie haben das Recht auf Auskunft, Berichtigung und Löschung Ihrer Daten. Bei Fr
   },
   kontakt: {
     title: 'Kontakt',
-    body: `<strong>Fragen, Anmerkungen oder Einreichungen?</strong><br><br>
-Für Rückfragen, Fehlerhinweise oder Anregungen:<br><br>
+    body: `<strong>Lucas Müller</strong><br>
+Student, RWTH Aachen University<br>
+Arbeit am Lehrstuhl und Institut für Wasserbau und Wasserwirtschaft (IWW)<br><br>
 <strong>E-Mail:</strong> lucas.mueller@rwth-aachen.de<br><br>
-<strong>Hinweis für Hersteller und Installationsbetriebe:</strong><br>
-Einreichungen für die Plattform erfolgen über ein standardisiertes Formular. Bitte nehmen Sie zunächst per E-Mail Kontakt auf.<br><br>
 <strong>Schnelles Feedback:</strong> Für kurze Rückmeldungen steht der Button „Feedback" in der Navigationsleiste zur Verfügung.`
   }
 };
@@ -3642,39 +3700,118 @@ function updateCategoryPanel() {
 }
 
 // ═══════════════════════════════════════════════
-// (e) FEEDBACK MODAL (Formspree)
-// ► Anleitung: Konto auf formspree.io anlegen → neues Formular erstellen
-//   → die Form-ID (z. B. "xabcdefg") unten bei FORMSPREE_ID eintragen
+// (e) FEEDBACK MODAL + FRAGEBOGEN (Formspree)
 // ═══════════════════════════════════════════════
 const FORMSPREE_ID = 'xojbnwvz';
 
+const surveyQuestions = [
+  'Die Plattform ist insgesamt leicht zu bedienen.',
+  'Ich finde mich auf der Seite schnell zurecht.',
+  'Die Darstellung der Produkte ist übersichtlich und verständlich.',
+  'Die Filterfunktion hilft mir, gezielt nach Produkten zu suchen.',
+  'Die interaktive Hausgrafik unterstützt mich bei der Orientierung.',
+  'Die Informationen zu den einzelnen Produkten sind ausreichend.',
+  'Die Karte der Fachbetriebe ist hilfreich und gut nutzbar.',
+  'Die Adresssuche nach Betrieben in meiner Nähe funktioniert nachvollziehbar.',
+  'Die Plattform würde mir bei der Entscheidung für Hochwasserschutzmaßnahmen helfen.',
+  'Ich würde diese Plattform weiterempfehlen oder erneut nutzen.'
+];
+const surveyLabels = ['Trifft gar nicht zu', 'Trifft eher nicht zu', 'Teils / teils', 'Trifft eher zu', 'Trifft vollständig zu'];
+let surveyAnswers = new Array(surveyQuestions.length).fill(null);
+let surveyCurrentQ = 0;
+let surveyCompleted = false;
+
+function renderSurveyQuestion(idx) {
+  const area = document.getElementById('survey-question-area');
+  const progress = document.getElementById('survey-progress');
+  const navLabel = document.getElementById('survey-nav-label');
+  const nextBtn = document.getElementById('survey-next-btn');
+  if (!area) return;
+  const isLast = idx === surveyQuestions.length - 1;
+  const pct = (idx / surveyQuestions.length) * 100;
+  progress.style.width = pct + '%';
+  navLabel.textContent = `Frage ${idx + 1} von ${surveyQuestions.length}`;
+  nextBtn.textContent = isLast ? 'Fragebogen abschließen ✓' : 'Weiter →';
+  nextBtn.disabled = surveyAnswers[idx] === null;
+  area.innerHTML = `
+    <div class="survey-question">
+      <div class="survey-q-num">Frage ${idx + 1} / ${surveyQuestions.length}</div>
+      <div class="survey-q-label">${surveyQuestions[idx]}</div>
+      <div class="survey-scale">
+        ${surveyLabels.map((lbl, vi) => `
+          <button class="survey-scale-btn ${surveyAnswers[idx] === vi + 1 ? 'selected' : ''}"
+            onclick="surveySelect(${vi + 1})">
+            <span class="survey-scale-num">${vi + 1}</span>${lbl}
+          </button>`).join('')}
+      </div>
+    </div>`;
+}
+
+function surveySelect(value) {
+  surveyAnswers[surveyCurrentQ] = value;
+  document.querySelectorAll('.survey-scale-btn').forEach((btn, i) => {
+    btn.classList.toggle('selected', i + 1 === value);
+  });
+  document.getElementById('survey-next-btn').disabled = false;
+}
+
+function surveyNext() {
+  if (surveyAnswers[surveyCurrentQ] === null) return;
+  if (surveyCurrentQ < surveyQuestions.length - 1) {
+    surveyCurrentQ++;
+    renderSurveyQuestion(surveyCurrentQ);
+  } else {
+    surveyCompleted = true;
+    document.getElementById('survey-progress').style.width = '100%';
+    document.getElementById('survey-question-area').innerHTML = `
+      <div style="text-align:center;padding:16px 0 8px;">
+        <div style="font-size:1.6rem;margin-bottom:8px;">✓</div>
+        <div style="font-weight:600;color:var(--blue-deep);font-family:'DM Serif Display',serif;font-size:1rem;">Fragebogen abgeschlossen</div>
+        <div style="font-size:0.82rem;color:var(--text-muted);margin-top:6px;">Ihre Bewertungen werden zusammen mit dem Kommentar übermittelt.</div>
+      </div>`;
+    document.getElementById('survey-nav-label').textContent = '';
+    document.getElementById('survey-next-btn').style.display = 'none';
+    document.getElementById('survey-divider').style.display = '';
+  }
+}
+
 function openFeedbackModal() {
-  document.getElementById('feedback-overlay').classList.remove('hidden');
+  surveyAnswers = new Array(surveyQuestions.length).fill(null);
+  surveyCurrentQ = 0;
+  surveyCompleted = false;
+  document.getElementById('survey-divider').style.display = 'none';
+  document.getElementById('survey-next-btn').style.display = '';
   document.getElementById('feedback-text').value = '';
   document.getElementById('feedback-success').classList.remove('visible');
+  renderSurveyQuestion(0);
+  document.getElementById('feedback-overlay').classList.remove('hidden');
 }
+
 function closeFeedbackModal() {
   document.getElementById('feedback-overlay').classList.add('hidden');
 }
+
 async function sendFeedback() {
   const text = document.getElementById('feedback-text').value.trim();
-  if (!text) { document.getElementById('feedback-text').focus(); return; }
+  const surveyLines = surveyQuestions.map((q, i) => {
+    const ans = surveyAnswers[i];
+    const label = ans !== null ? `${ans} – ${surveyLabels[ans - 1]}` : 'nicht beantwortet';
+    return `F${i + 1}: ${q}\n→ ${label}`;
+  }).join('\n\n');
+  const fullMessage = `=== FRAGEBOGEN ===\n\n${surveyLines}${text ? `\n\n=== KOMMENTAR ===\n${text}` : ''}`;
   if (FORMSPREE_ID === 'FORMSPREE_ID') {
-    // Kein echtes Backend – Simulation für Demo
     document.getElementById('feedback-success').classList.add('visible');
-    document.getElementById('feedback-text').value = '';
-    setTimeout(closeFeedbackModal, 2000);
+    setTimeout(closeFeedbackModal, 2200);
     return;
   }
   try {
     const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-      body: JSON.stringify({ message: text })
+      body: JSON.stringify({ message: fullMessage })
     });
     if (res.ok) {
       document.getElementById('feedback-success').classList.add('visible');
-      document.getElementById('feedback-text').value = '';
       setTimeout(closeFeedbackModal, 2200);
     } else {
       alert('Senden fehlgeschlagen. Bitte erneut versuchen.');
