@@ -352,34 +352,47 @@
     .nav-info-btn { display: none; }
     .nav-hamburger { display: flex; }
 
-    .hero { padding: 36px 20px 32px; }
-    .hero h1 { font-size: 1.7rem; }
+    .hero { padding: 28px 20px 24px; }
+    .hero h1 { font-size: 1.5rem; line-height: 1.25; }
+    .hero p { font-size: 0.85rem; }
+    .hero-tag { font-size: 0.7rem; padding: 4px 12px; }
 
-    main { padding: 24px 16px 60px; }
+    main { padding: 16px 12px 60px; }
 
-    /* Tabs werden zu vollbreiten Buttons */
-    .main-tabs { width: 100%; border-radius: var(--radius) var(--radius) 0 0; margin-bottom: 0; padding-bottom: 0; }
-    .main-tab { flex: 1; text-align: center; padding: 10px 8px; font-size: 0.82rem; border-radius: 8px 8px 0 0; }
-    .main-panel.active { border-radius: 0 0 var(--radius) var(--radius); padding-top: 20px; }
+    /* Tabs: horizontal scrollbar statt flex-1, damit langer Text nicht bricht */
+    .main-tabs {
+      width: 100%; border-radius: var(--radius) var(--radius) 0 0;
+      margin-bottom: 0; padding-bottom: 0;
+      overflow-x: auto; overflow-y: hidden;
+      display: flex; flex-wrap: nowrap; -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+    }
+    .main-tabs::-webkit-scrollbar { display: none; }
+    .main-tab {
+      flex: 0 0 auto; white-space: nowrap;
+      padding: 11px 16px; font-size: 0.82rem;
+      border-radius: 8px 8px 0 0; min-height: 44px;
+    }
+    .main-panel.active { border-radius: 0 0 var(--radius) var(--radius); padding-top: 16px; }
 
-    /* Layout: alles gestapelt */
-    .products-layout { flex-direction: column; gap: 16px; }
-    .products-layout { flex-direction: column; gap: 16px; overflow: hidden; }
+    /* Produkte-Layout: gestapelt */
+    .products-layout { flex-direction: column; gap: 12px; overflow: hidden; }
     .products-left-col {
       width: 100%; max-width: 100%; position: static;
       max-height: none; overflow: visible; flex-direction: column; gap: 10px;
     }
-    .products-top-row {
-      flex-direction: column; gap: 10px;
-    }
+    .products-top-row { flex-direction: column; gap: 10px; }
     .products-top-row .grafik-spalte { width: 100%; flex: none; }
     .products-top-row .sidebar { width: 100%; flex-shrink: unset; }
-    /* Sidebar: horizontale Chips */
+
+    /* Sidebar: horizontale Chip-Leiste */
     .sidebar {
-      width: 100%; max-width: 100%; overflow-x: auto; overflow-y: hidden;
+      width: 100%; max-width: 100%;
+      overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch;
       display: flex; flex-direction: row; flex-wrap: nowrap;
       border-radius: var(--radius); position: static;
     }
+    .sidebar::-webkit-scrollbar { height: 3px; }
     .sidebar-group-label {
       padding: 8px 10px 6px; font-size: 0.62rem;
       white-space: nowrap; flex-shrink: 0; border-left: none;
@@ -392,7 +405,8 @@
     .sidebar-item {
       white-space: nowrap; border-left: none;
       border-bottom: 3px solid transparent;
-      padding: 10px 12px; flex-shrink: 0; font-size: 0.82rem;
+      padding: 11px 14px; flex-shrink: 0; font-size: 0.82rem;
+      min-height: 44px; display: flex; align-items: center;
     }
     .sidebar-item.active {
       border-bottom-color: var(--blue-accent);
@@ -403,33 +417,79 @@
     .grafik-spalte { width: 100%; }
     .products-right { width: 100% !important; max-width: 100% !important; border-left: none; padding-left: 0; }
     .inst-right-col { width: 100% !important; max-width: 100% !important; border-left: none; padding-left: 0; }
-    .product-grid { max-width: 100% !important; }
-    .inst-map-square { aspect-ratio: 4/3; } /* auf Mobile etwas flacher */
-    /* Tabs auf Mobile */
-    /* Tabs auf Mobile – bereits oben geregelt */
+    .product-grid { max-width: 100% !important; grid-template-columns: 1fr; }
+    .installateure-grid { grid-template-columns: 1fr; }
 
-    /* Installateure layout */
-    .inst-layout { flex-direction: column; gap: 16px; }
+    /* Fachbetriebe-Layout */
+    .inst-layout { flex-direction: column; gap: 12px; }
     .inst-left-col { width: 100%; position: static; max-height: none; overflow: visible; }
     .inst-mid-row { flex-direction: column; gap: 10px; }
     .inst-sidebar { width: 100%; overflow-x: auto; }
-    .inst-filter-wrap .inst-filter-btn { padding: 8px 10px; }
-    .map-placeholder { flex: none; min-height: 140px; width: 100%; }
+    .inst-filter-wrap .inst-filter-btn { padding: 10px 12px; min-height: 44px; }
+    .map-placeholder { flex: none; min-height: 120px; width: 100%; }
+    .inst-map-wrap { padding-bottom: 75%; }
+    .plz-box { padding: 16px; }
 
-    /* Produktkarten: 1 Spalte */
-    .product-grid { grid-template-columns: 1fr; }
-    .installateure-grid { grid-template-columns: 1fr; }
+    /* Produktkarten */
+    .product-card { padding: 16px; }
+    .card-detail-toggle { min-height: 44px; padding: 10px 14px; font-size: 0.84rem; }
+    .installateur-card { padding: 16px; }
 
-    /* Info modal */
-    #info-box { padding: 0; }
-    .info-header { padding: 24px 20px 20px; }
-    .info-body { padding: 20px 20px 8px; }
-    .info-footer { padding: 0 20px 20px; flex-direction: column; gap: 8px; }
-    .info-btn-close, .info-btn-noshow { width: 100%; }
+    /* Zertifikate-Tabellen: horizontal scrollbar */
+    .cert-panel-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 0.75rem; }
+    .cert-panel-item { padding: 14px 16px; }
+    .cert-panel-title { font-size: 0.92rem; }
+
+    /* Content-Panels */
+    .content-panel-inner { padding: 4px 0 32px; }
+    .content-panel-title { font-size: 1.4rem; }
+    .content-panel-intro { font-size: 0.84rem; }
+    .foerder-panel-blocks { grid-template-columns: 1fr; gap: 12px; }
+    .foerder-panel-block { padding: 16px; }
+
+    /* Info-Modal */
+    #info-box { max-height: 95vh; width: 98%; }
+    .info-topic-row { padding: 14px 18px; min-height: 52px; }
+    .info-back-btn { padding: 11px 18px; }
+    .info-detail-title { padding: 16px 18px 0; font-size: 1rem; }
+    .info-content-area { padding: 12px 18px 20px; }
+
+    /* Feedback / Survey */
+    #feedback-box { width: 98%; max-height: 95vh; }
+    .feedback-body { padding: 16px 18px 20px; }
+    .survey-scale {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 4px;
+    }
+    .survey-scale-btn {
+      padding: 8px 2px; font-size: 0.65rem; border-radius: 6px;
+    }
+    .survey-scale-num { font-size: 0.9rem; }
+    .survey-next-btn { padding: 12px 18px; font-size: 0.84rem; min-height: 44px; }
+
+    /* Legal / Cert Modal */
+    #legal-box { width: 98%; max-height: 95vh; }
+    #cert-overlay > div { width: 98%; max-height: 95vh; }
+    #foerder-overlay > div { width: 98%; max-height: 95vh; }
+
+    /* Tour-Box */
+    #tour-box { max-width: calc(100vw - 24px); }
+
+    /* Footer */
+    .footer-inner { flex-direction: column; gap: 24px; padding: 28px 16px 20px; }
+    .footer-links { gap: 24px; flex-wrap: wrap; }
   }
 
-  @media (min-width: 769px) and (max-width: 1100px) {
-    .product-grid { grid-template-columns: 1fr; }
+  /* Sehr kleine Geräte (unter 390px) */
+  @media (max-width: 390px) {
+    .hero h1 { font-size: 1.3rem; }
+    main { padding: 12px 10px 60px; }
+    .main-tab { padding: 11px 12px; font-size: 0.78rem; }
+    .survey-scale-btn { font-size: 0.6rem; padding: 7px 1px; }
+    .product-card { padding: 14px; }
+    .cert-panel-item { padding: 12px; }
+    .info-topic-row { padding: 12px 14px; }
   }
 
   /* Titel bzw. Überschrift */
@@ -1468,12 +1528,9 @@
     text-align: center; padding: 16px 32px;
     font-size: 0.75rem; color: rgba(255,255,255,0.3);
   }
-  @media (max-width: 768px) {
-    .footer-inner { flex-direction: column; gap: 28px; padding: 32px 20px 24px; }
-    .footer-links { gap: 32px; }
+  @media (min-width: 769px) and (max-width: 1100px) {
+    .product-grid { grid-template-columns: 1fr; }
   }
-
-
 
   /* ─── PASSWORT-OVERLAY ─────────────────────────── */
   #pw-overlay {
@@ -3178,23 +3235,23 @@ function startTour() {
 }
 
 function createTourOverlay() {
-  // Backdrop
-  let backdrop = document.getElementById('tour-backdrop');
-  if (!backdrop) {
-    backdrop = document.createElement('div');
-    backdrop.id = 'tour-backdrop';
-    backdrop.style.cssText = `
-      position: fixed; inset: 0; z-index: 8000;
-      background: rgba(10,37,64,0.55);
-      pointer-events: none;
-      transition: opacity 0.3s;
+  // Spotlight-Div: sitzt auf dem Ziel-Element, Box-Shadow erzeugt die Abdunkelung
+  let spotlight = document.getElementById('tour-spotlight');
+  if (!spotlight) {
+    spotlight = document.createElement('div');
+    spotlight.id = 'tour-spotlight';
+    spotlight.style.cssText = `
+      position: fixed; z-index: 8010; pointer-events: none;
+      border-radius: 12px;
+      box-shadow: 0 0 0 9999px rgba(10,37,64,0.55);
+      outline: 3px solid #1e7fc2;
+      outline-offset: 3px;
     `;
-    document.body.appendChild(backdrop);
+    document.body.appendChild(spotlight);
   }
-  backdrop.style.display = 'block';
-  backdrop.style.opacity = '1';
+  spotlight.style.display = 'block';
 
-  // Tooltip-Box
+  // Tour-Box
   let box = document.getElementById('tour-box');
   if (!box) {
     box = document.createElement('div');
@@ -3206,7 +3263,6 @@ function createTourOverlay() {
       padding: 0; max-width: 320px; width: 92%;
       font-family: 'DM Sans', sans-serif;
       pointer-events: all;
-      transition: top 0.35s ease, left 0.35s ease, opacity 0.25s;
     `;
     document.body.appendChild(box);
   }
@@ -3229,10 +3285,10 @@ function showTourStep(idx) {
     }
   }
 
-  // Ziel-Element finden und highlighten
+  // Ziel-Element finden
   const target = document.querySelector(step.target);
-  
-  // Highlight-Rahmen
+
+  // Altes Highlight bereinigen
   document.querySelectorAll('.tour-highlight').forEach(el => {
     el.classList.remove('tour-highlight');
     el.style.outline = '';
@@ -3242,14 +3298,19 @@ function showTourStep(idx) {
     el.style.borderRadius = '';
   });
 
-  if (target) {
-    target.classList.add('tour-highlight');
-    target.style.outline = '3px solid #1e7fc2';
-    target.style.outlineOffset = '4px';
-    target.style.position = 'relative';
-    target.style.zIndex = '8050';
-    target.style.borderRadius = '12px';
+  // Spotlight auf Ziel-Element setzen
+  const spotlight = document.getElementById('tour-spotlight');
+  if (target && spotlight) {
     target.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    // Kurz warten bis Scroll + Tab-Wechsel abgeschlossen
+    setTimeout(() => {
+      const rect = target.getBoundingClientRect();
+      const pad = 6;
+      spotlight.style.top    = (rect.top    - pad) + 'px';
+      spotlight.style.left   = (rect.left   - pad) + 'px';
+      spotlight.style.width  = (rect.width  + pad * 2) + 'px';
+      spotlight.style.height = (rect.height + pad * 2) + 'px';
+    }, 350);
   }
 
   // Tour-Box befüllen
@@ -3271,8 +3332,8 @@ function showTourStep(idx) {
     </div>
   `;
 
-  // Box positionieren
-  setTimeout(() => positionTourBox(target, step.position), 100);
+  // Box positionieren (nach Spotlight, beide nach Scroll)
+  setTimeout(() => positionTourBox(target, step.position), 380);
 }
 
 function positionTourBox(target, position) {
@@ -3326,7 +3387,7 @@ function tourGo(idx) {
 
 function endTour() {
   tourActive = false;
-  // Highlight entfernen
+  // Highlight bereinigen
   document.querySelectorAll('.tour-highlight').forEach(el => {
     el.classList.remove('tour-highlight');
     el.style.outline = '';
@@ -3334,19 +3395,17 @@ function endTour() {
     el.style.zIndex = '';
     el.style.borderRadius = '';
   });
-  // Zurück zu Produkte
-  const produkte = document.getElementById('panel-produkte');
-  if (!produkte.classList.contains('active')) {
-    const btn = document.querySelector('.main-tab');
-    showMainTab('produkte', btn);
-  }
-  // Overlay ausblenden
-  const backdrop = document.getElementById('tour-backdrop');
-  if (backdrop) { backdrop.style.opacity = '0'; setTimeout(() => backdrop.style.display = 'none', 300); }
+  // Spotlight entfernen
+  const spotlight = document.getElementById('tour-spotlight');
+  if (spotlight) spotlight.remove();
+  // Tour-Box entfernen
   const box = document.getElementById('tour-box');
-  if (box) { box.style.opacity = '0'; setTimeout(() => box.remove(), 300); }
-  const bdEl = document.getElementById('tour-backdrop');
-  if (bdEl) setTimeout(() => bdEl.remove(), 400);
+  if (box) box.remove();
+  // Alten Backdrop entfernen falls noch vorhanden
+  const backdrop = document.getElementById('tour-backdrop');
+  if (backdrop) backdrop.remove();
+  // Zurück zu Produkte
+  showMainTab('produkte', null);
 }
 
 // Initialisierung
