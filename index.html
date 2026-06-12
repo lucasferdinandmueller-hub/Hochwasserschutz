@@ -41,7 +41,7 @@
     height: 60px;
     position: sticky;
     top: 0;
-    z-index: 100;
+    z-index: 9000;
   }
   .nav-logo {
     font-family: 'DM Serif Display', serif;
@@ -124,7 +124,17 @@
     gap: 14px;
     position: sticky;
     top: 80px;
+    max-height: calc(100vh - 90px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    align-self: flex-start;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+    padding-right: 4px;
   }
+  .products-left-col::-webkit-scrollbar { width: 4px; }
+  .products-left-col::-webkit-scrollbar-track { background: transparent; }
+  .products-left-col::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
   /* Grafik + Filter nebeneinander */
   .products-top-row {
     display: flex;
@@ -183,7 +193,22 @@
     display: flex;
     flex-direction: column;
     gap: 16px;
+    position: sticky;
+    top: 80px;
+    max-height: calc(100vh - 90px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    align-self: flex-start;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+    padding-right: 4px;
   }
+  .inst-left-col::-webkit-scrollbar { width: 4px; }
+  .inst-left-col::-webkit-scrollbar-track { background: transparent; }
+  .inst-left-col::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  /* Karte: isolation damit z-index Leaflet die Navbar nicht überlagert */
+  .inst-map-wrap { isolation: isolate; }
   /* Filter und Karte nebeneinander */
   .inst-mid-row {
     display: flex;
@@ -352,47 +377,35 @@
     .nav-info-btn { display: none; }
     .nav-hamburger { display: flex; }
 
-    .hero { padding: 28px 20px 24px; }
-    .hero h1 { font-size: 1.5rem; line-height: 1.25; }
-    .hero p { font-size: 0.85rem; }
-    .hero-tag { font-size: 0.7rem; padding: 4px 12px; }
+    .hero { padding: 36px 20px 32px; }
+    .hero h1 { font-size: 1.7rem; }
 
-    main { padding: 16px 12px 60px; }
+    main { padding: 24px 16px 60px; }
 
-    /* Tabs: horizontal scrollbar statt flex-1, damit langer Text nicht bricht */
-    .main-tabs {
-      width: 100%; border-radius: var(--radius) var(--radius) 0 0;
-      margin-bottom: 0; padding-bottom: 0;
-      overflow-x: auto; overflow-y: hidden;
-      display: flex; flex-wrap: nowrap; -webkit-overflow-scrolling: touch;
-      scrollbar-width: none;
-    }
-    .main-tabs::-webkit-scrollbar { display: none; }
-    .main-tab {
-      flex: 0 0 auto; white-space: nowrap;
-      padding: 11px 16px; font-size: 0.82rem;
-      border-radius: 8px 8px 0 0; min-height: 44px;
-    }
-    .main-panel.active { border-radius: 0 0 var(--radius) var(--radius); padding-top: 16px; }
+    /* Tabs werden zu vollbreiten Buttons */
+    .main-tabs { width: 100%; border-radius: var(--radius) var(--radius) 0 0; margin-bottom: 0; padding-bottom: 0; }
+    .main-tab { flex: 1; text-align: center; padding: 10px 8px; font-size: 0.82rem; border-radius: 8px 8px 0 0; }
+    .main-panel.active { border-radius: 0 0 var(--radius) var(--radius); padding-top: 20px; }
 
-    /* Produkte-Layout: gestapelt */
-    .products-layout { flex-direction: column; gap: 12px; overflow: hidden; }
+    /* Layout: alles gestapelt */
+    .products-layout { flex-direction: column; gap: 16px; }
+    .products-layout { flex-direction: column; gap: 16px; overflow: hidden; }
     .products-left-col {
       width: 100%; max-width: 100%; position: static;
       max-height: none; overflow: visible; flex-direction: column; gap: 10px;
+      padding-right: 0;
     }
-    .products-top-row { flex-direction: column; gap: 10px; }
+    .products-top-row {
+      flex-direction: column; gap: 10px;
+    }
     .products-top-row .grafik-spalte { width: 100%; flex: none; }
     .products-top-row .sidebar { width: 100%; flex-shrink: unset; }
-
-    /* Sidebar: horizontale Chip-Leiste */
+    /* Sidebar: horizontale Chips */
     .sidebar {
-      width: 100%; max-width: 100%;
-      overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch;
+      width: 100%; max-width: 100%; overflow-x: auto; overflow-y: hidden;
       display: flex; flex-direction: row; flex-wrap: nowrap;
       border-radius: var(--radius); position: static;
     }
-    .sidebar::-webkit-scrollbar { height: 3px; }
     .sidebar-group-label {
       padding: 8px 10px 6px; font-size: 0.62rem;
       white-space: nowrap; flex-shrink: 0; border-left: none;
@@ -405,8 +418,7 @@
     .sidebar-item {
       white-space: nowrap; border-left: none;
       border-bottom: 3px solid transparent;
-      padding: 11px 14px; flex-shrink: 0; font-size: 0.82rem;
-      min-height: 44px; display: flex; align-items: center;
+      padding: 10px 12px; flex-shrink: 0; font-size: 0.82rem;
     }
     .sidebar-item.active {
       border-bottom-color: var(--blue-accent);
@@ -415,81 +427,43 @@
     .category-info-panel { display: none !important; }
     .sidebar-count { display: none; }
     .grafik-spalte { width: 100%; }
-    .products-right { width: 100% !important; max-width: 100% !important; border-left: none; padding-left: 0; }
-    .inst-right-col { width: 100% !important; max-width: 100% !important; border-left: none; padding-left: 0; }
-    .product-grid { max-width: 100% !important; grid-template-columns: 1fr; }
-    .installateure-grid { grid-template-columns: 1fr; }
+    .products-right {
+      width: 100% !important; max-width: 100% !important;
+      border-left: none; padding-left: 0;
+      position: static; max-height: none; overflow: visible;
+    }
+    .inst-right-col {
+      width: 100% !important; max-width: 100% !important;
+      border-left: none; padding-left: 0;
+      position: static; max-height: none; overflow: visible;
+    }
+    .product-grid { max-width: 100% !important; }
+    .inst-map-square { aspect-ratio: 4/3; } /* auf Mobile etwas flacher */
+    /* Tabs auf Mobile */
+    /* Tabs auf Mobile – bereits oben geregelt */
 
-    /* Fachbetriebe-Layout */
-    .inst-layout { flex-direction: column; gap: 12px; }
-    .inst-left-col { width: 100%; position: static; max-height: none; overflow: visible; }
+    /* Installateure layout */
+    .inst-layout { flex-direction: column; gap: 16px; }
+    .inst-left-col { width: 100%; position: static; max-height: none; overflow: visible; padding-right: 0; }
     .inst-mid-row { flex-direction: column; gap: 10px; }
     .inst-sidebar { width: 100%; overflow-x: auto; }
-    .inst-filter-wrap .inst-filter-btn { padding: 10px 12px; min-height: 44px; }
-    .map-placeholder { flex: none; min-height: 120px; width: 100%; }
-    .inst-map-wrap { padding-bottom: 75%; }
-    .plz-box { padding: 16px; }
+    .inst-filter-wrap .inst-filter-btn { padding: 8px 10px; }
+    .map-placeholder { flex: none; min-height: 140px; width: 100%; }
 
-    /* Produktkarten */
-    .product-card { padding: 16px; }
-    .card-detail-toggle { min-height: 44px; padding: 10px 14px; font-size: 0.84rem; }
-    .installateur-card { padding: 16px; }
+    /* Produktkarten: 1 Spalte */
+    .product-grid { grid-template-columns: 1fr; }
+    .installateure-grid { grid-template-columns: 1fr; }
 
-    /* Zertifikate-Tabellen: horizontal scrollbar */
-    .cert-panel-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; font-size: 0.75rem; }
-    .cert-panel-item { padding: 14px 16px; }
-    .cert-panel-title { font-size: 0.92rem; }
-
-    /* Content-Panels */
-    .content-panel-inner { padding: 4px 0 32px; }
-    .content-panel-title { font-size: 1.4rem; }
-    .content-panel-intro { font-size: 0.84rem; }
-    .foerder-panel-blocks { grid-template-columns: 1fr; gap: 12px; }
-    .foerder-panel-block { padding: 16px; }
-
-    /* Info-Modal */
-    #info-box { max-height: 95vh; width: 98%; }
-    .info-topic-row { padding: 14px 18px; min-height: 52px; }
-    .info-back-btn { padding: 11px 18px; }
-    .info-detail-title { padding: 16px 18px 0; font-size: 1rem; }
-    .info-content-area { padding: 12px 18px 20px; }
-
-    /* Feedback / Survey */
-    #feedback-box { width: 98%; max-height: 95vh; }
-    .feedback-body { padding: 16px 18px 20px; }
-    .survey-scale {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 4px;
-    }
-    .survey-scale-btn {
-      padding: 8px 2px; font-size: 0.65rem; border-radius: 6px;
-    }
-    .survey-scale-num { font-size: 0.9rem; }
-    .survey-next-btn { padding: 12px 18px; font-size: 0.84rem; min-height: 44px; }
-
-    /* Legal / Cert Modal */
-    #legal-box { width: 98%; max-height: 95vh; }
-    #cert-overlay > div { width: 98%; max-height: 95vh; }
-    #foerder-overlay > div { width: 98%; max-height: 95vh; }
-
-    /* Tour-Box */
-    #tour-box { max-width: calc(100vw - 24px); }
-
-    /* Footer */
-    .footer-inner { flex-direction: column; gap: 24px; padding: 28px 16px 20px; }
-    .footer-links { gap: 24px; flex-wrap: wrap; }
+    /* Info modal */
+    #info-box { padding: 0; }
+    .info-header { padding: 24px 20px 20px; }
+    .info-body { padding: 20px 20px 8px; }
+    .info-footer { padding: 0 20px 20px; flex-direction: column; gap: 8px; }
+    .info-btn-close, .info-btn-noshow { width: 100%; }
   }
 
-  /* Sehr kleine Geräte (unter 390px) */
-  @media (max-width: 390px) {
-    .hero h1 { font-size: 1.3rem; }
-    main { padding: 12px 10px 60px; }
-    .main-tab { padding: 11px 12px; font-size: 0.78rem; }
-    .survey-scale-btn { font-size: 0.6rem; padding: 7px 1px; }
-    .product-card { padding: 14px; }
-    .cert-panel-item { padding: 12px; }
-    .info-topic-row { padding: 12px 14px; }
+  @media (min-width: 769px) and (max-width: 1100px) {
+    .product-grid { grid-template-columns: 1fr; }
   }
 
   /* Titel bzw. Überschrift */
@@ -1111,15 +1085,38 @@
 
   /* PRODUCT GRID */
   .products-right {
-    flex: 1; min-width: 0; max-width: 46%;
+    flex: 1; min-width: 0;
     border-left: 2px solid var(--border);
     padding-left: 24px;
+    position: sticky;
+    top: 80px;
+    max-height: calc(100vh - 90px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    align-self: flex-start;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
   }
+  .products-right::-webkit-scrollbar { width: 4px; }
+  .products-right::-webkit-scrollbar-track { background: transparent; }
+  .products-right::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
   .inst-right-col {
-    flex: 1; min-width: 0; max-width: 46%;
+    flex: 1; min-width: 0;
     border-left: 2px solid var(--border);
     padding-left: 24px;
+    position: sticky;
+    top: 80px;
+    max-height: calc(100vh - 90px);
+    overflow-y: auto;
+    overflow-x: hidden;
+    align-self: flex-start;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
   }
+  .inst-right-col::-webkit-scrollbar { width: 4px; }
+  .inst-right-col::-webkit-scrollbar-track { background: transparent; }
+  .inst-right-col::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 
   .products-topbar {
     display: flex;
@@ -1528,9 +1525,12 @@
     text-align: center; padding: 16px 32px;
     font-size: 0.75rem; color: rgba(255,255,255,0.3);
   }
-  @media (min-width: 769px) and (max-width: 1100px) {
-    .product-grid { grid-template-columns: 1fr; }
+  @media (max-width: 768px) {
+    .footer-inner { flex-direction: column; gap: 28px; padding: 32px 20px 24px; }
+    .footer-links { gap: 32px; }
   }
+
+
 
   /* ─── PASSWORT-OVERLAY ─────────────────────────── */
   #pw-overlay {
