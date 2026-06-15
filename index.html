@@ -2214,6 +2214,9 @@
       <!-- ── FRAGEBOGEN ── -->
       <div class="survey-section" id="survey-section">
         <div class="survey-section-title">Kurzfragebogen zur Nutzererfahrung</div>
+        <div class="feedback-intro" style="margin-bottom:14px;">
+          <strong>Hinweis:</strong> Dieser Fragebogen bewertet die <strong>Bedienbarkeit und Nutzerführung</strong> der Plattform – nicht die inhaltliche Vollständigkeit oder persönliche Relevanz der dargestellten Produkte. Bitte beurteilen Sie, wie gut Sie sich auf der Seite zurechtgefunden haben und wie verständlich die Bedienelemente sind. Ob Sie für Ihren konkreten Fall das passende Produkt gefunden haben oder alle Hersteller vertreten sind, ist nicht Gegenstand dieser Bewertung.
+        </div>
         <div class="survey-section-sub">10 kurze Fragen – Ihre Einschätzung hilft, die Plattform gezielt weiterzuentwickeln.</div>
         <div class="survey-progress-bar"><div class="survey-progress-fill" id="survey-progress" style="width:0%"></div></div>
         <div id="survey-question-area"></div>
@@ -3788,18 +3791,18 @@ function updateCategoryPanel() {
 const FORMSPREE_ID = 'xojbnwvz';
 
 const surveyQuestions = [
-  'Die Plattform ist insgesamt leicht zu bedienen.',
-  'Ich finde mich auf der Seite schnell zurecht.',
-  'Die Darstellung der Produkte ist übersichtlich und verständlich.',
-  'Die Filterfunktion hilft mir, gezielt nach Produkten zu suchen.',
-  'Die interaktive Hausgrafik unterstützt mich bei der Orientierung.',
-  'Die Informationen zu den einzelnen Produkten sind ausreichend.',
-  'Die Karte der Fachbetriebe ist hilfreich und gut nutzbar.',
-  'Die Adresssuche nach Betrieben in meiner Nähe funktioniert nachvollziehbar.',
-  'Die Plattform würde mir bei der Entscheidung für Hochwasserschutzmaßnahmen helfen.',
-  'Ich würde diese Plattform weiterempfehlen oder erneut nutzen.'
+  'Ich wusste jederzeit, wo ich mich auf der Seite befinde und wie ich zu anderen Bereichen gelange.',
+  'Die Bedienelemente wie Filter, Buttons und Tabs waren intuitiv verständlich, ohne dass ich lange nachdenken musste.',
+  'Die Darstellung der Produkte war übersichtlich und ich konnte relevante Informationen schnell erfassen.',
+  'Die Filterfunktion und die interaktive Hausgrafik halfen mir dabei, gezielt nach Produktkategorien zu suchen.',
+  'Die Karte und die Adresssuche für Fachbetriebe waren verständlich und einfach zu bedienen.',
+  'Die Seite hat mir durch sichtbare Rückmeldungen gezeigt, was gerade passiert – zum Beispiel bei Filterauswahl oder Ladevorgang.',
+  'Ich hatte das Gefühl, die Kontrolle über meine Aktionen auf der Seite zu haben und Fehler leicht korrigieren zu können.',
+  'Die Einführungstour hat mir geholfen, die wichtigsten Funktionen der Seite zu verstehen.',
+  'Die Seite wirkt insgesamt vertrauenswürdig und seriös.',
+  'Ich würde diese Plattform weiterempfehlen, wenn jemand Informationen zum privaten Hochwasserschutz sucht.'
 ];
-const surveyLabels = ['Trifft gar nicht zu', 'Trifft eher nicht zu', 'Teils / teils', 'Trifft eher zu', 'Trifft vollständig zu'];
+const surveyLabels = ['Trifft gar nicht zu', 'Trifft eher nicht zu', 'Teils / teils', 'Trifft eher zu', 'Trifft vollständig zu', 'Kann ich nicht beurteilen'];
 let surveyAnswers = new Array(surveyQuestions.length).fill(null);
 let surveyCurrentQ = 0;
 let surveyCompleted = false;
@@ -3821,11 +3824,16 @@ function renderSurveyQuestion(idx) {
       <div class="survey-q-num">Frage ${idx + 1} / ${surveyQuestions.length}</div>
       <div class="survey-q-label">${surveyQuestions[idx]}</div>
       <div class="survey-scale">
-        ${surveyLabels.map((lbl, vi) => `
+        ${surveyLabels.slice(0,5).map((lbl, vi) => `
           <button class="survey-scale-btn ${surveyAnswers[idx] === vi + 1 ? 'selected' : ''}"
             onclick="surveySelect(${vi + 1})">
             <span class="survey-scale-num">${vi + 1}</span>${lbl}
           </button>`).join('')}
+        <button class="survey-scale-btn ${surveyAnswers[idx] === 6 ? 'selected' : ''}"
+          onclick="surveySelect(6)"
+          style="margin-top:8px;opacity:0.8;border-style:dashed;">
+          <span class="survey-scale-num">–</span>Kann ich nicht beurteilen
+        </button>
       </div>
     </div>`;
 }
@@ -3878,7 +3886,10 @@ async function sendFeedback() {
   const text = document.getElementById('feedback-text').value.trim();
   const surveyLines = surveyQuestions.map((q, i) => {
     const ans = surveyAnswers[i];
-    const label = ans !== null ? `${ans} – ${surveyLabels[ans - 1]}` : 'nicht beantwortet';
+    let label;
+    if (ans === null) label = 'nicht beantwortet';
+    else if (ans === 6) label = 'Kann ich nicht beurteilen';
+    else label = `${ans} – ${surveyLabels[ans - 1]}`;
     return `F${i + 1}: ${q}\n→ ${label}`;
   }).join('\n\n');
   const fullMessage = `=== FRAGEBOGEN ===\n\n${surveyLines}${text ? `\n\n=== KOMMENTAR ===\n${text}` : ''}`;
