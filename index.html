@@ -3235,6 +3235,29 @@ function startTour() {
   tourCurrentStep = 0;
   createTourOverlay();
   showTourStep(0);
+  window.addEventListener('scroll', tourSyncPosition, true);
+  window.addEventListener('resize', tourSyncPosition, true);
+}
+
+let tourSyncRaf = null;
+function tourSyncPosition() {
+  if (!tourActive) return;
+  if (tourSyncRaf) cancelAnimationFrame(tourSyncRaf);
+  tourSyncRaf = requestAnimationFrame(() => {
+    const step = tourSteps[tourCurrentStep];
+    if (!step) return;
+    const target = document.querySelector(step.target);
+    const spotlight = document.getElementById('tour-spotlight');
+    if (target && spotlight) {
+      const rect = target.getBoundingClientRect();
+      const pad = 6;
+      spotlight.style.top    = (rect.top    - pad) + 'px';
+      spotlight.style.left   = (rect.left   - pad) + 'px';
+      spotlight.style.width  = (rect.width  + pad * 2) + 'px';
+      spotlight.style.height = (rect.height + pad * 2) + 'px';
+    }
+    positionTourBox(target, step.position);
+  });
 }
 
 function createTourOverlay() {
@@ -3390,6 +3413,8 @@ function tourGo(idx) {
 
 function endTour() {
   tourActive = false;
+  window.removeEventListener('scroll', tourSyncPosition, true);
+  window.removeEventListener('resize', tourSyncPosition, true);
   // Highlight bereinigen
   document.querySelectorAll('.tour-highlight').forEach(el => {
     el.classList.remove('tour-highlight');
@@ -3488,7 +3513,7 @@ function updateMapMarkers(list) {
         for (const card of cards) {
           if (card.textContent.includes(i.name)) {
             card.classList.add('map-selected');
-            card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            card.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
             // Highlight für 3 Sekunden
             setTimeout(() => card.classList.remove('map-selected'), 3000);
             break;
