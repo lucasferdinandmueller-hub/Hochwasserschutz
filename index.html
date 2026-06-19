@@ -382,9 +382,14 @@
 
     main { padding: 24px 16px 60px; }
 
-    /* Tabs werden zu vollbreiten Buttons */
-    .main-tabs { width: 100%; border-radius: var(--radius) var(--radius) 0 0; margin-bottom: 0; padding-bottom: 0; }
-    .main-tab { flex: 1; text-align: center; padding: 10px 8px; font-size: 0.82rem; border-radius: 8px 8px 0 0; }
+    /* Tabs werden zu 2x2 Grid */
+    .main-tabs { width: 100%; border-radius: var(--radius) var(--radius) 0 0; margin-bottom: 0; padding-bottom: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
+    .main-tab { flex: unset; text-align: center; padding: 10px 8px; font-size: 0.82rem; border-radius: 8px; }
+    .main-tab:nth-child(1) { border-radius: 8px 8px 0 0; }
+    .main-tab:nth-child(2) { border-radius: 8px 8px 0 0; }
+    .main-tab:nth-child(3) { border-radius: 0; }
+    .main-tab:nth-child(4) { border-radius: 0; }
+    .main-tab.active::after { display: none; }
     .main-panel.active { border-radius: 0 0 var(--radius) var(--radius); padding-top: 20px; }
 
     /* Layout: alles gestapelt */
