@@ -100,6 +100,13 @@
     position: sticky; top: 60px; z-index: 99;
   }
   .mobile-menu.hidden { display: none; }
+  .mobile-menu-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1px;
+    background: rgba(255,255,255,0.07);
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+  }
   .mobile-tab {
     padding: 14px 24px; color: rgba(255,255,255,0.8);
     background: transparent; border: none;
@@ -107,6 +114,12 @@
     cursor: pointer; font-family: 'DM Sans', sans-serif;
     border-bottom: 1px solid rgba(255,255,255,0.07);
     transition: background 0.15s;
+  }
+  .mobile-menu-grid .mobile-tab {
+    border-bottom: none;
+    text-align: center;
+    padding: 14px 8px;
+    background: var(--blue-deep);
   }
   .mobile-tab:hover { background: rgba(255,255,255,0.08); }
 
@@ -1824,10 +1837,12 @@
   </div>
 </nav>
 <div class="mobile-menu hidden" id="mobile-menu">
-  <button class="mobile-tab" onclick="showMainTab('produkte',this);toggleMobileMenu()">Produkte</button>
-  <button class="mobile-tab" onclick="showMainTab('installateure',this);toggleMobileMenu()">Fachbetriebe</button>
-  <button class="mobile-tab" onclick="showMainTab('zertifikate',this);toggleMobileMenu()">Zertifikate</button>
-  <button class="mobile-tab" onclick="showMainTab('foerderung',this);toggleMobileMenu()">Förderung</button>
+  <div class="mobile-menu-grid">
+    <button class="mobile-tab" onclick="showMainTab('produkte',this);toggleMobileMenu()">Produkte</button>
+    <button class="mobile-tab" onclick="showMainTab('installateure',this);toggleMobileMenu()">Fachbetriebe</button>
+    <button class="mobile-tab" onclick="showMainTab('zertifikate',this);toggleMobileMenu()">Zertifikate</button>
+    <button class="mobile-tab" onclick="showMainTab('foerderung',this);toggleMobileMenu()">Förderung</button>
+  </div>
   <button class="mobile-tab" onclick="openFeedbackModal();toggleMobileMenu()">Feedback</button>
   <button class="mobile-tab" onclick="showInfoModal();toggleMobileMenu()">Info</button>
 </div>
