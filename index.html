@@ -396,8 +396,8 @@
     main { padding: 24px 16px 60px; }
 
     /* Tabs werden zu 2x2 Grid */
-    .main-tabs { width: 100%; border-radius: var(--radius) var(--radius) 0 0; margin-bottom: 0; padding-bottom: 0; display: grid; grid-template-columns: 1fr 1fr; gap: 4px; }
-    .main-tab { flex: unset; text-align: center; padding: 10px 8px; font-size: 0.82rem; border-radius: 8px; }
+    .main-tabs { width: 100% !important; max-width: 100% !important; box-sizing: border-box; border-radius: var(--radius) var(--radius) 0 0; margin-bottom: 0; padding: 4px 4px 0 4px; display: grid !important; grid-template-columns: 1fr 1fr; gap: 4px; }
+    .main-tab { flex: unset; text-align: center; padding: 10px 8px; font-size: 0.82rem; border-radius: 8px; min-width: 0; }
     .main-tab:nth-child(1) { border-radius: 8px 8px 0 0; }
     .main-tab:nth-child(2) { border-radius: 8px 8px 0 0; }
     .main-tab:nth-child(3) { border-radius: 0; }
@@ -779,10 +779,12 @@
     border-radius: var(--radius) var(--radius) 0 0;
     box-shadow: var(--shadow);
     width: fit-content;
+    max-width: 100%;
     margin-left: auto;
     margin-right: auto;
     position: relative;
     z-index: 1;
+    box-sizing: border-box;
   }
   .main-tab {
     padding: 14px 40px;
