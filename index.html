@@ -2078,6 +2078,12 @@
         <button class="sidebar-item" onclick="filterProducts('Sonstiges', this)">
           Sonstiges<div class="sidebar-check"></div>
         </button>
+        <div class="sidebar-divider"></div>
+
+        <div class="sidebar-group-label">Zertifizierung</div>
+        <button class="sidebar-item sub" id="filter-certified-btn" onclick="toggleCertifiedFilter(this)">
+          Nur zertifizierte Produkte<div class="sidebar-check"></div>
+        </button>
       </aside>
 
       </div><!-- end products-top-row -->
@@ -2363,6 +2369,13 @@ const categoryInfo = {
 
 // Aktive Kategorien für Produkte (Mehrfachauswahl)
 let activeProductKategorien = new Set(['Alle']);
+let filterCertifiedOnly = false;
+
+function toggleCertifiedFilter(btn) {
+  filterCertifiedOnly = !filterCertifiedOnly;
+  btn.classList.toggle('active', filterCertifiedOnly);
+  renderProducts();
+}
 
 function renderProducts(filter) {
   if (filter !== undefined) {
@@ -2377,6 +2390,13 @@ function renderProducts(filter) {
     filtered = visibleProducts;
   } else {
     filtered = visibleProducts.filter(p => activeProductKategorien.has(p.category));
+  }
+
+  if (filterCertifiedOnly) {
+    filtered = filtered.filter(p => {
+      const z = p.zertifizierung ? String(p.zertifizierung).trim() : '';
+      return z !== '' && z.toLowerCase() !== 'k.a.' && z !== '#';
+    });
   }
 
   const label = document.getElementById('products-count-label');
@@ -3874,12 +3894,12 @@ function renderSurveyQuestion(idx) {
         ${surveyLabels.slice(0,5).map((lbl, vi) => `
           <button class="survey-scale-btn ${surveyAnswers[idx] === vi + 1 ? 'selected' : ''}"
             onclick="surveySelect(${vi + 1})">
-            <span class="survey-scale-num">${vi + 1}</span>${lbl}
+            ${lbl}
           </button>`).join('')}
         <button class="survey-scale-btn ${surveyAnswers[idx] === 6 ? 'selected' : ''}"
           onclick="surveySelect(6)"
           style="margin-top:8px;opacity:0.8;border-style:dashed;">
-          <span class="survey-scale-num">–</span>Kann ich nicht beurteilen
+          Kann ich nicht beurteilen
         </button>
       </div>
     </div>`;
