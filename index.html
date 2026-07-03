@@ -2394,8 +2394,9 @@ function renderProducts(filter) {
 
   if (filterCertifiedOnly) {
     filtered = filtered.filter(p => {
-      const z = p.zertifizierung ? String(p.zertifizierung).trim() : '';
-      return z !== '' && z.toLowerCase() !== 'k.a.' && z !== '#';
+      if (!p.zertifizierung || !String(p.zertifizierung).trim()) return false;
+      const certs = String(p.zertifizierung).split(/[,;]+/).map(s => s.trim()).filter(Boolean);
+      return certs.some(c => CERT_INFO[c]);
     });
   }
 
