@@ -2171,7 +2171,7 @@
     <div class="content-panel-inner">
       <h2 class="content-panel-title">Zertifikate &amp; Normen im Hochwasserschutz</h2>
       <p class="content-panel-intro">In Deutschland gibt es keine einheitlichen Normen als Vorschrift für die Vermarktung von Hochwasserschutzelementen. Dennoch existieren nationale und internationale Prüf- und Zertifizierungsmechanismen, die Qualität und Effektivität der geprüften Produkte belegen. Die folgenden Zertifikate und Normen sind auf dieser Plattform relevant.</p>
-      <div class="cert-panel-warning">Hochwasserschutzzertifikate sind keine allgemeinen Bau- oder Qualitätsnormen. Sie prüfen gezielt Dichtheit, Belastbarkeit und Einsatzeignung unter Hochwasserbedingungen. Allgemeine Normen – etwa für Schlagregendichtheit – sind kein Ersatz für spezifische Hochwasserzulassungen.</div>
+      <div class="cert-panel-warning">Hochwasserschutzzertifikate sind keine allgemeinen Bau- oder Qualitätsnormen. Sie prüfen Dichtheit, Belastbarkeit und Einsatzeignung unter Hochwasserbedingungen. Allgemeine Normen – etwa für Schlagregendichtheit – sind kein Ersatz für spezifische Hochwasserzulassungen.</div>
       <div class="cert-panel-grid" id="cert-panel-list"></div>
     </div>
   </div>
@@ -2245,7 +2245,7 @@
         <div class="feedback-intro" style="margin-bottom:14px;">
           <strong>Hinweis:</strong> Dieser Fragebogen bezieht sich in erster Linie auf die <strong>Bedienbarkeit und Nutzererfahrung</strong> dieser Plattform. Umfang, Vollständigkeit oder persönliche Relevanz der dargestellten Produkte und Dienstleistungen ist nur beispielhaft zu beurteilen. Weitere Kommentare können in der Textbox eingetragen werden. Bitte klicken Sie am Ende auf <em>„Alles absenden"</em> – erst wenn sich das Fenster danach automatisch geschlossen hat, wurde die Rückmeldung an den Autor versendet.
         </div>
-        <div class="survey-section-sub">10 kurze Fragen – Ihre Einschätzung hilft, die Plattform gezielt weiterzuentwickeln.</div>
+        <div class="survey-section-sub">10 kurze Fragen – Ihre Einschätzung hilft, die Plattform weiterzuentwickeln.</div>
         <div class="survey-progress-bar"><div class="survey-progress-fill" id="survey-progress" style="width:0%"></div></div>
         <div id="survey-question-area"></div>
         <div class="survey-nav">
@@ -3633,7 +3633,7 @@ const infoSectionContent = {
     title: 'Zweck & Anwendung',
     render: () => `
       <p>Diese Plattform bietet einen strukturierten Überblick über Produkte und Fachbetriebe im Bereich des privaten Hochwasserschutzes. Sie richtet sich an Hauseigentümerinnen und -eigentümer, die sich über verfügbare Schutzmaßnahmen informieren und geeignete Installationsbetriebe in ihrer Nähe finden möchten.</p>
-      <p><strong>Produkte:</strong> Im Tab „Produkte" können Sie über die Kategorienfilter links oder durch Klick auf die Bereiche der Hausgrafik gezielt nach Produkttypen suchen. Die Karten zeigen Hersteller, Zertifizierungen und technische Details.</p>
+      <p><strong>Produkte:</strong> Im Tab „Produkte" können Sie über die Kategorienfilter links oder durch Klick auf die Bereiche der Hausgrafik nach Produkttypen suchen. Die Karten zeigen Hersteller, Zertifizierungen und technische Details.</p>
       <p><strong>Fachbetriebe:</strong> Im Tab „Fachbetriebe & Monteure" finden Sie eingetragene Installationsbetriebe. Über die Adresssuche können Sie die Ergebnisse auf Betriebe in Ihrer Nähe einschränken. Die Karte zeigt deren Standorte und – bei Klick auf einen Marker – den hinterlegten Einsatzradius.</p>
       <p><strong>Hinweis:</strong> Alle aufgeführten Produkte und Betriebe sind Beispieldaten und erheben keinen Anspruch auf Vollständigkeit oder Aktualität.</p>`
   },
@@ -3668,7 +3668,7 @@ const infoSectionContent = {
   zertifikate: {
     title: 'Zertifikate & Normen',
     render: () => {
-      const warning = `<div class="info-cert-warning"><strong>Hinweis:</strong> Hochwasserschutzzertifikate sind keine allgemeinen Bau- oder Qualitätsnormen. Sie prüfen gezielt Dichtheit, Belastbarkeit und Einsatzeignung unter Hochwasserbedingungen. Allgemeine Normen – etwa für Schlagregendichtheit – sind kein Ersatz für spezifische Hochwasserzulassungen.</div>`;
+      const warning = `<div class="info-cert-warning"><strong>Hinweis:</strong> Hochwasserschutzzertifikate sind keine allgemeinen Bau- oder Qualitätsnormen. Sie prüfen Dichtheit, Belastbarkeit und Einsatzeignung unter Hochwasserbedingungen. Allgemeine Normen – etwa für Schlagregendichtheit – sind kein Ersatz für spezifische Hochwasserzulassungen.</div>`;
       const items = Object.entries(CERT_INFO).map(([key, info]) => `
         <div class="info-cert-item">
           <div class="info-cert-norm">${key}</div>
