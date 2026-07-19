@@ -1598,6 +1598,45 @@
   .pw-error.visible { display: block; }
   .pw-hint { font-size: 0.75rem; color: var(--text-muted); margin-top: 16px; opacity: 0.7; }
 
+  /* ─── TOUR-PROMPT (nach Login) ────────────────── */
+  #tour-prompt-overlay {
+    position: fixed; inset: 0; z-index: 9990;
+    background: rgba(10,37,64,0.72);
+    display: flex; align-items: center; justify-content: center;
+    backdrop-filter: blur(3px);
+    transition: opacity 0.3s ease;
+  }
+  #tour-prompt-overlay.hidden { display: none; }
+  #tour-prompt-box {
+    background: white; border-radius: 20px;
+    padding: 52px 48px; max-width: 460px; width: 90%;
+    text-align: center; box-shadow: 0 24px 80px rgba(0,0,0,0.35);
+    position: relative; overflow: hidden;
+    animation: modalIn 0.3s ease;
+  }
+  #tour-prompt-box::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px;
+    background: linear-gradient(90deg, var(--blue-accent), #5bc0f8);
+  }
+  #tour-prompt-box h2 {
+    font-family: 'DM Serif Display', serif; font-size: 1.5rem;
+    color: var(--blue-deep); margin-bottom: 14px;
+  }
+  #tour-prompt-box p { color: var(--text-muted); font-size: 0.88rem; margin-bottom: 28px; line-height: 1.7; }
+  #tour-prompt-box .pw-field-wrap { gap: 10px; }
+  #tour-prompt-yes-btn {
+    padding: 14px; background: var(--blue-deep); color: white;
+    border: none; border-radius: 10px; font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem; font-weight: 600; cursor: pointer; transition: background 0.2s;
+  }
+  #tour-prompt-yes-btn:hover { background: var(--blue-accent); }
+  #tour-prompt-no-btn {
+    padding: 12px; background: transparent; color: var(--text-muted);
+    border: 1.5px solid var(--border); border-radius: 10px; font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem; font-weight: 500; cursor: pointer; transition: all 0.2s;
+  }
+  #tour-prompt-no-btn:hover { border-color: var(--blue-accent); color: var(--blue-accent); }
+
   /* ─── INFO-MODAL ────────────────────────────────── */
   .nav-info-btn {
     background: rgba(30,127,194,0.2); color: rgba(255,255,255,0.85);
@@ -1783,6 +1822,21 @@
     </div>
     <div id="pw-error" class="pw-error">❌ Falsches Passwort. Bitte erneut versuchen.</div>
     <div class="pw-hint">Erstellt im Rahmen einer Masterarbeit · Prototyp</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════ -->
+<!-- TOUR-PROMPT (erscheint einmalig nach dem Login) -->
+<!-- ═══════════════════════════════════════════════ -->
+<div id="tour-prompt-overlay" class="hidden">
+  <div id="tour-prompt-box">
+    <div class="pw-logo">Hochwasser<span>Schutz</span></div>
+    <h2>Möchten Sie eine kurze Tour machen?</h2>
+    <p>Die Tour führt Sie in wenigen Schritten durch die wichtigsten Bereiche der Plattform, darunter die Produktsuche, die Betriebssuche und die Zertifikatsübersicht. Sie dauert nur wenige Minuten und kann jederzeit über den Button „Tour" in der Navigationsleiste erneut gestartet werden.</p>
+    <div class="pw-field-wrap">
+      <button id="tour-prompt-yes-btn" onclick="tourPromptYes()">Ja, zur Tour →</button>
+      <button id="tour-prompt-no-btn" onclick="tourPromptNo()">Nein danke, direkt zur Plattform</button>
+    </div>
   </div>
 </div>
 
@@ -2243,7 +2297,7 @@
       <div class="survey-section" id="survey-section">
         <div class="survey-section-title">Kurzfragebogen zur Nutzererfahrung</div>
         <div class="feedback-intro" style="margin-bottom:14px;">
-          <strong>Hinweis:</strong> Dieser Fragebogen bezieht sich in erster Linie auf die <strong>Bedienbarkeit und Nutzererfahrung</strong> dieser Plattform. Umfang, Vollständigkeit oder persönliche Relevanz der dargestellten Produkte und Dienstleistungen ist nur beispielhaft zu beurteilen. Weitere Kommentare können in der Textbox eingetragen werden. Bitte klicken Sie am Ende auf <em>„Alles absenden"</em> – erst wenn sich das Fenster danach automatisch geschlossen hat, wurde die Rückmeldung an den Autor versendet.
+          <strong>Hinweis:</strong> Dieser Fragebogen bezieht sich in erster Linie auf die <strong>Bedienbarkeit und Nutzererfahrung</strong> dieser Plattform. Umfang, Vollständigkeit oder persönliche Relevanz der dargestellten Produkte und Dienstleistungen ist nur beispielhaft zu beurteilen. Weitere Kommentare können in der Textbox eingetragen werden. Bitte klicken Sie am Ende auf <em>„Alles absenden"</em> – erst wenn sich das Fenster danach automatisch geschlossen hat, ist die Rückmeldung an den Autor versendet worden.
         </div>
         <div class="survey-section-sub">10 kurze Fragen – Ihre Einschätzung hilft, die Plattform weiterzuentwickeln.</div>
         <div class="survey-progress-bar"><div class="survey-progress-fill" id="survey-progress" style="width:0%"></div></div>
@@ -2260,7 +2314,7 @@
       <div id="freetext-section">
         <div class="feedback-section-title">Weitere Anmerkungen</div>
         <div class="feedback-intro">
-          Haben Sie darüber hinaus 0Fehler entdeckt, Hinweise oder Verbesserungsvorschläge? Jede Rückmeldung hilft dabei, die Plattform weiterzuentwickeln.
+          Haben Sie darüber hinaus Fehler entdeckt, Hinweise oder Verbesserungsvorschläge? Jede Rückmeldung hilft dabei, die Plattform weiterzuentwickeln.
         </div>
         <div class="feedback-label">Ihr Kommentar (optional)</div>
         <textarea class="feedback-textarea" id="feedback-text" placeholder="Bitte schreiben Sie hier Ihr Feedback …"></textarea>
@@ -3107,7 +3161,7 @@ function checkPassword() {
     error.classList.remove('visible');
     if (!localStorage.getItem('tourSeen')) {
       localStorage.setItem('tourSeen', '1');
-      setTimeout(startTour, 700);
+      setTimeout(showTourPrompt, 500);
     }
   } else {
     error.classList.add('visible');
@@ -3272,6 +3326,19 @@ const tourSteps = [
 let tourCurrentStep = -1;
 let tourActive = false;
 
+function showTourPrompt() {
+  document.getElementById('tour-prompt-overlay').classList.remove('hidden');
+}
+
+function tourPromptNo() {
+  document.getElementById('tour-prompt-overlay').classList.add('hidden');
+}
+
+function tourPromptYes() {
+  document.getElementById('tour-prompt-overlay').classList.add('hidden');
+  startTour();
+}
+
 function startTour() {
   showMainTab('produkte', null);
   tourActive = true;
@@ -3386,9 +3453,10 @@ function showTourStep(idx) {
   const box = document.getElementById('tour-box');
   const isLast = idx === tourSteps.length - 1;
   box.innerHTML = `
-    <div style="background: linear-gradient(135deg, var(--blue-deep) 0%, var(--blue-mid) 100%); border-radius: 14px 14px 0 0; padding: 16px 20px 14px;">
+    <div style="background: linear-gradient(135deg, var(--blue-deep) 0%, var(--blue-mid) 100%); border-radius: 14px 14px 0 0; padding: 16px 20px 14px; position: relative;">
+      <button onclick="endTour()" title="Tour schließen" style="position: absolute; top: 10px; right: 10px; width: 26px; height: 26px; background: rgba(255,255,255,0.15); border: none; border-radius: 50%; color: white; font-size: 0.85rem; cursor: pointer; line-height: 1; display: flex; align-items: center; justify-content: center;">✕</button>
       <div style="font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: rgba(255,255,255,0.6); margin-bottom: 4px;">Plattform-Tour</div>
-      <div style="font-family: 'DM Serif Display', serif; color: white; font-size: 1rem; line-height: 1.3;">${step.title}</div>
+      <div style="font-family: 'DM Serif Display', serif; color: white; font-size: 1rem; line-height: 1.3; padding-right: 24px;">${step.title}</div>
     </div>
     <div style="padding: 16px 20px 8px; font-size: 0.88rem; color: var(--text-muted); line-height: 1.65;">${step.text}</div>
     <div style="padding: 0 20px 16px; display: flex; gap: 8px; justify-content: flex-end; align-items: center;">
@@ -3811,10 +3879,8 @@ function renderCertPanel() {
     </div>`).join('');
 }
 
-// Beim ersten Besuch automatisch anzeigen
-if (!localStorage.getItem('infoSeen')) {
-  setTimeout(() => showInfoModal(), 600);
-}
+// Hinweis: Das automatische Öffnen des Info-Modals beim Laden wurde entfernt.
+// Stattdessen erscheint nach erfolgreichem Login das Tour-Prompt-Fenster (siehe checkPassword()).
 
 // ═══════════════════════════════════════════════
 // (a) KATEGORIE-ERKLÄRUNGSPANEL
@@ -3859,13 +3925,13 @@ function updateCategoryPanel() {
 const FORMSPREE_ID = 'xojbnwvz';
 
 const surveyQuestions = [
-  'Es ist eindeutig welche Art von Informationen auf der Website einzuholen sind.',
+  'Es war eindeutig, welche Art von Informationen ich auf der Website finden konnte.',
   'Ich wusste jederzeit, wo ich mich auf der Seite befinde und wie ich zu anderen Bereichen gelange.',
   'Die Bedienelemente wie Filter, Buttons und Tabs waren intuitiv verständlich, ohne dass ich lange nachdenken musste.',
-  'Textgröße, Schriftart und Farben wurden so gewählt, dass es angenehm war sich die Inhalte auf der Seite anzuschauen.',
+  'Textgröße, Schriftart und Farben wurden so gewählt, dass es angenehm war, sich die Inhalte auf der Seite anzuschauen.',
   'Die Filterfunktion und die interaktive Hausgrafik waren eine gute Hilfe, nach Produkten zu suchen.',
   'Die Karte und der Adressfilter für Monteure und Fachbetriebe waren verständlich und einfach zu bedienen.',
-  'Die Seite lief Einwandfrei und ohne technische Fehler.',
+  'Die Seite lief einwandfrei und ohne technische Fehler.',
   'Die Einführungstour hat mir geholfen, die wichtigsten Funktionen der Seite zu verstehen.',
   'Die Seite wirkt insgesamt vertrauenswürdig und seriös.',
   'Ich würde diese Plattform weiterempfehlen, wenn jemand Informationen zum privaten Hochwasserschutz sucht.'
