@@ -2504,6 +2504,7 @@ function renderProducts(filter) {
         ${desc ? `<div class="card-desc">${desc}</div>` : ''}
         <div class="card-meta">
         </div>
+        ${link ? `<a class="card-link" href="${link}" target="_blank" rel="noopener">Hier geht's zum Produkt →</a>` : ''}
         ${hasDetails ? `
         <button class="card-detail-toggle" onclick="toggleCardDetail(this)" aria-expanded="false">
           Details &amp; Spezifikationen <i class="toggle-arrow">&#9662;</i>
