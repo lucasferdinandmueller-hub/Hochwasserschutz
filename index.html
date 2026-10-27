@@ -596,6 +596,59 @@
   .foerder-panel-block p { font-size: 0.84rem; color: var(--text-muted); line-height: 1.75; }
   .foerder-panel-tag { display: inline-block; background: var(--blue-light); color: var(--blue-accent); font-size: 0.68rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; padding: 3px 10px; border-radius: 100px; }
   .foerder-panel-disclaimer { font-size: 0.78rem; color: var(--text-muted); font-style: italic; line-height: 1.65; padding: 14px 18px; background: var(--bg); border-radius: 8px; }
+
+  .fs-nav { display:flex; gap:8px; margin:6px 0 18px; flex-wrap:wrap; }
+  .fs-nav button { flex:1; min-width:140px; text-align:left; padding:12px 14px; border:1.5px solid var(--border); border-radius:12px; background:#fff; cursor:pointer; font-family:'DM Sans',sans-serif; font-size:0.84rem; color:var(--text-muted); }
+  .fs-nav button b { display:inline-flex; width:22px; height:22px; border-radius:50%; background:var(--blue-light); color:var(--blue-accent); align-items:center; justify-content:center; margin-right:8px; font-size:0.78rem; }
+  .fs-nav button.active { border-color:var(--blue-accent); color:var(--blue-deep); font-weight:600; }
+  .fs-nav button.active b { background:var(--blue-accent); color:#fff; }
+  .fs-body { border:1.5px solid var(--border); border-radius:14px; padding:22px 24px; margin-bottom:18px; font-size:0.86rem; color:var(--text-muted); line-height:1.75; }
+  .fs-body h3 { font-family:'DM Sans',sans-serif; font-size:1rem; color:var(--blue-deep); margin:0 0 8px; }
+  .fs-body select { padding:9px 12px; border:1.5px solid var(--border); border-radius:8px; font-size:0.86rem; margin:6px 0 14px; max-width:100%; }
+  .fs-warn { background:#fff7e6; border-left:3px solid #e8a317; padding:10px 14px; border-radius:0 8px 8px 0; margin:12px 0; color:#6b4a00; }
+  .fs-link { display:inline-block; margin:6px 12px 0 0; color:var(--blue-accent); font-weight:600; text-decoration:none; cursor:pointer; background:none; border:none; font-size:0.86rem; padding:0; }
+  .fs-link:hover { text-decoration:underline; }
+  .fs-result { background:var(--blue-light); border-radius:10px; padding:14px 16px; margin-bottom:10px; }
+  .fs-stand { font-size:0.72rem; color:var(--text-muted); margin-top:6px; }
+  .fs-actions { display:flex; justify-content:space-between; margin-top:16px; }
+
+  .adv-bar { display:flex; align-items:center; gap:10px; flex-wrap:wrap; margin-bottom:14px; }
+  .adv-start { background:var(--blue-accent); color:#fff; border:none; border-radius:100px; padding:10px 18px; font-family:'DM Sans',sans-serif; font-size:0.84rem; font-weight:600; cursor:pointer; }
+  .adv-start:hover { background:var(--blue-deep); }
+  .adv-summary { font-size:0.8rem; color:var(--blue-deep); background:var(--blue-light); border-radius:100px; padding:7px 14px; }
+  .adv-reset { background:none; border:none; color:var(--blue-accent); font-size:0.8rem; font-weight:600; cursor:pointer; text-decoration:underline; }
+  .adv-wiz { border:1.5px solid var(--blue-accent); border-radius:14px; padding:20px 22px; margin-bottom:18px; background:#fff; }
+  .adv-prog { font-size:0.7rem; font-weight:700; letter-spacing:0.08em; text-transform:uppercase; color:var(--blue-accent); margin-bottom:6px; }
+  .adv-q { font-family:'DM Sans',sans-serif; font-size:1.05rem; color:var(--blue-deep); margin:0 0 4px; }
+  .adv-hint { font-size:0.78rem; color:var(--text-muted); margin-bottom:12px; }
+  .adv-chips { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px; }
+  .adv-chip { border:1.5px solid var(--border); background:#fff; border-radius:100px; padding:8px 14px; font-size:0.82rem; cursor:pointer; color:var(--text-muted); font-family:inherit; }
+  .adv-chip.on { border-color:var(--blue-accent); background:var(--blue-light); color:var(--blue-deep); font-weight:600; }
+  .adv-nav { display:flex; justify-content:space-between; gap:10px; }
+  .adv-nav button { border:1.5px solid var(--border); background:#fff; border-radius:8px; padding:8px 16px; font-size:0.82rem; cursor:pointer; }
+  .adv-nav button.primary { background:var(--blue-accent); border-color:var(--blue-accent); color:#fff; font-weight:600; }
+
+  .price-range { padding:4px 16px 6px; }
+  .pr-values { display:flex; justify-content:space-between; font-size:0.78rem; font-weight:600; color:var(--blue-deep); margin-bottom:6px; }
+  .pr-track { position:relative; height:22px; }
+  .pr-track::before { content:''; position:absolute; left:0; right:0; top:9px; height:4px; border-radius:4px; background:var(--border); }
+  .pr-fill { position:absolute; top:9px; height:4px; border-radius:4px; background:var(--blue-accent); }
+  .pr-track input[type=range] { position:absolute; left:0; width:100%; top:0; height:22px; margin:0; background:none; pointer-events:none; -webkit-appearance:none; appearance:none; }
+  .pr-track input[type=range]::-webkit-slider-runnable-track { background:none; height:22px; }
+  .pr-track input[type=range]::-moz-range-track { background:none; }
+  .pr-track input[type=range]::-webkit-slider-thumb { -webkit-appearance:none; pointer-events:auto; width:18px; height:18px; margin-top:2px; border-radius:50%; background:#fff; border:2px solid var(--blue-accent); cursor:pointer; box-shadow:0 1px 3px rgba(0,0,0,0.2); }
+  .pr-track input[type=range]::-moz-range-thumb { pointer-events:auto; width:14px; height:14px; border-radius:50%; background:#fff; border:2px solid var(--blue-accent); cursor:pointer; }
+  .pr-unknown { display:block; font-size:0.72rem; color:var(--text-muted); margin-top:8px; cursor:pointer; }
+  .adv-link { display:block; width:100%; text-align:left; background:none; border:none; padding:6px 16px 10px; font-size:0.76rem; color:var(--text-muted); cursor:pointer; text-decoration:underline; text-underline-offset:3px; font-family:inherit; }
+  .adv-link:hover { color:var(--blue-accent); }
+
+  .bro-row { display:flex; align-items:center; gap:12px; padding:10px 12px; border:1px solid var(--border); border-radius:10px; background:var(--blue-light); margin:4px 0; }
+  .bro-thumb { flex:0 0 auto; width:54px; height:72px; border-radius:4px; overflow:hidden; background:#fff; box-shadow:0 2px 6px rgba(0,0,0,0.18); display:flex; align-items:center; justify-content:center; text-decoration:none; }
+  .bro-thumb img { width:100%; height:100%; object-fit:cover; }
+  .bro-ph { font-size:0.7rem; font-weight:700; color:#c0392b; letter-spacing:0.05em; }
+  .bro-links { display:flex; flex-direction:column; gap:4px; font-size:0.82rem; }
+  .bro-links a { color:var(--blue-accent); font-weight:600; text-decoration:none; }
+  .bro-links a:hover { text-decoration:underline; }
   @media (max-width: 768px) { .foerder-panel-blocks { grid-template-columns: 1fr; } .cert-panel-item { padding: 16px 18px; } }
 
   /* ─── FEEDBACK MODAL ──── */
@@ -2138,6 +2191,19 @@
         <button class="sidebar-item sub" id="filter-certified-btn" onclick="toggleCertifiedFilter(this)">
           Nur zertifizierte Produkte<div class="sidebar-check"></div>
         </button>
+        <div class="sidebar-divider"></div>
+
+        <div class="sidebar-group-label">Preisspanne</div>
+        <div class="price-range">
+          <div class="pr-values"><span id="pr-lo"></span><span id="pr-hi"></span></div>
+          <div class="pr-track"><div class="pr-fill" id="pr-fill"></div>
+            <input type="range" id="pr-a" aria-label="Mindestpreis" oninput="prInput()">
+            <input type="range" id="pr-b" aria-label="Höchstpreis" oninput="prInput()"></div>
+          <label class="pr-unknown"><input type="checkbox" id="pr-unk" checked onchange="renderProducts()"> Produkte ohne Preisangabe einblenden</label>
+          <button class="adv-reset" id="pr-reset" style="display:none" onclick="prReset();renderProducts()">Preisspanne zurücksetzen</button>
+        </div>
+        <div class="sidebar-divider"></div>
+        <button class="adv-link" onclick="advOpen()">Unsicher? Zum Produktberater →</button>
       </aside>
 
       </div><!-- end products-top-row -->
@@ -2157,6 +2223,8 @@
 
       <!-- RIGHT COLUMN: Produkte -->
       <div class="products-right">
+        <div class="adv-bar" id="adv-bar"><span id="adv-status"></span></div>
+        <div class="adv-wiz" id="adv-wiz" style="display:none"></div>
         <div class="product-grid" id="product-grid">
           <!-- Cards rendered by JS -->
         </div>
@@ -2234,30 +2302,17 @@
   <div class="main-panel" id="panel-foerderung">
     <div class="content-panel-inner">
       <h2 class="content-panel-title">Fördermöglichkeiten</h2>
-      <p class="content-panel-intro">Für Schutzmaßnahmen an Privatgebäuden gibt es auf verschiedenen Ebenen finanzielle Unterstützungsmöglichkeiten. Eine Übersicht der wichtigsten Programme:</p>
-      <div class="foerder-panel-blocks">
-        <div class="foerder-panel-block">
-          <div class="foerder-panel-tag">Bund</div>
-          <h3>Bundesförderung – KfW</h3>
-          <p>Im Rahmen der Bundesförderung für effiziente Gebäude (BEG) können Maßnahmen zum Schutz vor Naturgefahren wie Hochwasser förderfähig sein, sofern sie Teil einer energetischen Sanierung sind. Die KfW bietet zudem zinsgünstige Kredite an. Aktuelle Konditionen sind direkt bei der KfW oder einem Finanzierungspartner zu erfragen.</p>
-        </div>
-        <div class="foerder-panel-block">
-          <div class="foerder-panel-tag">Länder</div>
-          <h3>Landesförderprogramme</h3>
-          <p>Viele Bundesländer haben eigene Förderprogramme für den privaten Hochwasserschutz aufgelegt, insbesondere nach größeren Hochwasserereignissen. Umfang und Förderquoten variieren stark. Zuständig sind in der Regel die Landesumweltministerien oder Bezirksregierungen.</p>
-        </div>
-        <div class="foerder-panel-block">
-          <div class="foerder-panel-tag">Kommunen</div>
-          <h3>Kommunale Programme</h3>
-          <p>Einzelne Städte und Gemeinden bieten ergänzende Zuschüsse für Schutzmaßnahmen an Privatgebäuden. Ansprechpartner sind das lokale Stadtplanungsamt oder die Gemeindeverwaltung.</p>
-        </div>
-        <div class="foerder-panel-block">
-          <div class="foerder-panel-tag">Versicherung</div>
-          <h3>Elementarschadenversicherung</h3>
-          <p>Elementarschadenversicherungen können nach einem Hochwasserereignis Kosten übernehmen. Manche Versicherer gewähren günstigere Tarife bei nachgewiesenen Schutzmaßnahmen. Ein Gespräch mit dem Versicherungsanbieter lohnt sich.</p>
-        </div>
-      </div>
-      <div class="foerder-panel-disclaimer">Die Angaben sind allgemeiner Natur und ohne Gewähr. Förderprogramme können sich ändern. Für verbindliche Informationen wenden Sie sich bitte direkt an die genannten Institutionen.</div>
+      <p class="content-panel-intro">In vier Schritten von der Förder-Recherche bis zum Nachweis. Wichtig: <strong>Förderanträge immer vor Beginn der Maßnahme stellen.</strong></p>
+      <div class="fs-nav" id="fs-nav"></div>
+      <div class="fs-body" id="fs-body"></div>
+      <div class="fs-body"><h3>Steuerbonus für Handwerkerleistungen (§ 35a EStG)</h3>
+        Für Renovierungs-, Erhaltungs- und Modernisierungsmaßnahmen im eigenen Haushalt mindert sich die Einkommensteuer auf Antrag um 20 % der <strong>Arbeitskosten</strong>, höchstens um 1.200 € pro Jahr. Materialkosten zählen nicht. Die Rechnung muss die Arbeitskosten getrennt ausweisen und unbar bezahlt werden. Für Maßnahmen, die bereits über Zuschüsse oder zinsverbilligte Darlehen gefördert werden, gilt der Bonus nicht. Ob Ihre konkrete Maßnahme darunter fällt, klärt das Finanzamt oder eine Steuerberatung.
+        <div><a class="fs-link" href="https://www.gesetze-im-internet.de/estg/__35a.html" target="_blank" rel="noopener">§ 35a EStG im Gesetzestext ↗</a></div></div>
+      <div class="fs-body"><h3>Elementarschadenversicherung</h3>
+        Eine gesetzliche Pflicht gibt es nach unserer Recherche noch nicht (Stand <span class="fs-stand-date"></span>): Der Koalitionsvertrag sieht vor, dass Wohngebäudeversicherungen künftig nur noch mit Elementarschutz angeboten werden, ein Gesetzentwurf war angekündigt. Unabhängig davon lohnt sich ein Blick in Ihren Vertrag. Fragen Sie Ihren Versicherer: Ist Überschwemmung/Rückstau mitversichert? Gibt es Selbstbeteiligungen? Werden nachgewiesene Schutzmaßnahmen bei der Prämie berücksichtigt?</div>
+      <div class="foerder-panel-disclaimer">Die Angaben sind allgemeiner Natur und ohne Gewähr (Stand <span class="fs-stand-date"></span>). Förderprogramme, Fristen und Mittel ändern sich. Verbindlich sind nur die Auskünfte der jeweiligen Förderstelle.</div>
+    </div>
+  </div>
     </div>
   </div>
 
@@ -2424,6 +2479,8 @@ const categoryInfo = {
 // Aktive Kategorien für Produkte (Mehrfachauswahl)
 let activeProductKategorien = new Set(['Alle']);
 let filterCertifiedOnly = false;
+let advisor = { cert: '' };
+let priceFilter = { active: false, lo: 0, hi: 0, bmin: 0, bmax: 0 };
 
 function toggleCertifiedFilter(btn) {
   filterCertifiedOnly = !filterCertifiedOnly;
@@ -2453,6 +2510,13 @@ function renderProducts(filter) {
       return certs.some(c => CERT_INFO[c]);
     });
   }
+
+  prSync();
+  if (priceFilter.active) {
+    const unk = document.getElementById('pr-unk');
+    filtered = filtered.filter(p => { const pr = advParsePrice(p.kosten); return pr ? (pr.min <= priceFilter.hi && pr.max >= priceFilter.lo) : (unk ? unk.checked : true); });
+  }
+  if (advisor.cert) filtered = filtered.filter(p => String(p.zertifizierung || '').split(/[,;]+/).map(x => x.trim()).includes(advisor.cert));
 
   const label = document.getElementById('products-count-label');
   const title = document.getElementById('active-category-title');
@@ -2502,6 +2566,7 @@ function renderProducts(filter) {
         <div class="card-category">${p.category}</div>
         <div class="card-name">${p.name}</div>
         ${desc ? `<div class="card-desc">${desc}</div>` : ''}
+        ${renderBrochure(p)}
         <div class="card-meta">
         </div>
         ${link ? `<a class="card-link" href="${link}" target="_blank" rel="noopener">Hier geht's zum Produkt →</a>` : ''}
@@ -2618,6 +2683,7 @@ function searchProducts(query) {
         <div class="card-category">${p.category}</div>
         <div class="card-name">${p.name}</div>
         <div class="card-desc">${p.desc}</div>
+        ${renderBrochure(p)}
         <div class="card-meta">
           <div class="card-meta-row"><span>Hersteller</span> ${p.hersteller}</div>
         </div>
@@ -2801,6 +2867,25 @@ function showLoading() {
     </div>`;
 }
 
+// Spalte per Muster finden (tolerant bei ü/ue und Schreibweise)
+function findCol(obj, re) {
+  const k = Object.keys(obj).find(key => re.test(key.normalize('NFC')));
+  return k ? sanitizeCell(obj[k]) : '';
+}
+function escHtml(t) { return String(t).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
+// Broschüren-Zeile mit Vorschaubild; Zelle: "URL" oder "Titel|URL; Titel|URL"
+function renderBrochure(p) {
+  const items = String(p.broschuere || '').split(';').map(x => x.trim()).filter(Boolean).map(x => {
+    const i = x.indexOf('|');
+    return i > 0 ? { t: x.slice(0, i).trim(), u: x.slice(i + 1).trim() } : { t: 'Broschüre (PDF)', u: x };
+  }).filter(b => /^https?:\/\//i.test(b.u));
+  if (!items.length) return '';
+  const hasImg = /^https?:\/\//i.test(p.broschuereBild || '');
+  const thumb = hasImg ? `<img src="${escHtml(p.broschuereBild)}" alt="Vorschau der Broschüre" loading="lazy">` : '<span class="bro-ph">PDF</span>';
+  return `<div class="bro-row"><a class="bro-thumb" href="${escHtml(items[0].u)}" target="_blank" rel="noopener" aria-label="Broschüre öffnen">${thumb}</a>
+    <div class="bro-links">${items.map(b => `<a href="${escHtml(b.u)}" target="_blank" rel="noopener">📄 ${escHtml(b.t)} →</a>`).join('')}</div></div>`;
+}
+
 // Lädt Produkte aus Google Sheets und gibt sie als Array zurück
 async function loadFromSheets() {
   showLoading();
@@ -2830,7 +2915,9 @@ async function loadFromSheets() {
           aktualisiert: sanitizeCell(obj['aktualisiert']),
           link: sanitizeCell(obj['link']) || '#',
           icon: sanitizeCell(obj['icon']),
-          real: sanitizeCell(obj['real'])
+          real: sanitizeCell(obj['real']),
+          broschuere: findCol(obj, /^brosch(ü|ue)re\s*(link|url)?$/),
+          broschuereBild: findCol(obj, /^brosch(ü|ue)re\s*[-_ ]?(bild|vorschau|cover)$/)
         };
       })
       .filter(hasProductContent);
@@ -3121,6 +3208,176 @@ function filterInstallateure(cat, btn) {
 }
 
 // Tab-Umschaltung
+
+const foerderData = {
+  stand: 'Oktober 2026',
+  foerderdb: 'https://www.foerderdatenbank.de',
+  bund: 'Auf Bundesebene konnten wir kein eigenes Programm für private Hochwasser-Objektschutzmaßnahmen bestätigen. Die KfW-Wohngebäudeprogramme zielen primär auf Energieeffizienz. Die Aufbauhilfe nach der Flut vom Juli 2021 betraf nur Geschädigte in NRW, Rheinland-Pfalz, Bayern und Sachsen.',
+  kommune: 'Einzelne Städte und Gemeinden fördern Beratung oder Kleinmaßnahmen, z. B. Walldorf (Baden-Württemberg). Fragen Sie bei Ihrer Gemeinde nach.',
+  kommuneLink: ['https://www.walldorf.de/fileadmin/Nachhaltig/Foerderprogramme/RL_Starkregen-_und_Hochwasserschutz_2026.pdf','Beispiel: Förderrichtlinie Walldorf'],
+  default: 'Für dieses Bundesland konnten wir kein landesweites Programm für private Hochwasser-Eigenvorsorge bestätigen. Das heißt nicht, dass es keines gibt: Prüfen Sie die Förderdatenbank des Bundes und fragen Sie Ihre Gemeinde.',
+  laender: {
+    'Sachsen': { text: 'Die „Förderrichtlinie private Hochwassereigenvorsorge“ gewährt Eigentümern und Erbbauberechtigten von Wohngebäuden Zuschüsse für Maßnahmen an Bestandsgebäuden zum Schutz vor Hochwasser, Starkregen und Sturzfluten, inklusive Gutachten. Antrag bei der Sächsischen Aufbaubank (SAB). Kein Rechtsanspruch, Bewilligung im Rahmen der Haushaltsmittel.', link: ['https://www.foerderdatenbank.de/FDB/Content/DE/Foerderprogramm/Land/Sachsen/private-hochwassereigenvorsorge.html','Programm in der Förderdatenbank ↗'] },
+    'Rheinland-Pfalz': { text: 'Kein Vorsorge-Programm bestätigt. Es gibt die „Wiederaufbau RLP 2021“-Hilfen, aber nur für Geschädigte der Flut vom 14./15.7.2021 in bestimmten Landkreisen (Antrag über die ISB). Aktuelle Fristen bitte dort prüfen.', link: ['https://www.foerderdatenbank.de/FDB/Content/DE/Foerderprogramm/Land/Rheinland-Pfalz/wiederaufbau-rlp-2021-private-vereine.html','Wiederaufbau RLP 2021 ↗'] }
+  }
+};
+const FS_LAENDER = ['Baden-Württemberg','Bayern','Berlin','Brandenburg','Bremen','Hamburg','Hessen','Mecklenburg-Vorpommern','Niedersachsen','Nordrhein-Westfalen','Rheinland-Pfalz','Saarland','Sachsen','Sachsen-Anhalt','Schleswig-Holstein','Thüringen'];
+const FS_STEPS = ['Förderung prüfen','Angebot einholen','Antrag stellen','Umsetzung & Nachweis'];
+let fsStep = 0, fsLand = '';
+function fsLinkHtml(l){ return l ? `<a class="fs-link" href="${l[0]}" target="_blank" rel="noopener">${l[1]} ↗</a>`.replace('↗ ↗','↗') : ''; }
+function fsGoTab(id){ const b=[...document.querySelectorAll('.main-tab')].find(x=>(x.getAttribute('onclick')||'').includes(`'${id}'`)); showMainTab(id,b); window.scrollTo({top:0,behavior:'smooth'}); }
+function renderFoerderStepper(){
+  document.querySelectorAll('.fs-stand-date').forEach(e=>e.textContent=foerderData.stand);
+  document.getElementById('fs-nav').innerHTML = FS_STEPS.map((t,i)=>`<button class="${i===fsStep?'active':''}" onclick="fsStep=${i};renderFoerderStepper()"><b>${i+1}</b>${t}</button>`).join('');
+  const L = foerderData.laender[fsLand];
+  let h='';
+  if(fsStep===0){
+    h=`<h3>Welche Förderung passt zu Ihnen?</h3>Wählen Sie Ihr Bundesland:<br>
+    <select onchange="fsLand=this.value;renderFoerderStepper()"><option value="">– bitte wählen –</option>${FS_LAENDER.map(l=>`<option ${l===fsLand?'selected':''}>${l}</option>`).join('')}</select>`;
+    if(fsLand) h+=`<div class="fs-result"><strong>${fsLand}</strong><br>${L?L.text:foerderData.default}<br>${fsLinkHtml(L&&L.link)}${L?'':`<a class="fs-link" href="${foerderData.foerderdb}" target="_blank" rel="noopener">Förderdatenbank des Bundes ↗</a>`}</div>`;
+    h+=`<div class="fs-result"><strong>Bund</strong><br>${foerderData.bund}</div><div class="fs-result"><strong>Kommune</strong><br>${foerderData.kommune}<br>${fsLinkHtml(foerderData.kommuneLink)}</div>`;
+  } else if(fsStep===1){
+    h=`<h3>Angebot vom Fachbetrieb einholen</h3>Die meisten Förderstellen verlangen einen Kostenvoranschlag oder ein Angebot. Holen Sie es bei einem qualifizierten Fachbetrieb ein, und lassen Sie die Arbeitskosten getrennt ausweisen (relevant für den Steuerbonus).<br><button class="fs-link" onclick="fsGoTab('installateure')">Zu den Fachbetrieben & Monteuren →</button>`;
+  } else if(fsStep===2){
+    h=`<h3>Antrag stellen</h3><div class="fs-warn"><strong>Nicht vor dem Antrag beginnen:</strong> Wer mit der Maßnahme startet, bevor der Antrag gestellt oder bewilligt ist, verliert den Anspruch in der Regel. Genaue Regeln stehen in der jeweiligen Richtlinie.</div>${fsLand?`Für <strong>${fsLand}</strong>:<br>${L?L.text:foerderData.default}<br>${fsLinkHtml(L&&L.link)}`:'Wählen Sie in Schritt 1 Ihr Bundesland, dann erscheinen hier die passende Stelle und der Link.'}`;
+  } else {
+    h=`<h3>Umsetzung & Nachweis</h3>Bewahren Sie Rechnung, Zahlungsbeleg und Fachbetriebs-Bescheinigung auf. Förderstellen und Versicherer verlangen oft Nachweise, dass das Produkt normgerecht ist.<br><button class="fs-link" onclick="fsGoTab('zertifikate')">Zu Zertifikate & Normen →</button>`;
+  }
+  h+=`<div class="fs-actions"><button class="fs-link" ${fsStep===0?'style="visibility:hidden"':''} onclick="fsStep--;renderFoerderStepper()">← Zurück</button><button class="fs-link" ${fsStep===3?'style="visibility:hidden"':''} onclick="fsStep++;renderFoerderStepper()">Weiter →</button></div>`;
+  document.getElementById('fs-body').innerHTML=h;
+}
+document.addEventListener('DOMContentLoaded', renderFoerderStepper);
+
+
+// ═══════════════ PRODUKTBERATER (Frage-Antwort) ═══════════════
+const ADV_PRICES = [
+  { l: 'bis 500 €', lo: 0, hi: 500 }, { l: '500 – 2.000 €', lo: 500, hi: 2000 },
+  { l: '2.000 – 5.000 €', lo: 2000, hi: 5000 }, { l: 'über 5.000 €', lo: 5000, hi: Infinity }
+];
+let adv = { step: 0, kats: new Set(), price: -1, cert: '' }; // cert: '' = egal, '*' = nur zertifizierte, sonst Name
+let advActive = false;
+
+function advParsePrice(str) {
+  const nums = (String(str || '').match(/\d{1,3}(?:\.\d{3})+|\d+/g) || []).map(n => +n.replace(/\./g, ''));
+  if (!nums.length) return null;
+  if (nums.length > 1) return { min: Math.min(...nums), max: Math.max(...nums) };
+  if (/ab/i.test(str)) return { min: nums[0], max: Infinity };
+  if (/bis/i.test(str)) return { min: 0, max: nums[0] };
+  return { min: nums[0], max: nums[0] };
+}
+function advPriceFits(kosten, band) {
+  const pr = advParsePrice(kosten);
+  return !pr || (pr.min <= band.hi && pr.max >= band.lo); // ohne Preisangabe: anzeigen
+}
+function advCerts() {
+  const set = new Set();
+  products.filter(hasProductContent).forEach(p => String(p.zertifizierung || '').split(/[,;]+/).map(x => x.trim()).filter(c => CERT_INFO[c]).forEach(c => set.add(c)));
+  return [...set];
+}
+// ── Preisspanne (Doppel-Slider) ──
+function advBounds() {
+  const vals = [];
+  products.filter(hasProductContent).forEach(p => { const pr = advParsePrice(p.kosten); if (pr) { vals.push(pr.min); if (isFinite(pr.max)) vals.push(pr.max); } });
+  if (!vals.length) return { min: 0, max: 5000, step: 50 };
+  const top = Math.max(...vals), step = top > 5000 ? 100 : 50;
+  return { min: Math.floor(Math.min(...vals) / step) * step, max: Math.ceil(top / step) * step, step };
+}
+function prSync() {
+  const A = document.getElementById('pr-a'), B = document.getElementById('pr-b');
+  if (!A) return;
+  const b = advBounds();
+  if (+A.min !== b.min || +A.max !== b.max || !A.step) { [A, B].forEach(e => { e.min = b.min; e.max = b.max; e.step = b.step; }); priceFilter.active = false; }
+  if (!priceFilter.active) { A.value = b.min; B.value = b.max; }
+  priceFilter.bmin = b.min; priceFilter.bmax = b.max;
+  prLabels();
+}
+function prLabels() {
+  const A = document.getElementById('pr-a'), B = document.getElementById('pr-b');
+  const lo = Math.min(+A.value, +B.value), hi = Math.max(+A.value, +B.value), { bmin, bmax } = priceFilter;
+  const f = n => n.toLocaleString('de-DE') + ' €';
+  document.getElementById('pr-lo').textContent = f(lo);
+  document.getElementById('pr-hi').textContent = hi >= bmax ? f(hi) + '+' : f(hi);
+  const span = Math.max(bmax - bmin, 1);
+  const fill = document.getElementById('pr-fill');
+  fill.style.left = ((lo - bmin) / span * 100) + '%'; fill.style.width = ((hi - lo) / span * 100) + '%';
+  document.getElementById('pr-reset').style.display = priceFilter.active ? 'block' : 'none';
+}
+function prInput() {
+  const A = document.getElementById('pr-a'), B = document.getElementById('pr-b');
+  priceFilter.lo = Math.min(+A.value, +B.value); priceFilter.hi = Math.max(+A.value, +B.value);
+  priceFilter.active = priceFilter.lo > priceFilter.bmin || priceFilter.hi < priceFilter.bmax;
+  renderProducts();
+  if (advActive) advStatus();
+}
+function prSet(lo, hi) {
+  prSync();
+  const A = document.getElementById('pr-a'), B = document.getElementById('pr-b');
+  A.value = Math.max(lo, priceFilter.bmin); B.value = Math.min(hi, priceFilter.bmax);
+  priceFilter.lo = +A.value; priceFilter.hi = +B.value;
+  priceFilter.active = priceFilter.lo > priceFilter.bmin || priceFilter.hi < priceFilter.bmax;
+}
+function prReset() { priceFilter.active = false; prSync(); }
+
+function advOpen() {
+  document.getElementById('adv-wiz').scrollIntoView({ behavior: 'smooth', block: 'nearest' }); adv.step = 0; adv.kats = new Set(); adv.price = -1; adv.cert = ''; document.getElementById('adv-wiz').style.display = 'block'; advRender(); }
+function advClose() { document.getElementById('adv-wiz').style.display = 'none'; }
+function advPick(kind, v) {
+  if (kind === 'kat') { const k = Object.keys(categoryInfo)[v]; adv.kats.has(k) ? adv.kats.delete(k) : adv.kats.add(k); }
+  else if (kind === 'price') adv.price = v;
+  else if (kind === 'cert') adv.cert = v === -1 ? '' : (v === -2 ? '*' : advCerts()[v]);
+  advRender();
+}
+function advGo(d) { adv.step += d; advRender(); }
+function advRender() {
+  const chip = (on, label, fn) => `<button class="adv-chip ${on ? 'on' : ''}" onclick="${fn}">${label}</button>`;
+  let q = '', hint = '', chips = '';
+  if (adv.step === 0) {
+    q = 'Welche Art von Schutz suchen Sie?'; hint = 'Mehrfachauswahl möglich. Ohne Auswahl werden alle Arten berücksichtigt.';
+    chips = Object.keys(categoryInfo).map((k, i) => chip(adv.kats.has(k), k, `advPick('kat',${i})`)).join('');
+  } else if (adv.step === 1) {
+    q = 'Welches Budget haben Sie pro Produkt?'; hint = 'Stellt die Preisspanne in der Seitenleiste ein, die Sie dort jederzeit fein anpassen können.';
+    chips = chip(adv.price === -1, 'Egal', `advPick('price',-1)`) + ADV_PRICES.map((b, i) => chip(adv.price === i, b.l, `advPick('price',${i})`)).join('');
+  } else {
+    q = 'Wie wichtig ist die Zertifizierung?'; hint = 'Zertifizierte Produkte wurden nach einer anerkannten Prüfgrundlage getestet.';
+    chips = chip(adv.cert === '', 'Egal', `advPick('cert',-1)`) + chip(adv.cert === '*', 'Nur zertifizierte', `advPick('cert',-2)`) + advCerts().map((c, i) => chip(adv.cert === c, c, `advPick('cert',${i})`)).join('');
+  }
+  document.getElementById('adv-wiz').innerHTML = `<div class="adv-prog">Frage ${adv.step + 1} von 3</div><h3 class="adv-q">${q}</h3><div class="adv-hint">${hint}</div><div class="adv-chips">${chips}</div>
+    <div class="adv-nav"><button onclick="${adv.step === 0 ? 'advClose()' : 'advGo(-1)'}">${adv.step === 0 ? 'Abbrechen' : '← Zurück'}</button>
+    <button class="primary" onclick="${adv.step === 2 ? 'advApply()' : 'advGo(1)'}">${adv.step === 2 ? 'Produkte anzeigen' : 'Weiter →'}</button></div>`;
+}
+function advSyncSidebar() {
+  document.querySelectorAll('.sidebar-item').forEach(b => {
+    if (b.id === 'filter-certified-btn') { b.classList.toggle('active', filterCertifiedOnly); return; }
+    const m = (b.getAttribute('onclick') || '').match(/'([^']+)'/);
+    if (m) b.classList.toggle('active', activeProductKategorien.has(m[1]));
+  });
+  const zc = [...activeProductKategorien].filter(c => zoneCategories[c]);
+  highlightZone(zc.length === 1 ? zc[0] : null);
+}
+function advApply() {
+  activeProductKategorien = adv.kats.size ? new Set(adv.kats) : new Set(['Alle']);
+  filterCertifiedOnly = adv.cert === '*';
+  advisor = { cert: (adv.cert && adv.cert !== '*') ? adv.cert : '' };
+  if (adv.price >= 0) prSet(ADV_PRICES[adv.price].lo, ADV_PRICES[adv.price].hi); else prReset();
+  advActive = true;
+  advSyncSidebar(); renderProducts(); advStatus(); advClose();
+  document.getElementById('product-grid').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+function advReset() {
+  activeProductKategorien = new Set(['Alle']); filterCertifiedOnly = false; advisor = { cert: '' }; advActive = false; prReset();
+  advSyncSidebar(); renderProducts(); advStatus();
+}
+function advStatus() {
+  const el = document.getElementById('adv-status');
+  if (!advActive) { el.innerHTML = ''; return; }
+  const parts = [];
+  if (!activeProductKategorien.has('Alle')) parts.push([...activeProductKategorien].join(', '));
+  if (priceFilter.active) parts.push(priceFilter.lo.toLocaleString('de-DE') + ' – ' + priceFilter.hi.toLocaleString('de-DE') + ' €');
+  if (filterCertifiedOnly) parts.push('zertifiziert');
+  if (advisor.cert) parts.push(advisor.cert);
+  el.innerHTML = `<span class="adv-summary">Berater: ${parts.join(' · ') || 'keine Einschränkung'}</span> <button class="adv-reset" onclick="advReset()">Zurücksetzen</button>`;
+}
+
 function showMainTab(id, btn) {
   document.querySelectorAll('.main-tab').forEach(b => b.classList.remove('active'));
   document.querySelectorAll('.main-panel').forEach(p => p.classList.remove('active'));
@@ -3728,7 +3985,7 @@ const infoSectionContent = {
     title: 'Fördermöglichkeiten',
     render: () => `
       <p>Für Schutzmaßnahmen an Privatgebäuden gibt es auf verschiedenen Ebenen finanzielle Unterstützungsmöglichkeiten.</p>
-      <div class="info-foerder-block"><div class="info-foerder-title">Bundesförderung – KfW <span class="info-foerder-tag">Bund</span></div><div class="info-foerder-desc">Im Rahmen der Bundesförderung für effiziente Gebäude (BEG) können Maßnahmen zum Schutz vor Naturgefahren wie Hochwasser förderfähig sein, sofern sie Teil einer energetischen Sanierung sind. Die KfW bietet zudem zinsgünstige Kredite an. Aktuelle Konditionen sind direkt bei der KfW oder einem Finanzierungspartner zu erfragen.</div></div>
+      <div class="info-foerder-block"><div class="info-foerder-title">Bundesebene <span class="info-foerder-tag">Bund</span></div><div class="info-foerder-desc">Ein eigenes Bundesprogramm für privaten Hochwasser-Objektschutz konnten wir nicht bestätigen. Steuerlich können Handwerkerleistungen nach § 35a EStG geltend gemacht werden (20 % der Arbeitskosten, max. 1.200 € pro Jahr). Details im Tab „Fördermöglichkeiten“.</div></div>
       <div class="info-foerder-block"><div class="info-foerder-title">Landesförderprogramme <span class="info-foerder-tag">Länder</span></div><div class="info-foerder-desc">Viele Bundesländer haben eigene Förderprogramme für den privaten Hochwasserschutz aufgelegt, insbesondere nach größeren Hochwasserereignissen. Umfang und Förderquoten variieren stark. Zuständig sind in der Regel die Landesumweltministerien oder Bezirksregierungen.</div></div>
       <div class="info-foerder-block"><div class="info-foerder-title">Kommunale Programme <span class="info-foerder-tag">Kommunen</span></div><div class="info-foerder-desc">Einzelne Städte und Gemeinden bieten ergänzende Zuschüsse für Schutzmaßnahmen an Privatgebäuden. Ansprechpartner sind das lokale Stadtplanungsamt oder die Gemeindeverwaltung.</div></div>
       <div class="info-foerder-block"><div class="info-foerder-title">Elementarschadenversicherung <span class="info-foerder-tag">Versicherung</span></div><div class="info-foerder-desc">Elementarschadenversicherungen können nach einem Hochwasserereignis Kosten übernehmen. Manche Versicherer gewähren günstigere Tarife, wenn nachweislich Schutzmaßnahmen umgesetzt wurden. Ein Gespräch mit dem Versicherungsanbieter lohnt sich.</div></div>
