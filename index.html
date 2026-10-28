@@ -649,6 +649,12 @@
   .bro-links { display:flex; flex-direction:column; gap:4px; font-size:0.82rem; }
   .bro-links a { color:var(--blue-accent); font-weight:600; text-decoration:none; }
   .bro-links a:hover { text-decoration:underline; }
+
+  .adv-price-in { display:flex; gap:14px; flex-wrap:wrap; margin-bottom:16px; font-size:0.84rem; color:var(--text-muted); }
+  .adv-price-in input { width:96px; padding:8px 10px; border:1.5px solid var(--border); border-radius:8px; font-size:0.84rem; margin:0 4px; }
+  .adv-res { display:flex; justify-content:space-between; gap:12px; padding:8px 0; border-bottom:1px solid var(--border); font-size:0.84rem; color:var(--blue-deep); }
+  .adv-res-meta { color:var(--text-muted); font-size:0.78rem; text-align:right; }
+  .adv-monteur { background:var(--blue-light); border-radius:10px; padding:12px 14px; margin:14px 0; font-size:0.84rem; color:var(--blue-deep); line-height:1.6; }
   @media (max-width: 768px) { .foerder-panel-blocks { grid-template-columns: 1fr; } .cert-panel-item { padding: 16px 18px; } }
 
   /* ─── FEEDBACK MODAL ──── */
@@ -1861,24 +1867,6 @@
 <body>
 
 <!-- ═══════════════════════════════════════════════ -->
-<!-- PASSWORT-OVERLAY                                -->
-<!-- Passwort ändern: PASSWORT-Variable im Script    -->
-<!-- ═══════════════════════════════════════════════ -->
-<div id="pw-overlay">
-  <div id="pw-box">
-    <div class="pw-logo">Hochwasser<span>Schutz</span></div>
-    <h2>Zugang zur Plattform</h2>
-    <p>Diese Plattform ist passwortgeschützt.<br>Bitte geben Sie das Zugangspasswort ein.</p>
-    <div class="pw-field-wrap">
-      <input type="password" id="pw-input" placeholder="Passwort …" autofocus/>
-      <button id="pw-submit-btn">Einloggen →</button>
-    </div>
-    <div id="pw-error" class="pw-error">❌ Falsches Passwort. Bitte erneut versuchen.</div>
-    <div class="pw-hint">Erstellt im Rahmen einer Masterarbeit · Prototyp</div>
-  </div>
-</div>
-
-<!-- ═══════════════════════════════════════════════ -->
 <!-- TOUR-PROMPT (erscheint einmalig nach dem Login) -->
 <!-- ═══════════════════════════════════════════════ -->
 <div id="tour-prompt-overlay" class="hidden">
@@ -2480,6 +2468,7 @@ const categoryInfo = {
 let activeProductKategorien = new Set(['Alle']);
 let filterCertifiedOnly = false;
 let advisor = { cert: '' };
+let lastFiltered = [];
 let priceFilter = { active: false, lo: 0, hi: 0, bmin: 0, bmax: 0 };
 
 function toggleCertifiedFilter(btn) {
@@ -2518,6 +2507,7 @@ function renderProducts(filter) {
   }
   if (advisor.cert) filtered = filtered.filter(p => String(p.zertifizierung || '').split(/[,;]+/).map(x => x.trim()).includes(advisor.cert));
 
+  lastFiltered = filtered;
   const label = document.getElementById('products-count-label');
   const title = document.getElementById('active-category-title');
   const labelText = (activeProductKategorien.has('Alle') || activeProductKategorien.size === 0)
@@ -2567,6 +2557,7 @@ function renderProducts(filter) {
         <div class="card-name">${p.name}</div>
         ${desc ? `<div class="card-desc">${desc}</div>` : ''}
         ${renderBrochure(p)}
+        ${advNeedsMonteur(p) ? `<button class="fs-link" onclick="fsGoTab('installateure')">🔧 Einbau durch Fachbetrieb – Betriebe finden →</button>` : ''}
         <div class="card-meta">
         </div>
         ${link ? `<a class="card-link" href="${link}" target="_blank" rel="noopener">Hier geht's zum Produkt →</a>` : ''}
@@ -2917,7 +2908,8 @@ async function loadFromSheets() {
           icon: sanitizeCell(obj['icon']),
           real: sanitizeCell(obj['real']),
           broschuere: findCol(obj, /^brosch(ü|ue)re\s*(link|url)?$/),
-          broschuereBild: findCol(obj, /^brosch(ü|ue)re\s*[-_ ]?(bild|vorschau|cover)$/)
+          broschuereBild: findCol(obj, /^brosch(ü|ue)re\s*[-_ ]?(bild|vorschau|cover)$/),
+          monteur: findCol(obj, /^monteur/)
         };
       })
       .filter(hasProductContent);
@@ -3254,7 +3246,7 @@ const ADV_PRICES = [
   { l: 'bis 500 €', lo: 0, hi: 500 }, { l: '500 – 2.000 €', lo: 500, hi: 2000 },
   { l: '2.000 – 5.000 €', lo: 2000, hi: 5000 }, { l: 'über 5.000 €', lo: 5000, hi: Infinity }
 ];
-let adv = { step: 0, kats: new Set(), price: -1, cert: '' }; // cert: '' = egal, '*' = nur zertifizierte, sonst Name
+let adv = { step: 0, kats: new Set(), pmin: null, pmax: null, cert: '' }; // cert: '' = egal, '*' = nur zertifizierte, sonst Name
 let advActive = false;
 
 function advParsePrice(str) {
@@ -3318,32 +3310,60 @@ function prSet(lo, hi) {
 }
 function prReset() { priceFilter.active = false; prSync(); }
 
+function advNeedsMonteur(p) {
+  const m = String(p.monteur || '').trim().toLowerCase();
+  if (/^(ja|yes|true|1|x)$/.test(m)) return true;
+  if (/^(nein|no|false|0)$/.test(m)) return false;
+  const t = String(p.installation || '');
+  const role = '(fachbetrieb|monteur|fachmann|fachfirma|installateur|handwerker)';
+  if (!t || !new RegExp(role, 'i').test(t)) return false;
+  return !new RegExp('kein(e|en)?\\s+(\\S+\\s+){0,2}' + role, 'i').test(t) && !/nicht\s+(erforderlich|nötig|notwendig)|optional/i.test(t);
+}
 function advOpen() {
-  document.getElementById('adv-wiz').scrollIntoView({ behavior: 'smooth', block: 'nearest' }); adv.step = 0; adv.kats = new Set(); adv.price = -1; adv.cert = ''; document.getElementById('adv-wiz').style.display = 'block'; advRender(); }
+  adv = { step: 0, kats: new Set(), pmin: null, pmax: null, cert: '' };
+  const w = document.getElementById('adv-wiz');
+  w.style.display = 'block'; advRender();
+  w.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
 function advClose() { document.getElementById('adv-wiz').style.display = 'none'; }
 function advPick(kind, v) {
   if (kind === 'kat') { const k = Object.keys(categoryInfo)[v]; adv.kats.has(k) ? adv.kats.delete(k) : adv.kats.add(k); }
-  else if (kind === 'price') adv.price = v;
+  else if (kind === 'price') { if (v < 0) { adv.pmin = null; adv.pmax = null; } else { adv.pmin = ADV_PRICES[v].lo || null; adv.pmax = isFinite(ADV_PRICES[v].hi) ? ADV_PRICES[v].hi : null; } }
   else if (kind === 'cert') adv.cert = v === -1 ? '' : (v === -2 ? '*' : advCerts()[v]);
   advRender();
 }
+function advSetPrice(which, val) { adv[which] = val === '' ? null : Math.max(0, +val); }
 function advGo(d) { adv.step += d; advRender(); }
+function advGoMonteur() { advClose(); fsGoTab('installateure'); }
+function advShowGrid() { advClose(); document.getElementById('product-grid').scrollIntoView({ behavior: 'smooth', block: 'start' }); }
 function advRender() {
   const chip = (on, label, fn) => `<button class="adv-chip ${on ? 'on' : ''}" onclick="${fn}">${label}</button>`;
-  let q = '', hint = '', chips = '';
+  const box = document.getElementById('adv-wiz');
+  if (adv.step === 3) {
+    const n = lastFiltered.length, mont = lastFiltered.filter(advNeedsMonteur).length;
+    const rows = lastFiltered.slice(0, 8).map(p => `<div class="adv-res"><span>${escHtml(p.name)}</span><span class="adv-res-meta">${escHtml(p.kosten || '')}${advNeedsMonteur(p) ? ' · 🔧 Fachbetrieb' : ''}</span></div>`).join('');
+    box.innerHTML = `<div class="adv-prog">Ergebnis</div><h3 class="adv-q">${n ? n + (n === 1 ? ' passendes Produkt' : ' passende Produkte') : 'Keine passenden Produkte'}</h3>
+      ${n ? `<div class="adv-hint">${n > 8 ? 'Die ersten 8 im Überblick, alle im Raster.' : 'Alle Treffer im Überblick.'}</div>${rows}` : '<div class="adv-hint">Versuchen Sie eine größere Preisspanne oder weniger strenge Zertifizierungs-Kriterien.</div>'}
+      ${mont ? `<div class="adv-monteur"><strong>🔧 ${mont} von ${n} Produkten</strong> werden durch einen Fachbetrieb eingebaut (oder sollten es).<br><button class="fs-link" onclick="advGoMonteur()">Fachbetriebe in Ihrer Nähe finden →</button></div>` : ''}
+      <div class="adv-nav"><button onclick="${n ? 'advOpen()' : 'advGo(-1)'}">${n ? 'Neu starten' : '← Zurück'}</button>${n ? '<button class="primary" onclick="advShowGrid()">Im Raster ansehen</button>' : ''}</div>`;
+    return;
+  }
+  let q = '', hint = '', chips = '', extra = '';
   if (adv.step === 0) {
     q = 'Welche Art von Schutz suchen Sie?'; hint = 'Mehrfachauswahl möglich. Ohne Auswahl werden alle Arten berücksichtigt.';
     chips = Object.keys(categoryInfo).map((k, i) => chip(adv.kats.has(k), k, `advPick('kat',${i})`)).join('');
   } else if (adv.step === 1) {
-    q = 'Welches Budget haben Sie pro Produkt?'; hint = 'Stellt die Preisspanne in der Seitenleiste ein, die Sie dort jederzeit fein anpassen können.';
-    chips = chip(adv.price === -1, 'Egal', `advPick('price',-1)`) + ADV_PRICES.map((b, i) => chip(adv.price === i, b.l, `advPick('price',${i})`)).join('');
-  } else {
-    q = 'Wie wichtig ist die Zertifizierung?'; hint = 'Zertifizierte Produkte wurden nach einer anerkannten Prüfgrundlage getestet.';
+    q = 'Soll das Produkt zertifiziert sein?'; hint = 'Zertifizierte Produkte wurden nach einer anerkannten Prüfgrundlage getestet.';
     chips = chip(adv.cert === '', 'Egal', `advPick('cert',-1)`) + chip(adv.cert === '*', 'Nur zertifizierte', `advPick('cert',-2)`) + advCerts().map((c, i) => chip(adv.cert === c, c, `advPick('cert',${i})`)).join('');
+  } else {
+    q = 'Welche Preisspanne passt zu Ihnen?'; hint = 'Wählen Sie einen Bereich oder tragen Sie Ihre eigene Spanne ein.';
+    const none = adv.pmin === null && adv.pmax === null;
+    chips = chip(none, 'Egal', `advPick('price',-1)`) + ADV_PRICES.map((b, i) => chip(adv.pmin === (b.lo || null) && adv.pmax === (isFinite(b.hi) ? b.hi : null), b.l, `advPick('price',${i})`)).join('');
+    extra = `<div class="adv-price-in"><label>von <input type="number" min="0" step="50" placeholder="Min" value="${adv.pmin ?? ''}" onchange="advSetPrice('pmin',this.value)"> €</label><label>bis <input type="number" min="0" step="50" placeholder="Max" value="${adv.pmax ?? ''}" onchange="advSetPrice('pmax',this.value)"> €</label></div>`;
   }
-  document.getElementById('adv-wiz').innerHTML = `<div class="adv-prog">Frage ${adv.step + 1} von 3</div><h3 class="adv-q">${q}</h3><div class="adv-hint">${hint}</div><div class="adv-chips">${chips}</div>
+  box.innerHTML = `<div class="adv-prog">Frage ${adv.step + 1} von 3</div><h3 class="adv-q">${q}</h3><div class="adv-hint">${hint}</div><div class="adv-chips">${chips}</div>${extra}
     <div class="adv-nav"><button onclick="${adv.step === 0 ? 'advClose()' : 'advGo(-1)'}">${adv.step === 0 ? 'Abbrechen' : '← Zurück'}</button>
-    <button class="primary" onclick="${adv.step === 2 ? 'advApply()' : 'advGo(1)'}">${adv.step === 2 ? 'Produkte anzeigen' : 'Weiter →'}</button></div>`;
+    <button class="primary" onclick="${adv.step === 2 ? 'advApply()' : 'advGo(1)'}">${adv.step === 2 ? 'Ergebnis ansehen' : 'Weiter →'}</button></div>`;
 }
 function advSyncSidebar() {
   document.querySelectorAll('.sidebar-item').forEach(b => {
@@ -3358,10 +3378,10 @@ function advApply() {
   activeProductKategorien = adv.kats.size ? new Set(adv.kats) : new Set(['Alle']);
   filterCertifiedOnly = adv.cert === '*';
   advisor = { cert: (adv.cert && adv.cert !== '*') ? adv.cert : '' };
-  if (adv.price >= 0) prSet(ADV_PRICES[adv.price].lo, ADV_PRICES[adv.price].hi); else prReset();
+  if (adv.pmin === null && adv.pmax === null) prReset(); else { prSync(); prSet(adv.pmin ?? priceFilter.bmin, adv.pmax ?? priceFilter.bmax); }
   advActive = true;
-  advSyncSidebar(); renderProducts(); advStatus(); advClose();
-  document.getElementById('product-grid').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  advSyncSidebar(); renderProducts(); advStatus();
+  adv.step = 3; advRender();
 }
 function advReset() {
   activeProductKategorien = new Set(['Alle']); filterCertifiedOnly = false; advisor = { cert: '' }; advActive = false; prReset();
@@ -3402,47 +3422,16 @@ function showMainTab(id, btn) {
 }
 
 // ═══════════════════════════════════════════════
-// PASSWORTSCHUTZ
-// Passwort hier ändern:
+// START: kein Login mehr – Tour-Prompt einmalig beim ersten Besuch
 // ═══════════════════════════════════════════════
-const PASSWORT = 'hochwasser2026';
-
-function checkPassword() {
-  const input = document.getElementById('pw-input').value;
-  const error = document.getElementById('pw-error');
-  if (input === PASSWORT) {
-    sessionStorage.setItem('pw_ok', '1');
-    const overlay = document.getElementById('pw-overlay');
-    overlay.style.transition = 'opacity 0.5s ease';
-    overlay.style.opacity = '0';
-    setTimeout(() => overlay.classList.add('hidden'), 500);
-    error.classList.remove('visible');
+window.addEventListener('load', () => {
+  try {
     if (!localStorage.getItem('tourSeen')) {
       localStorage.setItem('tourSeen', '1');
       setTimeout(showTourPrompt, 500);
     }
-  } else {
-    error.classList.add('visible');
-    const inp = document.getElementById('pw-input');
-    inp.value = '';
-    inp.focus();
-    inp.style.borderColor = '#c0392b';
-    setTimeout(() => inp.style.borderColor = '', 1200);
-  }
-}
-
-// Button und Enter-Taste verdrahten
-document.getElementById('pw-submit-btn').addEventListener('click', checkPassword);
-document.getElementById('pw-input').addEventListener('keydown', e => {
-  if (e.key === 'Enter') checkPassword();
+  } catch (e) { /* localStorage nicht verfügbar: Tour-Prompt überspringen */ }
 });
-
-// Session-Check beim Laden
-if (sessionStorage.getItem('pw_ok') === '1') {
-  document.getElementById('pw-overlay').classList.add('hidden');
-}
-
-
 
 // ═══════════════════════════════════════════════
 // HAUS-ZONEN HIGHLIGHT
@@ -4138,7 +4127,7 @@ function renderCertPanel() {
 }
 
 // Hinweis: Das automatische Öffnen des Info-Modals beim Laden wurde entfernt.
-// Stattdessen erscheint nach erfolgreichem Login das Tour-Prompt-Fenster (siehe checkPassword()).
+// Stattdessen erscheint beim ersten Besuch das Tour-Prompt-Fenster.
 
 // ═══════════════════════════════════════════════
 // (a) KATEGORIE-ERKLÄRUNGSPANEL
